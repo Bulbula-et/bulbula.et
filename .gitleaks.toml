@@ -1,0 +1,23 @@
+# Secret scanning configuration.
+#
+# The default rule set is used as-is; only generated directories that are not
+# part of the repository (and the vendored, minified front-end libraries,
+# whose entropy trips the generic rules) are allowlisted.
+
+title = "Bulbula secret scanning"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Generated or vendored files, and the documented placeholders"
+paths = [
+  # Placeholders only - the empty DB_PASSWORD= line makes the generic
+  # high-entropy rule read the following line as a secret. A feature test
+  # asserts that this file never carries a real value.
+  '''^\.env\.example$''',
+  '''^vendor/''',
+  '''^build/''',
+  '''^node_modules/''',
+  '''^public/assets/vendor/''',
+]

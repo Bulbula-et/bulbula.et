@@ -65,6 +65,21 @@ final readonly class ErrorHandler
      */
     public function handleThrowable(Throwable $throwable): void
     {
+        $reference = $this->report($throwable);
+
+        if (self::shouldSetStatusCode(headers_sent(), $this->sapi)) {
+            $this->sendStatusCode(500);
+        }
+
+        echo $this->render($throwable, $reference);
+    }
+
+    /**
+     * Log a throwable and return the reference that correlates the log entry
+     * with whatever is shown to the client.
+     */
+    public function report(Throwable $throwable): string
+    {
         $reference = $this->reference();
 
         $this->logger->error($throwable->getMessage(), [
@@ -74,11 +89,7 @@ final readonly class ErrorHandler
             'line' => $throwable->getLine(),
         ]);
 
-        if (self::shouldSetStatusCode(headers_sent(), $this->sapi)) {
-            $this->sendStatusCode(500);
-        }
-
-        echo $this->render($throwable, $reference);
+        return $reference;
     }
 
     /**

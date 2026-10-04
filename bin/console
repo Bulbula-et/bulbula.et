@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Bulbula\Console\ConsoleFactory;
+use Bulbula\Foundation\Application;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+/*
+ * Command line entry point. The only place in the project allowed to call
+ * exit(): everything it drives returns an exit code instead.
+ */
+/** @var mixed $argv */
+$argv = $_SERVER['argv'] ?? [];
+
+$arguments = is_array($argv) ? array_values(array_map(strval(...), $argv)) : [];
+
+exit(ConsoleFactory::create(Application::boot(dirname(__DIR__)))->run($arguments));
