@@ -1,7 +1,35 @@
+# Dependencies
+/vendor/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Runtime artefacts
+/storage/logs/*.log
+/storage/cache/
+
+# Tooling caches & reports
+/.phpunit.cache/
+/.phpunit.result.cache
+/.php-cs-fixer.cache
+/.phpinsights.cache
+/build/
+/infection.log
+/infection-report.*
+/.infection/
+
+# Local overrides
+/phpunit.xml
+/phpstan.neon
+/infection.json
+
+# Editors & OS
+.idea/
+*.swp
+*.swo
 .DS_Store
 Thumbs.db
-*.log
-.vscode/
-.idea/
-node_modules/
-.env

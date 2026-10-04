@@ -1,0 +1,21 @@
+# Keep distributed archives free of development-only files.
+/.github           export-ignore
+/.vscode           export-ignore
+/docs              export-ignore
+/tests             export-ignore
+.editorconfig      export-ignore
+.gitattributes     export-ignore
+.gitignore         export-ignore
+.env.example       export-ignore
+infection.json5    export-ignore
+phpstan.neon.dist  export-ignore
+phpunit.xml.dist   export-ignore
+pint.json          export-ignore
+rector.php         export-ignore
+CHANGELOG.md       export-ignore
+CONTRIBUTING.md    export-ignore
+README.md          export-ignore
+
+# Normalise line endings.
+* text=auto eol=lf
+*.png binary

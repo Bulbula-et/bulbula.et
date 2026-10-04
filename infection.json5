@@ -1,0 +1,36 @@
+{
+    // Mutation testing for the Bulbula engineering baseline.
+    //
+    // Infection has no Pest adapter (0.35 accepts phpunit, phpspec, codeception,
+    // testo and debug only), and plain PHPUnit cannot execute Pest-style test
+    // files. The `unit` suite is therefore written as classic PHPUnit test
+    // classes - Pest runs them too - and mutation testing targets that suite.
+    $schema: "vendor/infection/infection/resources/schema.json",
+    source: {
+        directories: ["src"],
+    },
+    mutators: {
+        "@default": true,
+        // http_response_code() is a documented no-op under the CLI SAPI that the
+        // test runner uses, so these two mutants are equivalent: no test can
+        // observe them. The *decision* to send a status code is fully covered
+        // (ErrorHandler::shouldSetStatusCode + the injected emitter seam).
+        ReturnRemoval: {
+            ignore: ["Bulbula\\Error\\ErrorHandler::sendStatusCode"],
+        },
+        FunctionCallRemoval: {
+            ignore: ["Bulbula\\Error\\ErrorHandler::sendStatusCode"],
+        },
+    },
+    testFramework: "phpunit",
+    testFrameworkOptions: "--testsuite=unit",
+    minMsi: 100,
+    minCoveredMsi: 100,
+    logs: {
+        text: "build/infection/infection.log",
+        html: "build/infection/infection.html",
+        summary: "build/infection/summary.log",
+        github: true,
+    },
+    tmpDir: "build/infection/tmp",
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.5/phpunit.xsd"
+         colors="true"
+         cacheDirectory=".phpunit.cache"
+         failOnWarning="true"
+         failOnRisky="true"
+         failOnDeprecation="true"
+         beStrictAboutOutputDuringTests="true">
+    <source>
+        <include>
+            <directory suffix=".php">./src</directory>
+        </include>
+    </source>
+    <testsuites>
+        <!-- PHPUnit-style tests: run by Pest *and* by Infection's PHPUnit adapter. -->
+        <testsuite name="unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
+        <!-- Pest-style tests. -->
+        <testsuite name="feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
+        <testsuite name="arch">
+            <directory suffix="Test.php">./tests/Arch</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="APP_ENV" value="testing" force="true"/>
+        <env name="APP_DEBUG" value="true" force="true"/>
+    </php>
+</phpunit>
