@@ -37,7 +37,7 @@ jobs:
         run: composer check-platform-reqs --lock
 
       - name: Audit dependencies for known vulnerabilities
-        run: composer audit
+        run: composer audit --locked
 
   coding-standards:
     name: 🎨 Coding standards
