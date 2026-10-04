@@ -119,18 +119,26 @@ main{flex:1}
 
 .hero__title{
   margin:1.4rem auto .9rem;
-  max-width:17ch;
-  font-size:clamp(2.05rem,7.2vw,4.7rem);
-  line-height:1.03;
-  letter-spacing:-.045em;
+  max-width:20ch;
+  font-size:clamp(2rem,6.4vw,4.3rem);
+  line-height:1.06;
+  letter-spacing:-.04em;
   font-weight:700;
-  background:linear-gradient(180deg,#FFFFFF 30%,#9FB0C6 115%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
+  color:#F3F6FB;
+  text-shadow:0 1px 30px rgba(0,0,0,.45);
 }
-.hero__title .word{display:inline-block}
+/* each word is its own element, so paint colour per word — never on the h1
+   (background-clip:text on the parent does not show through child spans) */
+.hero__title .word{display:inline-block;color:#F3F6FB}
 .hero__title .word--accent{
-  background:linear-gradient(95deg,var(--orange),var(--orange-2) 42%,var(--blue-2));
-  -webkit-background-clip:text;background-clip:text;color:transparent;
+  background:linear-gradient(95deg,var(--orange),var(--orange-2) 45%,var(--blue-2));
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  text-shadow:none;
+}
+/* if background-clip:text is unsupported, fall back to a solid orange word */
+@supports not ((-webkit-background-clip:text) or (background-clip:text)){
+  .hero__title .word--accent{background:none;-webkit-text-fill-color:initial;color:var(--orange)}
 }
 .hero__sub{
   max-width:58ch;margin:0 auto;color:var(--muted);

@@ -23,7 +23,7 @@
   var title = $("[data-split]");
   var words = [];
   if (title) {
-    var accent = ["BULBULA.ET,"];         // words painted with the brand gradient
+    var accent = ["BULBULA.ET"];          // words painted with the brand gradient
     var parts  = title.textContent.trim().split(/\s+/);
     title.textContent = "";
     parts.forEach(function (w, i) {
