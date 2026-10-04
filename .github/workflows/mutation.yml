@@ -30,7 +30,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.4"
-          extensions: dom, curl, libxml, mbstring, zip, intl, fileinfo
+          extensions: dom, curl, libxml, mbstring, zip, intl, fileinfo, pdo, pdo_mysql, pdo_sqlite
           coverage: pcov
 
       - name: Composer install
