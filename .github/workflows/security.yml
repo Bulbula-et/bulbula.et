@@ -15,7 +15,7 @@ jobs:
     name: 📦 Composer audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -24,7 +24,7 @@ jobs:
           coverage: none
 
       - name: Composer install
-        uses: ramsey/composer-install@v3
+        uses: ramsey/composer-install@v4
         with:
           dependency-versions: highest
 
@@ -35,7 +35,7 @@ jobs:
     name: 🕵️ Secret scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
