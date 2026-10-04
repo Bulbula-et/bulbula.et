@@ -1,0 +1,50 @@
+name: Mutation testing 🧬
+
+# Mutation testing is expensive, so it never gates a pull request.
+# It runs on main, nightly, and on demand.
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch: ~
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mutation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  infection:
+    name: 🧬 Infection
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: dom, curl, libxml, mbstring, zip, intl, fileinfo
+          coverage: pcov
+
+      - name: Composer install
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: highest
+
+      - name: Run Infection
+        run: composer infection:ci
+
+      - name: Upload mutation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: infection-report
+          path: build/infection/
+          retention-days: 14

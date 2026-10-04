@@ -1,0 +1,202 @@
+name: CI ⚡
+
+on:
+  pull_request: ~
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PHP_VERSION: "8.4"
+  PHP_EXTENSIONS: dom, curl, libxml, mbstring, zip, intl, fileinfo
+
+jobs:
+  dependencies:
+    name: 🧰 Dependency validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          coverage: none
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Check the lock file is up to date
+        run: composer check-platform-reqs --lock
+
+      - name: Audit dependencies for known vulnerabilities
+        run: composer audit
+
+  coding-standards:
+    name: 🎨 Coding standards
+    needs: [dependencies]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          coverage: none
+
+      - name: Composer install
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: highest
+
+      - name: Laravel Pint
+        run: composer test:pint
+
+  static-analysis:
+    name: ⚗️ Static analysis
+    needs: [dependencies]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        dependencies: [highest, lowest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          coverage: none
+
+      - name: Composer install
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+
+      - name: PHPStan
+        run: composer phpstan
+
+  refactoring:
+    name: ♻️ Rector dry-run
+    needs: [dependencies]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          coverage: none
+
+      - name: Composer install
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: highest
+
+      - name: Rector
+        run: composer test:rector
+
+  tests:
+    name: ✅ Tests (${{ matrix.dependencies }})
+    needs: [dependencies]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        dependencies: [highest, lowest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          coverage: none
+
+      - name: Composer install
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+
+      - name: Pest
+        run: ./vendor/bin/pest --colors=always --bail
+
+  type-coverage:
+    name: 🏷️ Type coverage
+    needs: [dependencies]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          coverage: none
+
+      - name: Composer install
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: highest
+
+      - name: Type coverage
+        run: composer pest:type-coverage
+
+  quality:
+    name: 💎 Architecture & quality (PHPInsights)
+    needs: [dependencies]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          coverage: none
+
+      - name: Composer install
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: highest
+
+      - name: PHPInsights
+        run: composer test:insights
+
+  code-coverage:
+    name: 📊 Code coverage
+    needs: [tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          coverage: pcov
+
+      - name: Composer install
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: highest
+
+      - name: Pest coverage
+        run: composer pest:coverage
