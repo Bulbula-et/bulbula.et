@@ -23,7 +23,7 @@
   var title = $("[data-split]");
   var words = [];
   if (title) {
-    var accent = ["Ethiopia,"];           // words painted with the brand gradient
+    var accent = ["BULBULA.ET,"];         // words painted with the brand gradient
     var parts  = title.textContent.trim().split(/\s+/);
     title.textContent = "";
     parts.forEach(function (w, i) {
@@ -66,8 +66,6 @@
       .from("[data-anim='sub']", { y: 16, duration: 0.8 }, "<")
       .to("[data-anim='form']", { opacity: 1, duration: 0.7 }, "-=0.55")
       .from("[data-anim='form']", { y: 20, scale: 0.985, duration: 0.7 }, "<")
-      .to("[data-anim='stats']", { opacity: 1, duration: 0.7, onStart: runCounters }, "-=0.45")
-      .from("[data-anim='stats'] li", { y: 18, duration: 0.7, stagger: 0.09 }, "<")
       .to(".marquee", { opacity: 1, duration: 0.7 }, "-=0.45")
       .to("[data-card]", { opacity: 1, duration: 0.7, stagger: 0.1 }, "-=0.4")
       .from("[data-card]", { y: 26, duration: 0.8, stagger: 0.1 }, "<");
@@ -102,7 +100,6 @@
     }, { passive: true });
   } else {
     gsapless();
-    runCounters();
   }
 
   function gsapless() {
@@ -110,26 +107,6 @@
     words.forEach(function (w) { w.style.opacity = 1; });
   }
 
-  /* ---------- animated stat counters ---------- */
-  var countersDone = false;
-  function runCounters() {
-    if (countersDone) return;
-    countersDone = true;
-    $$("[data-count]").forEach(function (el) {
-      var target = parseInt(el.dataset.count, 10) || 0;
-      if (reduced || !hasGSAP) { el.textContent = fmt(target); return; }
-      var obj = { v: 0 };
-      gsap.to(obj, {
-        v: target,
-        duration: 1.9,
-        ease: "power2.out",
-        onUpdate: function () { el.textContent = fmt(Math.round(obj.v)); }
-      });
-    });
-  }
-  function fmt(n) {
-    return n >= 1000 ? (n / 1000).toFixed(n % 1000 === 0 ? 0 : 1) + "k+" : String(n) + "+";
-  }
 
   /* ---------- Motion: springy hover / press on interactive bits ---------- */
   if (animate && !reduced) {
@@ -196,7 +173,7 @@
         .catch(function () {
           btn.disabled = false;
           label.textContent = "Get early access";
-          setNote("Something went wrong. Please try again or email hello@bulbula.et.", "is-error");
+          setNote("Something went wrong. Please try again or email bulbula.et@gmail.com.", "is-error");
         });
     });
   }
