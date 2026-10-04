@@ -79,6 +79,19 @@ final class ErrorHandlerTest extends TestCase
         }
     }
 
+    public function test_report_logs_the_throwable_and_returns_its_reference(): void
+    {
+        $logger = $this->logger();
+
+        $reference = new ErrorHandler($logger, false)->report(new RuntimeException('something broke'));
+
+        self::assertCount(1, $logger->records);
+        self::assertSame('error', $logger->records[0]['level']);
+        self::assertSame('something broke', $logger->records[0]['message']);
+        self::assertSame($reference, $logger->records[0]['context']['reference']);
+        self::assertSame(RuntimeException::class, $logger->records[0]['context']['exception']);
+    }
+
     public function test_it_renders_details_in_debug_mode(): void
     {
         $handler = new ErrorHandler($this->logger(), true);

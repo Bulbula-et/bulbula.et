@@ -1,0 +1,1 @@
+Only *.php files are treated as migrations.
