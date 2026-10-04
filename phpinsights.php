@@ -7,6 +7,7 @@ use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenDefineFunctions;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenNormalClasses;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\NoSilencedErrorsSniff;
+use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
 use PhpCsFixer\Fixer\Import\OrderedImportsFixer;
 use SlevomatCodingStandard\Sniffs\Classes\SuperfluousExceptionNamingSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff;
@@ -38,6 +39,7 @@ return [
     'remove' => [
         // Formatting is owned by Pint (PSR-12 + project rules).
         AlphabeticallySortedUsesSniff::class,
+        ClassDefinitionFixer::class,
         OrderedImportsFixer::class,
         UseSpacingSniff::class,
         // PSR-compatible, intention-revealing exception names are wanted.

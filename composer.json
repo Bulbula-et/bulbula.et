@@ -17,11 +17,15 @@
     ],
     "require": {
         "php": "^8.4",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*",
         "monolog/monolog": "^3.9",
+        "nikic/fast-route": "^1.3",
         "psr/log": "^3.0",
         "vlucas/phpdotenv": "^5.6"
     },
     "require-dev": {
+        "ext-pdo_sqlite": "*",
         "infection/infection": "^0.35.6",
         "laravel/pint": "^1.29",
         "nunomaduro/phpinsights": "^2.14",
@@ -54,10 +58,14 @@
     },
     "scripts": {
         "serve": "php -S 0.0.0.0:8000 -t public",
+        "console": "php bin/console",
+        "migrate": "php bin/console migrate",
+        "migrate:status": "php bin/console migration:status",
+        "rollback": "php bin/console rollback",
         "pint": "./vendor/bin/pint --ansi",
         "rector": "./vendor/bin/rector --ansi",
         "phpstan": "./vendor/bin/phpstan analyse --ansi",
-        "phpinsights": "./vendor/bin/phpinsights analyse --ansi --no-interaction --config-path=phpinsights.php src config public",
+        "phpinsights": "./vendor/bin/phpinsights analyse --ansi --no-interaction --config-path=phpinsights.php src config public routes database bin",
         "pest": "./vendor/bin/pest --colors=always",
         "pest:parallel": "./vendor/bin/pest --colors=always --parallel --processes=4",
         "pest:profiling": "./vendor/bin/pest --colors=always --profile",
@@ -68,7 +76,7 @@
         "test:composer": "composer validate --strict --ansi",
         "test:rector": "./vendor/bin/rector --dry-run --ansi",
         "test:pint": "./vendor/bin/pint --test --ansi",
-        "test:insights": "./vendor/bin/phpinsights analyse --ansi --no-interaction --config-path=phpinsights.php src config public",
+        "test:insights": "./vendor/bin/phpinsights analyse --ansi --no-interaction --config-path=phpinsights.php src config public routes database bin",
         "test": [
             "@test:composer",
             "@test:rector",
