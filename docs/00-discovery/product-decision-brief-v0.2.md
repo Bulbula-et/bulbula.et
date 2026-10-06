@@ -4,7 +4,8 @@
 | --- | --- |
 | **Document** | Product Decision Brief (Decision Workshop Preparation) |
 | **Version** | 0.2 |
-| **Status** | Discovery — awaiting owner decisions |
+| **Status** | **Superseded** |
+| **Superseded by** | [product-decision-brief-v0.3.md](product-decision-brief-v0.3.md) — see its §3 for the list of statements in this document that are now obsolete. The body below is retained unedited as a historical record. |
 | **Date** | 2026-10-07 |
 | **Builds on** | [project-understanding-v0.1.md](project-understanding-v0.1.md) @ `0610568` (PR #12, unmerged) · [research-notes-v0.1.md](research-notes-v0.1.md) |
 | **Supersedes** | No prior decision brief exists. This document **amends**, and does not replace, v0.1: v0.1 remains the source material, and §18 below lists exactly which of its statements have changed. |
