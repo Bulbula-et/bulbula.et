@@ -32,7 +32,42 @@ it('documents every database setting the configuration reads', function (): void
         ->and($example)->toContain('DB_PASSWORD=');
 });
 
-it('keeps the pre-launch page in the public document root', function (): void {
-    expect(dirname(__DIR__, 2) . '/public/index.html')->toBeReadableFile()
-        ->and(dirname(__DIR__, 2) . '/public/index.php')->toBeReadableFile();
+it('keeps the pre-launch template outside the document root', function (): void {
+    $root = dirname(__DIR__, 2);
+
+    expect($root . '/resources/views/home.html')->toBeReadableFile()
+        ->and($root . '/public/index.php')->toBeReadableFile()
+        ->and($root . '/public/index.html')->not->toBeFile();
+});
+
+it('exposes a single executable entry point in the document root', function (): void {
+    $root = dirname(__DIR__, 2);
+    $scripts = glob($root . '/public/*.php');
+
+    expect($scripts)->toBe([$root . '/public/index.php']);
+});
+
+it('ships front-controller rules for the document root', function (): void {
+    $htaccess = (string) file_get_contents(dirname(__DIR__, 2) . '/public/.htaccess');
+
+    expect($htaccess)->toContain('DirectoryIndex index.php')
+        ->and($htaccess)->toContain('RewriteEngine On')
+        // Existing files and directories are served by Apache, not routed.
+        ->and($htaccess)->toContain('RewriteCond %{REQUEST_FILENAME} !-f')
+        ->and($htaccess)->toContain('RewriteCond %{REQUEST_FILENAME} !-d')
+        ->and($htaccess)->toContain('RewriteRule ^ index.php [QSA,L]')
+        // index.html must not come back as a competing directory index.
+        ->and($htaccess)->not->toContain('index.html');
+});
+
+it('keeps the application out of the document root', function (): void {
+    $root = dirname(__DIR__, 2);
+
+    foreach (['src', 'config', 'database', 'routes', 'tests', 'vendor', 'resources'] as $directory) {
+        expect($root . '/public/' . $directory)->not->toBeDirectory();
+    }
+
+    foreach (['.env', 'composer.json', 'composer.lock'] as $file) {
+        expect($root . '/public/' . $file)->not->toBeFile();
+    }
 });
