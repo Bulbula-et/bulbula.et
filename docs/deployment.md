@@ -133,6 +133,15 @@ version in MultiPHP Manager, then commit the generated handler block into
 `/health` has no dependencies; `/` reads `resources/views/home.html`. Check
 that the deploy actually created `resources/` and that the file is readable.
 
+### A 500 with an empty body
+
+That can no longer come from the application: the front controller catches
+anything thrown while booting, writes it to the server's PHP error log and
+answers with a readable `500 Internal Server Error` body - naming the
+exception, file and line outside production, and staying opaque in
+production. An empty 500 therefore means the request never reached PHP, so
+look at the web server configuration (see the first entry above).
+
 ### Booting fails with an unwritable log directory
 
 `storage/logs/` must be writable by the user the web server runs as. The
