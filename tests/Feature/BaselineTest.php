@@ -56,8 +56,12 @@ it('ships front-controller rules for the document root', function (): void {
         ->and($htaccess)->toContain('RewriteCond %{REQUEST_FILENAME} !-f')
         ->and($htaccess)->toContain('RewriteCond %{REQUEST_FILENAME} !-d')
         ->and($htaccess)->toContain('RewriteRule ^ index.php [QSA,L]')
-        // index.html must not come back as a competing directory index.
-        ->and($htaccess)->not->toContain('index.html');
+        // A static page must not come back as a competing directory index.
+        ->and($htaccess)->not->toContain('index.html')
+        // An Options directive needs an override class shared hosts often
+        // withhold; when it is withheld Apache answers 500 for every URL in
+        // the document root, static assets included.
+        ->and($htaccess)->not->toMatch('/^\s*Options\s/m');
 });
 
 it('keeps the application out of the document root', function (): void {

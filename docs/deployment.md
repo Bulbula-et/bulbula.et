@@ -106,6 +106,38 @@ Database migrations are not part of the cron. Run them deliberately:
 /opt/cpanel/ea-php84/root/usr/bin/php bin/console migrate
 ```
 
+## Troubleshooting
+
+### Every URL answers 500, static assets included
+
+Apache rejected a directive in `public/.htaccess` before PHP ran. The
+giveaway is that a plain `.css` file 500s too, with an empty body. The error
+log shows `... /public/.htaccess: <directive> not allowed here`.
+
+Shared hosts grant `.htaccess` only a subset of override classes. `cPanel`
+and EA4 commonly withhold the one that allows `Options`, so an
+`Options -Indexes` line - harmless on a self-managed server - takes the whole
+document root down. Keep this file to `DirectoryIndex` and the `mod_rewrite`
+block, and turn directory listings off in the hosting panel.
+
+### PHP runs as the wrong version after a deploy
+
+If the hosting panel pinned the domain's PHP version by writing a
+`# php -- BEGIN cPanel-generated handler` block into `public/.htaccess`, that
+block is not in version control and a deploy replaces the file. Re-apply the
+version in MultiPHP Manager, then commit the generated handler block into
+`public/.htaccess` so the next deploy keeps it.
+
+### The home page 500s but `/health` works
+
+`/health` has no dependencies; `/` reads `resources/views/home.html`. Check
+that the deploy actually created `resources/` and that the file is readable.
+
+### Booting fails with an unwritable log directory
+
+`storage/logs/` must be writable by the user the web server runs as. The
+failure is deliberate and loud rather than silently dropping log lines.
+
 ## Smoke test after a deploy
 
 ```bash
