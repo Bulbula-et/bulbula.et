@@ -9,8 +9,6 @@ use Bulbula\Http\Request;
 use Bulbula\Http\ResponseEmitter;
 use Bulbula\Support\Env;
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
 /*
  * Front controller.
  *
@@ -19,10 +17,40 @@ require_once __DIR__ . '/../vendor/autoload.php';
  * - are injected into the emitter so that nothing inside src/ depends on the
  * web SAPI, and every layer stays testable from the command line.
  *
- * Everything before the kernel exists is wrapped as well: a failure there
- * would otherwise reach the browser as a blank 500 that only a server log
- * can explain.
+ * Nothing here is allowed to answer with an empty body. The two guards below
+ * run before a single class is loaded and are written in syntax that every
+ * PHP version can parse, because the two ways a correct deployment still
+ * breaks - the host serving this file with an older interpreter, and
+ * dependencies that were never installed - both kill the process before any
+ * error handler of ours exists. Everything after them is wrapped in a catch.
  */
+
+if (PHP_VERSION_ID < 80400) {
+    http_response_code(500);
+    header('Content-Type: text/plain; charset=utf-8');
+    header('Cache-Control: no-store');
+
+    echo "500 Internal Server Error\n";
+    echo 'Bulbula requires PHP 8.4 or newer; this request was served by PHP ' . PHP_VERSION . ".\n";
+
+    return;
+}
+
+$autoloader = __DIR__ . '/../vendor/autoload.php';
+
+if (! is_file($autoloader)) {
+    http_response_code(503);
+    header('Content-Type: text/plain; charset=utf-8');
+    header('Cache-Control: no-store');
+
+    echo "503 Service Unavailable\n";
+    echo "Dependencies are missing: run composer install in the project root.\n";
+
+    return;
+}
+
+require_once $autoloader;
+
 try {
     $application = Application::boot(dirname(__DIR__));
 
@@ -41,11 +69,13 @@ try {
     $response = BootstrapFailure::response($throwable, Env::string('APP_ENV', 'local') !== 'production');
 }
 
-new ResponseEmitter(
+$emitter = new ResponseEmitter(
     static function (int $status): void {
         http_response_code($status);
     },
     static function (string $name, string $value): void {
         header($name . ': ' . $value, true);
     },
-)->emit($response);
+);
+
+$emitter->emit($response);
