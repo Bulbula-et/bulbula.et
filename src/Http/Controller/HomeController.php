@@ -18,6 +18,6 @@ final readonly class HomeController
 
     public function show(): Response
     {
-        return Response::html($this->pages->render('index.html'));
+        return Response::html($this->pages->render('home.html'));
     }
 }

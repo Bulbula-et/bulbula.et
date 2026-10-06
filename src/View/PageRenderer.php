@@ -9,8 +9,10 @@ use RuntimeException;
 use function sprintf;
 
 /**
- * Reads a static page from the public directory.
+ * Reads a static page from the view directory.
  *
+ * Templates live in resources/views, outside the document root, so the web
+ * server can never serve one directly and compete with the front controller.
  * Phase one has no templating engine because it has no dynamic page; this
  * keeps the HTML out of the controller without inventing a view layer.
  */
