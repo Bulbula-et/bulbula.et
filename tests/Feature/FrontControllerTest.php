@@ -12,13 +12,21 @@ beforeEach(function (): void {
 });
 
 /**
+ * @param array<string, string> $environment
+ *
  * @return array{status: int, headers: array<string, string>, body: string}
  */
-function request(string $root, string $method, string $path): array
+function request(string $root, string $method, string $path, array $environment = []): array
 {
     $port = random_int(8300, 8999);
+    $prefix = '';
+
+    foreach ($environment as $name => $value) {
+        $prefix .= sprintf('%s=%s ', $name, escapeshellarg($value));
+    }
+
     $server = proc_open(
-        sprintf('exec php -S 127.0.0.1:%d -t %s/public', $port, escapeshellarg($root)),
+        $prefix . sprintf('exec php -S 127.0.0.1:%d -t %s/public', $port, escapeshellarg($root)),
         [1 => ['file', '/dev/null', 'w'], 2 => ['file', '/dev/null', 'w']],
         $pipes,
     );
@@ -109,6 +117,15 @@ it('answers an unknown path with a 404 through the front controller', function (
 
     expect($response['status'])->toBe(404)
         ->and($response['body'])->toContain('404 Not Found');
+});
+
+it('never answers a boot failure with a blank response', function (): void {
+    // An unwritable log directory fails before the kernel exists;
+    // without the front controller's guard the browser gets an empty 500.
+    $response = request($this->root, 'GET', '/', ['LOG_PATH' => '/proc/bulbula/app.log']);
+
+    expect($response['status'])->toBe(500)
+        ->and($response['body'])->toContain('500 Internal Server Error');
 });
 
 it('answers the wrong verb with a 405 through the front controller', function (): void {
