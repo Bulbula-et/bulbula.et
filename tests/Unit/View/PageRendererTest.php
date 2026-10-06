@@ -18,14 +18,14 @@ final class PageRendererTest extends TestCase
     {
         $this->directory = sys_get_temp_dir() . '/bulbula-pages-' . bin2hex(random_bytes(6));
         mkdir($this->directory, 0o775, true);
-        file_put_contents($this->directory . '/index.html', '<h1>Bulbula</h1>');
+        file_put_contents($this->directory . '/home.html', '<h1>Bulbula</h1>');
 
         parent::setUp();
     }
 
     protected function tearDown(): void
     {
-        @unlink($this->directory . '/index.html');
+        @unlink($this->directory . '/home.html');
         @rmdir($this->directory);
 
         parent::tearDown();
@@ -33,7 +33,7 @@ final class PageRendererTest extends TestCase
 
     public function test_it_reads_a_page_from_the_directory(): void
     {
-        self::assertSame('<h1>Bulbula</h1>', new PageRenderer($this->directory)->render('index.html'));
+        self::assertSame('<h1>Bulbula</h1>', new PageRenderer($this->directory)->render('home.html'));
     }
 
     public function test_a_missing_page_is_reported(): void
@@ -60,6 +60,6 @@ final class PageRendererTest extends TestCase
 
     public function test_a_traversal_attempt_that_resolves_inside_the_directory_still_works(): void
     {
-        self::assertSame('<h1>Bulbula</h1>', new PageRenderer($this->directory)->render('../../index.html'));
+        self::assertSame('<h1>Bulbula</h1>', new PageRenderer($this->directory)->render('../../home.html'));
     }
 }

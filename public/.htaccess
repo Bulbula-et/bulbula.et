@@ -1,0 +1,18 @@
+# Apache front-controller rules for the document root.
+#
+# The document root must be this directory. index.php is the only entry
+# point: existing files (assets) are served directly, everything else is
+# handed to the application router with the original URI intact.
+
+DirectoryIndex index.php
+
+# No directory listings, and no static page competing with index.php.
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>

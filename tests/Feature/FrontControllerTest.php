@@ -76,6 +76,23 @@ it('serves the landing page through the front controller', function (): void {
         ->and($response['body'])->toContain('BULBULA.ET');
 });
 
+it('serves a real asset without routing it through the application', function (): void {
+    $response = request($this->root, 'GET', '/assets/css/styles.css');
+
+    expect($response['status'])->toBe(200)
+        ->and($response['headers']['content-type'] ?? null)->toContain('text/css')
+        // Application responses always carry the security headers; a file
+        // served straight off disk does not go through the middleware.
+        ->and($response['headers']['x-content-type-options'] ?? null)->toBeNull();
+});
+
+it('does not answer the stale pre-launch path', function (): void {
+    $response = request($this->root, 'GET', '/public/index.html');
+
+    expect($response['status'])->toBe(404)
+        ->and($response['body'])->toContain('No route matches [/public/index.html]');
+});
+
 it('serves the health endpoint through the front controller', function (): void {
     $response = request($this->root, 'GET', '/health');
 

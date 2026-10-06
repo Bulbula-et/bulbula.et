@@ -54,7 +54,7 @@ final readonly class Services
                 $clock,
                 $connection,
             ),
-            new PageRenderer($application->path('public')),
+            new PageRenderer($application->path('resources/views')),
             $clock,
         );
     }

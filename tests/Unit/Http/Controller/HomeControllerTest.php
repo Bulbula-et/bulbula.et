@@ -15,7 +15,7 @@ final class HomeControllerTest extends TestCase
 {
     public function test_it_returns_the_pre_launch_page_as_html(): void
     {
-        $response = new HomeController(new PageRenderer(__DIR__ . '/../../../../public'))->show();
+        $response = new HomeController(new PageRenderer(__DIR__ . '/../../../../resources/views'))->show();
 
         self::assertSame(Status::Ok, $response->status());
         self::assertSame('text/html; charset=utf-8', $response->header('Content-Type'));

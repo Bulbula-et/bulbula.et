@@ -62,8 +62,9 @@ SQLite.
 bin/console            CLI entry point: migrate · rollback · migration:status
 config/                app.php, logging.php, database.php — environment-driven
 database/migrations/   ordered schema migrations (up/down)
-docs/                  architecture notes
-public/                document root: front controller + pre-launch landing page
+docs/                  architecture and deployment notes
+public/                document root: index.php + .htaccess + static assets
+resources/views/       HTML templates, deliberately outside the document root
 routes/                web.php (browser) · api.php (/api/v1)
 src/                   PSR-4 source (Bulbula\)
 storage/               runtime logs (git-ignored)
@@ -197,10 +198,19 @@ with safe placeholder values. **Never commit secrets, tokens or credentials.**
 
 ## The pre-launch page
 
-`public/index.html` is the public coming-soon page (GSAP + Motion, no build
-step). `public/index.php` boots the application and the HTTP kernel serves it
-through the normal request lifecycle, so the routing, middleware, logging and
-error-handling foundation is exercised by a real request.
+`resources/views/home.html` is the public coming-soon page (GSAP + Motion, no
+build step). It lives outside the document root and is rendered by
+`HomeController` on `GET /`, so the routing, middleware, logging and
+error-handling foundation is exercised by a real request. Its assets are
+served straight off disk from `public/assets/`.
+
+## Web server
+
+`public/` is the document root and `public/index.php` is the only entry
+point; `public/.htaccess` sets `DirectoryIndex index.php` and routes
+everything that is not an existing file or directory to it. Setup, the cPanel
+paths and the automated development deploy are documented in
+[docs/deployment.md](docs/deployment.md).
 
 ## Credits
 

@@ -23,7 +23,8 @@ bin/console            Command line entry point (migrate, rollback, status)
 config/                Environment-driven configuration, each file returns an array
 database/migrations/   Ordered schema migrations
 docs/                  Project documentation
-public/                Web document root (front controller + pre-launch page)
+public/                Web document root (front controller, .htaccess, assets)
+resources/views/       HTML templates, outside the document root
 routes/                web.php and api.php route definitions
 src/                   Application source, PSR-4 under the `Bulbula\` namespace
 storage/               Runtime artefacts (logs); contents are git-ignored
@@ -65,6 +66,12 @@ appears when the code that belongs in it does.
    (the client only sees a reference id that is also written to the log).
 
 ## Request lifecycle
+
+Apache serves `public/` and resolves `DirectoryIndex index.php`; anything that
+is not an existing file or directory is rewritten internally to `index.php`,
+which keeps `REQUEST_URI` intact for the router. There is exactly one entry
+point — no static `index.html` competes with it, and templates live in
+`resources/views/` where no web server can reach them.
 
 ```
 public/index.php
@@ -232,6 +239,14 @@ try/catch for this — they throw, the kernel renders.
 Liveness must never depend on the database, otherwise an orchestrator restarts
 a healthy process during a database blip. Readiness returns `503` with a
 per-check detail when a check fails. Both send `Cache-Control: no-store`.
+
+## Document root
+
+Only `public/` is web accessible. `src/`, `config/`, `database/`,
+`resources/`, `routes/`, `tests/`, `vendor/`, `composer.json`,
+`composer.lock` and `.env` stay above it, and feature tests assert that the
+document root holds a single executable entry point. Deployment details are
+in [deployment.md](deployment.md).
 
 ## Security posture
 
