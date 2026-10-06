@@ -4,7 +4,8 @@
 | --- | --- |
 | **Document** | Product Decision Brief |
 | **Version** | 0.3 |
-| **Status** | Draft — awaiting owner approval |
+| **Status** | **Superseded** |
+| **Superseded by** | [product-decision-brief-v0.4.md](product-decision-brief-v0.4.md) — the owner approved the decisions proposed here on 2026-10-07. Approved decisions now live in [docs/60-decisions/decision-register.md](../60-decisions/decision-register.md); this body is retained unedited as the record of the analysis behind them. |
 | **Date** | 2026-10-07 |
 | **Supersedes** | [product-decision-brief-v0.2.md](product-decision-brief-v0.2.md) (status → Superseded). v0.2 is retained unmodified; §3 below lists every statement in it that is now obsolete |
 | **Builds on** | [project-understanding-v0.1.md](project-understanding-v0.1.md) · [research-notes-v0.1.md](research-notes-v0.1.md) |
