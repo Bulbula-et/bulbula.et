@@ -3,11 +3,15 @@
 # The document root must be this directory. index.php is the only entry
 # point: existing files (assets) are served directly, everything else is
 # handed to the application router with the original URI intact.
+#
+# Keep this file to directives the FileInfo and Indexes override classes
+# allow. An "Options" directive is rejected on hosts whose vhost does not
+# grant that override (cPanel/EA4 commonly does not), and Apache then fails
+# the whole directory with "not allowed here" - every URL, including static
+# assets, answers 500 before PHP ever runs. Disable directory listings in
+# the hosting panel instead.
 
 DirectoryIndex index.php
-
-# No directory listings, and no static page competing with index.php.
-Options -Indexes
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
