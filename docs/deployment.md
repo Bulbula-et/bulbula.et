@@ -133,6 +133,17 @@ version in MultiPHP Manager, then commit the generated handler block into
 `/health` has no dependencies; `/` reads `resources/views/home.html`. Check
 that the deploy actually created `resources/` and that the file is readable.
 
+### Every PHP URL answers 500 while static files are fine
+
+The request reached an interpreter older than PHP 8.4, which cannot parse
+this codebase. cPanel's MultiPHP Manager stores that choice as an
+`AddHandler` block inside the document root's `.htaccess`, and the
+deployment resets the working tree to `origin/main`, deleting anything the
+panel wrote there. The block therefore lives in `public/.htaccess` in this
+repository, and that is the copy to change when the PHP version changes.
+The front controller reports the interpreter it was served by, so the body
+of the 500 names this condition outright.
+
 ### A 500 with an empty body
 
 That can no longer come from the application: the front controller catches
