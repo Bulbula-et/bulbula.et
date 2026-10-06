@@ -51,6 +51,9 @@ it('ships front-controller rules for the document root', function (): void {
     $htaccess = (string) file_get_contents(dirname(__DIR__, 2) . '/public/.htaccess');
 
     expect($htaccess)->toContain('DirectoryIndex index.php')
+        // The deployment resets the working tree, so the host's PHP handler
+        // only survives while it is tracked here.
+        ->and($htaccess)->toContain('AddHandler application/x-httpd-ea-php84 .php')
         ->and($htaccess)->toContain('RewriteEngine On')
         // Existing files and directories are served by Apache, not routed.
         ->and($htaccess)->toContain('RewriteCond %{REQUEST_FILENAME} !-f')
