@@ -119,6 +119,23 @@ it('answers an unknown path with a 404 through the front controller', function (
         ->and($response['body'])->toContain('404 Not Found');
 });
 
+it('explains a deployment whose dependencies were never installed', function (): void {
+    // The autoloader is required before any of our code exists, so a failure
+    // there cannot be caught: the guard has to run before it.
+    $root = sys_get_temp_dir() . '/bulbula-no-vendor-' . bin2hex(random_bytes(6));
+    mkdir($root . '/public', 0o755, true);
+    copy(dirname(__DIR__, 2) . '/public/index.php', $root . '/public/index.php');
+
+    $response = request($root, 'GET', '/');
+
+    unlink($root . '/public/index.php');
+    rmdir($root . '/public');
+    rmdir($root);
+
+    expect($response['status'])->toBe(503)
+        ->and($response['body'])->toContain('Dependencies are missing');
+});
+
 it('never answers a boot failure with a blank response', function (): void {
     // An unwritable log directory fails before the kernel exists;
     // without the front controller's guard the browser gets an empty 500.
