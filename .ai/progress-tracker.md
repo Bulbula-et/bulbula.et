@@ -3,7 +3,7 @@
 ```text
 Source baseline:   33f58e0e1619c7e5b952eede2382ae3c5e2ccf8c
 Last derived from: 2026-10-07
-Context status:    Current
+Context status:    Needs review
 ```
 
 > **This is the one file in `.ai/` designed to change often.**
@@ -47,16 +47,24 @@ not built.
 | **3.6** | Operations, quality, release, production readiness | `docs/phase-3-operations-quality` | **#21** → `docs/phase-3-security-privacy` | Open |
 | **3.7** | **`.ai/` implementation context system** | `docs/phase-3-ai-context` | **#22** → `docs/phase-3-operations-quality` | Open |
 | **3.8** | **Final documentation audit and reconciliation** | `docs/phase-3-final-audit` | **#23** → `docs/phase-3-ai-context` | Open |
-| **3.9** | **Implementation plan and build readiness** | `docs/phase-3-implementation-plan` | *this branch* | **In progress** |
+| **3.9** | **Implementation plan and build readiness** | `docs/phase-3-implementation-plan` | **#24** → `docs/phase-3-final-audit` | Open |
+| **M0** | **Schema-shaping decisions approved and reconciled** | `docs/m0-schema-decisions` | *this branch* | **In progress** |
 
 **The chain is stacked and nothing is merged:**
 
 ```text
-main ← #12 ← #13 ← #14 ← #15 ← #16 ← #17 ← #19 ← #20 ← #21 ← #22 ← #23 ← (3.9)
+main ← #12 ← #13 ← #14 ← #15 ← #16 ← #17 ← #19 ← #20 ← #21 ← #22 ← #23 ← #24 ← (M0)
 ```
 
 Merging out of order, or merging any of these without the owner's
-instruction, breaks the chain. **Do not merge PR #21, PR #22 or PR #23.**
+instruction, breaks the chain. **Do not merge PR #21, PR #22, PR #23 or
+PR #24.**
+
+**M0 — the schema decision gate — is complete.** `D-34`, `D-55`, `D-56` and
+`D-57` were approved on **2026-10-07** and are recorded in
+`docs/60-decisions/decision-register.md` §1 (register **v1.1**). Schema
+implementation may proceed within the boundaries those decisions set and the
+boundaries the remaining open decisions still impose.
 
 ---
 
@@ -119,8 +127,9 @@ gateway · a media pipeline · the operations console · the Telegram surface.
 | **D-16 / D-17** | Frontend work | Open — JS approach and view layer. **SPA is rejected** |
 | **D-33** | Telegram identity | Open |
 | **D-45** | Staff auth | Open |
+| **Category catalogue content** | Launch | **Not produced.** D-56 settled the model on 2026-10-07; the curated content is an operations task and must never be invented |
 | **L-5** | Privacy notice, launch | PENDING COUNSEL — lawful basis per purpose |
-| **L-21** | Retention implementation | PENDING COUNSEL — retention periods |
+| **L-21 / D-46** | Retention implementation, including how long a **withdrawn Review** is kept | PENDING COUNSEL — retention periods. D-34 settled the *mechanism* (withdrawal), not the *duration* |
 | **L-7** | Rights handling | PENDING COUNSEL — procedures and windows |
 | **L-10** | Hosting choice | PENDING COUNSEL — Art. 22 data sovereignty |
 | Prices, inventory counts, SLAs, throughput, staffing | Operations and advertising | **Not decided. None exist. Do not invent any** |
