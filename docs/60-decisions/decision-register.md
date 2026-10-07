@@ -123,7 +123,7 @@ supersedes.
   approved scope: homepage, search, autocomplete, category and subcategory
   browsing, location/area browsing, category × area pages, nearby/distance,
   business profiles, opening hours and open status, maps, contact actions,
-  trust indicators, reviews, favourites, report/suggest correction,
+  trust indicators, reviews, Saves, report/suggest correction,
   sponsored placements, sharing and static pages.
 - **Status:** **Approved** · **Date:** 2026-10-07
 - **Source:** Owner decision, Phase 2.3 §17
@@ -293,7 +293,7 @@ supersedes.
   the least implementation surface; passwordless removes password storage,
   reset flows and credential-stuffing exposure entirely.
 - **Affected:** Accounts, identity model, email subsystem, reviews,
-  favourites, privacy, operations console (see D-45)
+  Saves, privacy, operations console (see D-45)
 - **Supersedes:** The Apple-inclusive provider set recorded in v0.2 (NC-5)
 
 ### D-49 — Web + Telegram shared frontend direction

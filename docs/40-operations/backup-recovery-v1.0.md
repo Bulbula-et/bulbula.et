@@ -218,6 +218,22 @@ Authoritative in TR-223; restated here in operational order.
 
 ---
 
+## Legal and regulatory references
+
+| Reference | Relevance | Classification |
+| --- | --- | --- |
+| Proclamation 1321/2024, Art. 22(1) | Data sovereignty — binds where a backup may be stored (BR-2.10) | Confirmed — statute/regulation |
+| Art. 20(1) | A backup held abroad is a cross-border transfer and needs a basis (BR-2.10) | Confirmed — statute/regulation |
+| Art. 15 | Storage limitation — an indefinitely retained backup defeats erasure (BR-3.7) | Confirmed — statute/regulation |
+| Art. 44(3)(a) | Breach-communication exception where data is unintelligible, e.g. encrypted; motivates BR-3.5 | Confirmed — statute/regulation |
+| Backup retention depth and schedule | BR-3.7, BR-7 | **PENDING COUNSEL (L-21)** |
+
+The article map lives in
+[`../55-privacy/privacy-governance-v1.0.md`](../55-privacy/privacy-governance-v1.0.md)
+§11. This document cites it; it does not interpret it.
+
+---
+
 ## Decision references
 
 D-20, D-23, D-25, D-42, D-42b, D-46.

@@ -323,7 +323,7 @@ one). This is the mechanical enforcement of DP-7.
 | EN-1 | **Production never displays exception detail to a client** (TRD TR-144) |
 | EN-2 | **Production data is never copied to a development host.** Real personal data belongs only in production (TRD TR-199) |
 | EN-3 | Environment differences are configuration only (DP-5) |
-| EN-4 | **Data location and vendor are Open (D-42 / D-42b)** and interact with Proclamation 1321/2024 Art. 20's residency requirement (R-26, L-2). Ethiopian colocation and cloud options exist (R-24), so local residency is feasible — but **the choice is the owner's, informed by counsel**, and is not made here |
+| EN-4 | **Data location and vendor are Open (D-42 / D-42b)** and interact with Proclamation 1321/2024 **Art. 22(1)**, the data-sovereignty provision requiring locally collected personal data to be stored on a server or data centre in Ethiopia (REG-15), and with **Art. 20(1)**, which governs the bases for cross-border transfer (R-26, L-2). Ethiopian colocation and cloud options exist (R-24), so local residency is feasible — but **the choice is the owner's, informed by counsel**, and is not made here. **Whether Art. 22(1) imposes an independent local-storage duty beyond Art. 20 is PENDING COUNSEL (L-2, VT-5.4)** |
 
 ---
 
@@ -385,7 +385,7 @@ curl -so /dev/null -w '%{http_code}\n' https://<host>/assets/css/styles.css     
 | BK-3 | `vendor/`, caches, the search document and logs are **not** backed up as recovery material; all are rebuildable (TRD TR-212) |
 | BK-4 | **A backup is not a backup until a restore has been tested** (TRD TR-213) |
 | BK-5 | Backups contain personal data and are therefore protected, access-controlled, and subject to the retention schedule — **PENDING COUNSEL** (L-21, TRD TR-214) |
-| BK-6 | Backup **location is bound by the residency requirement** of Proclamation 1321/2024 Art. 20 (R-26): a backup stored abroad is a cross-border transfer. **PENDING COUNSEL / Open (D-42, L-2, L-10)** |
+| BK-6 | Backup **location is bound by the data-sovereignty requirement** of Proclamation 1321/2024 **Art. 22(1)** (REG-15, R-26): a backup stored abroad is also a cross-border transfer and must therefore satisfy **Art. 20(1)** (VT §4, SO-8.7). **PENDING COUNSEL / Open (D-42, L-2, L-10)** |
 | BK-7 | Frequency, retention depth and restore-time objectives are **`Open — technical decision`** pending D-20 and D-42 |
 | BK-8 | A backup is taken immediately before any production migration (MG-7) |
 
@@ -523,6 +523,23 @@ response body names the failing check.
 | L-21 | Retention of backups and logs | **PENDING COUNSEL** |
 | TRD OT-03 | Filesystem versus database cache backend | Open — affects `storage/cache/` |
 | — | Production host, domain and provisioning date | Not yet decided |
+
+---
+
+## Legal and regulatory references
+
+| Reference | Relevance | Classification |
+| --- | --- | --- |
+| Proclamation 1321/2024, Art. 22(1) | **Data sovereignty** — locally collected personal data stored on a server or data centre in Ethiopia; binds hosting (EN-4) and backup location (BK-6) | Confirmed — statute/regulation |
+| Art. 20(1) | The four bases for cross-border transfer; engaged whenever hosting or backups sit outside Ethiopia | Confirmed — statute/regulation |
+| Whether Art. 22(1) imposes an independent local-storage duty beyond Art. 20 | Decides whether a foreign host is available at all (D-42, D-42b) | **PENDING COUNSEL (L-2, VT-5.4)** |
+| Retention of backups and logs | BK-5, BK-7 | **PENDING COUNSEL (L-21)** |
+
+The article map and the full regulatory assessment live in
+[`../55-privacy/privacy-governance-v1.0.md`](../55-privacy/privacy-governance-v1.0.md)
+§11 (REG-13, REG-15) and
+[`../55-privacy/vendor-and-transfer-register-v1.0.md`](../55-privacy/vendor-and-transfer-register-v1.0.md)
+§4–§5. This document cites them; it does not interpret them.
 
 ---
 

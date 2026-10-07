@@ -260,6 +260,22 @@ recorded as blocking in a document above this one.
 
 ---
 
+## Legal and regulatory references
+
+| Reference | Relevance | Classification |
+| --- | --- | --- |
+| Proclamation 1321/2024, Art. 11 | Minors — best interests, age-verification effort, prohibition on marketing and profiling; drives criterion 56 and PRR-5.11 (D-46) | Confirmed — statute/regulation |
+| Art. 20, Art. 22 | Cross-border transfer bases and data sovereignty; drives PRR-5.5 | Confirmed — statute/regulation |
+| Art. 40 | DPO triggers; "large scale" is undefined in the enacted text | Confirmed — statute/regulation; applicability **Unknown** |
+| Art. 43, Art. 44 | Breach notification to the Authority and to data subjects; the statutory timing and its content are stated in the Proclamation and are **not restated here**; drives PRR-5.6 | Confirmed — statute/regulation |
+| Whether any §5 item is satisfied | Every row in §5 | **PENDING COUNSEL — no readiness criterion in §5 may be marked met without it** |
+
+The article map lives in
+[`../55-privacy/privacy-governance-v1.0.md`](../55-privacy/privacy-governance-v1.0.md)
+§11. This document cites it; it does not interpret it.
+
+---
+
 ## Decision references
 
 D-08, D-11, D-14, D-23, D-26, D-30n, D-31, D-39, D-40, D-41, D-42,

@@ -181,6 +181,7 @@ lawfulness of each transfer is counsel's (L-10, L-12).
 
 | Party | Data | Status |
 | --- | --- | --- |
+| **Media storage / CDN** | Business and Branch imagery; request IP addresses on delivery | **No vendor in V1.** The storage adapter has a **local-filesystem implementation** that is the V1 default (TRD TR-84), so media never leaves the host. **D-25 is open**: selecting object storage or a delivery CDN creates a vendor, a processor relationship and a transfer, and triggers VT-3.20 and §7 in full |
 | **Payment provider** | Advertiser payment data | **Not in V1** — payments are handled offline (D-11). Would be a major new entry |
 | **Monitoring / APM** | Logs, error context | **Not in V1** (OT-07). Would be a processor (SO-5.10) |
 | **Domain and DNS** | Query metadata | Infrastructure; **Open — implementation detail** |
@@ -294,6 +295,7 @@ Bulbula must obtain:
 | D-41 | Email provider | **Open — technical decision.** Blocked on DI-6.5 |
 | D-21 | Maps provider | **Open — technical decision** |
 | D-33 | Telegram identity — would add a register entry | **Open — product decision** |
+| D-25 | Media storage provider — would add a register entry if it is not the local filesystem (VT-3.7, TRD TR-84) | **Open — technical decision** |
 | — | Whether any ECA adequacy determination exists | **Unknown** |
 | — | Whether Art. 22(2) critical-data designations exist | **Unknown** |
 | — | Whether Art. 48(1) prior authorization is required before launch | **PENDING COUNSEL** |
@@ -327,4 +329,4 @@ Bulbula must obtain:
 
 ## Decision references
 
-D-11, D-21, D-24, D-33, D-41, D-42, D-42b, D-48, D-49.
+D-11, D-21, D-24, D-25, D-33, D-41, D-42, D-42b, D-48, D-49.

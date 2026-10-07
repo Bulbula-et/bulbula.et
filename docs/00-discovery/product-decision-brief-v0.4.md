@@ -280,6 +280,14 @@ This document gives no legal advice.
 > Minimize unnecessary personal data, and keep personal data in appropriately
 > Ethiopian-hosted infrastructure where required.
 
+> **Historical numbering — see the register.** `D-46a` and `D-46b` below are
+> the discovery-era split. They were **consolidated into a single `D-46`**
+> when [`decision-register.md`](../60-decisions/decision-register.md) was
+> created, where D-46 reads: *"Minimum account age, retention schedule per
+> data class, and confirmation of the data-location and cross-border transfer
+> basis"* (Open — Class A, Pending external). **`D-46a` and `D-46b` are not
+> live identifiers and must not be cited outside this historical record.**
+
 | ID | Pending item | Needs |
 | --- | --- | --- |
 | **D-46a** | Minimum account age | Counsel |

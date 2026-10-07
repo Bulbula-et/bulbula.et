@@ -1637,7 +1637,7 @@ Full lifecycle narrative: [`listing-operations.md`](listing-operations.md).
   ```
 - **Dependencies:** C-19…C-28, C-36.
 - **Out of scope:** Retention period — **Open (D-27)**, with a floor set by
-  legal requirements — **PENDING COUNSEL** (L-21, D-46b). Storage design (TRD).
+  legal requirements — **PENDING COUNSEL** (L-21, D-46). Storage design (TRD).
 - **Decisions:** D-14, D-27, D-46.
 
 ### 12.3 Customer accounts
@@ -2514,7 +2514,7 @@ footnote.
 | --- | --- | --- |
 | **Business information** | Trading name, Category, description, business address, hours, services, premises photographs, coordinates, business website and social links | Published. Usually not personal data — Ethiopian law protects natural persons, not legal persons (R-26). "Usually" is not "always": see personal contact points |
 | **Personal information in business data** | A personal mobile used as the business number; a named individual associated with the Business; an owner's personal email | Flagged (PCP-2), collected only where necessary, locatable for rights requests, removable |
-| **Staff-operational information** | Who collected, verified, edited, moderated or approved what, and when; Permission records | Internal only. Never published. Retained for accountability (C-29); retention floor **PENDING COUNSEL** (L-21, D-46b) |
+| **Staff-operational information** | Who collected, verified, edited, moderated or approved what, and when; Permission records | Internal only. Never published. Retained for accountability (C-29); retention floor **PENDING COUNSEL** (L-21, D-46) |
 | **Customer information** | Identifier, email address, display name, sign-in method, Saves, Reviews, account dates | Personal data. Minimised, deletable, never sold, never shared for advertising |
 | **Derived and event data** | Analytics events and aggregates | **MUST NOT** identify an individual Guest (§26) |
 
@@ -2548,9 +2548,9 @@ authoritative; the full historical register with context is in v0.3 §20.5.
 | L-16 / L-17 / L-20 | Advertising disclosure, invoicing, VAT/tax and trade licence |
 | L-18 | Photography of premises and people |
 | L-19 | Google Maps Platform terms |
-| L-21 / D-46b | Retention schedule per data class, including audit records and Reviews after account deletion |
+| L-21 / D-46 | Retention schedule per data class, including audit records and Reviews after account deletion |
 | L-22 | DPIA covering accounts, Reviews and cross-border transfers |
-| D-46a | Minimum account age |
+| D-46 | Minimum account age |
 | D-46 | The overall legal minima set for launch |
 
 Operational status of the regulator's machinery — registration portal,

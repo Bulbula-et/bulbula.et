@@ -115,7 +115,7 @@ published → deleted  (by the author)
 | LC-3 | Rejected and removed Reviews **MUST NOT** contribute to the rating summary |
 | LC-4 | Whether moderation occurs **before** or **after** publication is **Open (D-34)** — the states above support either, and the product **MUST NOT** hard-code an assumption before it is decided |
 | LC-5 | Whether an edit returns a Review to moderation is **Open (D-34)** |
-| LC-6 | Whether author deletion is a hard delete or a withdrawal that retains an internal record is **Open (D-34)**, and interacts with the legal question of retention after account deletion (**PENDING COUNSEL**, L-21, D-46b) |
+| LC-6 | Whether author deletion is a hard delete or a withdrawal that retains an internal record is **Open (D-34)**, and interacts with the legal question of retention after account deletion (**PENDING COUNSEL**, L-21, D-46) |
 
 ---
 
@@ -227,14 +227,14 @@ recorded in the register before the UX and data-model phase.
 | 3 | Minimum and maximum review-text length |
 | 4 | Whether rating-only Reviews are permitted |
 | 5 | Edit window length, and whether an edit returns the Review to moderation |
-| 6 | Whether author deletion is a hard delete or a withdrawal (interacts with **L-21 / D-46b**, PENDING COUNSEL) |
+| 6 | Whether author deletion is a hard delete or a withdrawal (interacts with **L-21 / D-46**, PENDING COUNSEL) |
 | 7 | Pre-publication versus post-publication moderation (LC-4) |
 | 8 | Rating summary computation method (SUM-6) |
 | 9 | Rate-limit values (AB-2) and anomaly thresholds (AB-5) |
 | 10 | Whether an account-age or activity requirement applies (AB-8, currently **[P]**) |
 | 11 | Appeal mechanism and any time limit (MOD-6) |
 | 12 | Default ordering of Reviews on a profile |
-| 13 | Treatment of published Reviews after the author deletes their account (**L-21 / D-46b**, PENDING COUNSEL) |
+| 13 | Treatment of published Reviews after the author deletes their account (**L-21 / D-46**, PENDING COUNSEL) |
 | 14 | Commercial-editorial separation controls (**D-39**) |
 
 ---
