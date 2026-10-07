@@ -66,7 +66,8 @@ for p in EXPECTED:
     else:
         texts[p.name] = p.read_text(encoding="utf-8")
 
-LATER_PHASES = {"documentation-audit-v1.0.md"}  # Phase 3.8; see tools/verify-docs.py
+LATER_PHASES = {"documentation-audit-v1.0.md",      # Phase 3.8
+                "implementation-plan-v1.0.md"}     # Phase 3.9; see tools/verify-docs.py
 actual = sorted(p.name for p in list(OPS.glob("*.md")) + list(QUA.glob("*.md"))
                 if p.name not in LATER_PHASES)
 if actual != sorted(p.name for p in EXPECTED):
