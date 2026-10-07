@@ -97,11 +97,11 @@ ADVERTISING                      PLATFORM
 | --- | --- | --- |
 | Identity | id, slug, legal/trading name, name in Amharic (optional) | Slug unique and stable |
 | Description | short description, long description | Optional |
-| Classification | primary Category, secondary Categories | Cardinality **Open (D-57)** |
+| Classification | exactly one primary Category, zero or more secondary Categories | Cardinality fixed by D-57; see §3.4 |
 | Contact | website, public email, social links | Each optional; may be a personal contact point (§3.10) |
 | Publication | status, published_at, unpublished_at, closed_at, closure reason | — |
 | Quality | completeness score (derived), verification state (derived from §4.2) | Definition **Open (D-09)** |
-| Ratings | rating average, rating count (derived; absent when no published Reviews) | TRD TR-62, TR-63 |
+| Ratings | rating average, rating count (derived; absent when no published Reviews) | **Aggregated across the Business's Branches** (D-34, D-55); TRD TR-62, TR-63 |
 | Concurrency | version / updated_at token | TRD TR-57 |
 | Provenance | created_by, created_at, updated_by, updated_at | *operational* |
 
@@ -129,11 +129,20 @@ Branches and media attachments while **preserving** audit entries.
 | Status | active, temporarily closed, permanently closed | Distinct from Business closure |
 | Primacy | is_primary | Exactly one per Business |
 
-**Which attributes live on Branch versus Business is Open (D-55).** This
-model therefore keeps contact and hours on Branch (the safe default for a
-multi-branch business) and brand-level attributes on Business; D-55 may move
-specific fields, and the document records that explicitly rather than
-pretending the question is settled.
+**The Business/Branch attribute boundary is fixed by D-55.**
+
+| Level | Attributes |
+| --- | --- |
+| **Business** | Name, description, website, brand-level and public social links, and any other genuinely brand-level attribute |
+| **Branch** | Address, Area, Sub-city, Landmark, latitude, longitude, phone, branch email, opening hours, branch-specific services, products and pricing, and any other location-specific operational information |
+
+Reviews attach to a **Branch** (§6.1); Business-level rating figures are
+**aggregates** over the Business's Branches. Location-meaningful analytics
+attach to a **Branch**; Business-level analytics are aggregates. **Media may
+attach to either a Business or a Branch.**
+
+> **DM-R1.** An attribute **MUST NOT** be moved between the Business and
+> Branch levels for implementation convenience. A move requires a decision.
 
 **Uniqueness.** One primary Branch per Business. Coordinates are not unique
 (a mall may host several).
@@ -173,9 +182,27 @@ state of a Business.
 **Deletion.** Refused while any Business is classified under it (C-23). Merge
 reassigns and leaves a redirect record for the retired slug (SEO, C-23).
 
-**Open:** the catalogue itself (D-56) and how many Categories a Listing may
-carry (D-57). The join table `business_category` with a `is_primary` flag
-supports one primary plus N secondary without pre-deciding N.
+**Cardinality (D-57).** Every Listing carries **exactly one primary
+Category** and **zero or more secondary Categories**. The join table
+`business_category` with an `is_primary` flag models this directly:
+
+| Constraint | Enforcement |
+| --- | --- |
+| A published Listing **MUST** have exactly one row with `is_primary = true` | Database constraint plus a publication-time check |
+| A Listing **MAY** have zero secondary rows | No minimum |
+| A Category **MUST NOT** appear twice for one Listing | Unique index on (business_id, category_id) |
+| The primary Category **MUST NOT** also appear as a secondary | Implied by the unique index above |
+| There is **no artificial numeric maximum** on secondary Categories | No constraint is specified, and none may be invented |
+
+**Catalogue content (D-56).** Bulbula centrally owns and manually curates the
+catalogue. It is **reference data, not application schema**: adding,
+removing, renaming or reclassifying a Category or Subcategory **MUST NOT**
+require a code change or a migration while the model already supports it.
+There are **no user-created** Categories or Subcategories. An English label
+is required; Amharic is supported where available; controlled Aliases are
+supported (§3.5). The taxonomy is **exactly two levels** (D-06). The
+catalogue's *content* is produced as an operations task and is deliberately
+not listed here.
 
 ### 3.5 Alias
 
@@ -247,7 +274,7 @@ is **Open (D-04)**.
 
 | What is fixed now | What D-04 decides |
 | --- | --- |
-| Hours attach to a Branch (subject to D-55) | Whether split shifts and exception dates are supported |
+| Hours attach to a **Branch** — settled by D-55 | Whether split shifts and exception dates are supported |
 | Unknown hours are representable and excluded from open-now filtering (TRD TR-56) | Holiday handling |
 | Evaluation uses the configured timezone (DM-9) | Whether a "24 hours" marker is a flag or a range |
 
@@ -376,10 +403,12 @@ entities. This keeps them correct without a job (TRD TR-154, OC-1).
 
 **No password column exists anywhere in the model** (D-48).
 
-**Deletion (C-36).** Removes or irreversibly detaches personal data. The
-treatment of published Reviews afterwards is **Open — product/legal (D-34,
-L-21)**; the model supports both by allowing a Review to reference a deleted
-author placeholder.
+**Deletion (C-36).** Removes or irreversibly detaches personal data. A
+Review authored by the deleted Customer follows the **withdrawal** model
+fixed by D-34: public visibility ceases, and the model supports this by
+allowing a Review to reference a deleted-author placeholder. **How long any
+internal record is retained after account deletion remains PENDING COUNSEL
+(L-21, D-46); no period is specified here.**
 
 ### 5.2 ProviderIdentity
 
@@ -466,21 +495,26 @@ exist as data precisely so the split is configuration, not code (TRD TD-03).
 
 | | |
 | --- | --- |
-| **Purpose** | A Customer's published evaluation (C-13) |
+| **Purpose** | A Customer's evaluation of a **Branch** (C-13, D-34) |
 | **Written by** | Authenticated Customers only (D-12) |
 | **Class** | *customer / personal* (content authored by an identifiable person) |
 
 | Field | Notes |
 | --- | --- |
-| id, customer_id, subject type + subject id | **Business or Branch is Open (D-34)** — the model records the subject explicitly so the decision is a data change, not a rewrite |
-| rating | Scale **[P] five points**, confirmation under D-34 |
-| text | Optional; length limits **Open (D-34)** |
-| state (`pending`, `published`, `rejected`, `removed`, `deleted`) | Supports pre- **or** post-publication moderation (TRD TR-60) |
-| submitted_at, published_at, edited_at, deleted_at | Edit window **Open (D-34)** |
+| id, customer_id, **branch_id** | The subject is a **Branch** (D-34). A Review never references a Business directly; Business-level figures are aggregates over the Business's Branches |
+| rating | **Integer 1–5, required** (D-34). Enforced in the database, not only in application code |
+| text | **Optional** — a rating-only Review is valid (D-34). A maximum length is **configuration**, not schema; D-34 deliberately sets no value |
+| state (`pending`, `published`, `rejected`, `removed`, `deleted`) | **Moderation is pre-publication** (D-34): a Review is created `pending` and becomes `published` only on approval; `rejected` is never public. `removed` remains available for post-publication removal; `deleted` is author withdrawal (TRD TR-60) |
+| submitted_at, published_at, edited_at, deleted_at | The author may edit for **30 days from creation**; an edit returns the Review to `pending` (D-34). `deleted_at` marks withdrawal — a **soft delete**, so the row survives for retention, audit, abuse and legal purposes while public visibility ceases |
 | moderation reason reference | — |
 
-**Uniqueness.** One Review per Customer per subject, enforced in the database
-(TRD TR-160, AB-3).
+**Uniqueness.** **At most one active Review per Customer per Branch**,
+enforced in the database over (customer_id, branch_id) for non-withdrawn
+rows (TRD TR-160, AB-3). Re-reviewing the same Branch is an **edit** of the
+existing Review, never a second row.
+
+**Retention of a withdrawn Review.** The row is kept; **for how long is
+PENDING COUNSEL (L-21, D-46)** and no period is specified here.
 
 **No reply structure exists** (TRD TR-67, D-12, D-54).
 
@@ -515,10 +549,16 @@ no collections.
 
 ### 6.5 Rating summary
 
-Derived values on Business: average and count over **published** Reviews
-only. Absent when there are none (TRD TR-63). Rebuildable (DM-8). The
-computation method is **Open (D-34, SUM-6)**, so it is stored as a derived
-value rather than hard-coded in a query that assumes a plain mean.
+Derived values on **Branch** and on **Business**: average and count over
+**currently `published`** Reviews only. `pending`, `rejected`, `removed` and
+`deleted` Reviews are excluded. Absent when there are none (TRD TR-63).
+Rebuildable (DM-8).
+
+The computation is the **arithmetic mean of the included ratings, with no
+weighting** (D-34, SUM-6). A **Branch** summary covers that Branch's
+Reviews; a **Business** summary **aggregates across all of its Branches**
+(D-55). Both are stored as derived values so they can be rebuilt from the
+Reviews at any time.
 
 ---
 
@@ -675,7 +715,7 @@ change or a Category merge (SEO-4, C-23).
 | Personal contact points within business data | *personal* (flagged) | On justified request | **PENDING COUNSEL** (L-5) |
 | PermissionRecord, VerificationRecord, ListingChange, Report | *operational* (+ personal fragments) | Not deleted; personal fragments minimised | **PENDING COUNSEL** (L-21) |
 | Customer, ProviderIdentity, Session, OtpRequest, Save | *customer / personal* | **Yes** (C-36) | Short for OTP and sessions |
-| Review, ReviewReport | *customer / personal* | **Open — product/legal (D-34, L-21)** | — |
+| Review, ReviewReport | *customer / personal* | **Withdrawal** — public visibility ceases, the row survives (D-34) | **PENDING COUNSEL** (L-21, D-46) |
 | StaffUser, Role, StaffAuthFactor | *personal* + *operational* | Staff lifecycle, not Customer deletion | — |
 | Package, Placement, Campaign, CampaignTarget | *business* | Not applicable | Commercial records (L-17) |
 | AuditEntry | *operational* | **No** (DO-8) | Floor **PENDING COUNSEL** (L-21) |
@@ -713,14 +753,27 @@ change or a Category merge (SEO-4, C-23).
 | D-25 | Media storage and limits | Storage key is adapter-agnostic |
 | D-27 | Analytics granularity and retention | Raw-event policy open |
 | D-33 | Telegram identity | No Telegram provider row in V1 |
-| D-34 | Review subject, scale, limits, deletion semantics | Subject stored explicitly |
 | D-35 | Guest structured suggestions | Free-text reports only |
 | D-40 | Launch-area boundary | Area data provisional |
 | D-43 | Permission record contents and retention | Minimum fields only |
 | D-44 | Services / products / pricing | **No table specified** — see below |
-| D-55 | Branch versus Business attributes | Defaults stated, decision pending |
-| D-56 / D-57 | Category catalogue and cardinality | Join table supports either |
-| L-21 / D-46 | Retention schedule | Expiry supported, periods unset |
+| L-21 / D-46 | Retention schedule, including the retention of a withdrawn Review | Expiry supported, periods unset |
+
+**Resolved at the M0 schema gate — 2026-10-07.** Four questions that
+previously blocked this model are closed and are now specified above rather
+than deferred.
+
+| ID | Resolved | Where specified |
+| --- | --- | --- |
+| **D-34** | Review subject, rating scale, optional text, uniqueness, states, edit window, deletion semantics, summary computation, ordering | §6.1, §6.5, §5.1 |
+| **D-55** | Business versus Branch attribute boundary, including DM-R1 | §3.2 |
+| **D-56** | Catalogue is centrally curated reference data, two levels, no user-created entries | §3.4 |
+| **D-57** | Exactly one primary Category, zero or more secondaries, no duplicates, no artificial maximum | §3.4 |
+
+Note the limits of that closure. **D-04** (hours structure) and **D-44**
+(services, products and pricing representation) remain open; D-55 settles
+only that both live on the **Branch**. No retention period is invented
+anywhere in this model.
 
 **Services, products and pricing (D-44).** C-08 displays them "where
 captured", but their representation is unresolved. Specifying a table now

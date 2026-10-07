@@ -356,18 +356,27 @@ unpublished is returned with its current status rather than disappearing
 | Method | Path | Purpose | Capability |
 | --- | --- | --- | --- |
 | `GET` | `/me/reviews` | Own Reviews with state (`pending`, `published`, `rejected`, `removed`) | C-35 |
-| `POST` | `/businesses/{slug}/reviews` | Submit a Review | C-13 |
+| `GET` | `/branches/{id}/reviews` | Published Reviews for a Branch, newest first | C-13 |
+| `POST` | `/branches/{id}/reviews` | Submit a Review **for a Branch** | C-13 |
 | `PATCH` | `/me/reviews/{id}` | Edit own Review | C-35 |
 | `DELETE` | `/me/reviews/{id}` | Delete own Review | C-35 |
 
 | Rule | Statement |
 | --- | --- |
 | RV-1 | Only authenticated Customers may write (D-12) |
-| RV-2 | One Review per Customer per subject; a second `POST` returns `409` pointing at the existing Review (TRD TR-160) |
-| RV-3 | The response states the resulting state, because whether moderation precedes publication is **Open (D-34)** — clients **MUST NOT** assume immediate publication (TRD TR-60) |
-| RV-4 | Edit window, text limits, rating scale and deletion semantics are **Open (D-34)** and are enforced server-side from configuration, not hard-coded in clients |
+| RV-2 | **At most one active Review per Customer per Branch** (D-34); a second `POST` for the same Branch returns `409` pointing at the existing Review, which the Customer edits instead (TRD TR-160) |
+| RV-2a | **The subject of a Review is always a Branch** (D-34, D-55). There is no endpoint that creates a Review against a Business |
+| RV-3 | **Moderation precedes publication** (D-34). A successful `POST` returns the Review in state `pending`; clients **MUST NOT** assume immediate publication and **MUST** render the returned state (TRD TR-60) |
+| RV-3a | A `PATCH` within the edit window returns the Review to `pending`; the response states the new state (D-34) |
+| RV-4 | `rating` is a **required integer from 1 to 5**; a value outside that range is a `422`. `text` is **optional**, so a rating-only Review is valid (D-34) |
+| RV-4a | The edit window is **30 days from creation**; a `PATCH` after it returns `422`. The window is enforced server-side and **MUST NOT** be hard-coded in clients (D-34) |
+| RV-4b | `DELETE /me/reviews/{id}` is a **withdrawal**: public visibility ceases and the Review leaves every published list and every rating summary. It is **not** a destructive erase, and the API makes no promise about how long an internal record is kept — that remains **PENDING COUNSEL** (L-21, D-46) |
+| RV-4c | A maximum text length, rate limits and anomaly thresholds are **server-side configuration**, not part of this contract, and no value is specified here (D-34) |
 | RV-5 | **There is no reply endpoint, field or affordance** (D-12, D-54, TRD TR-67) |
 | RV-6 | Review photos and helpful votes do not exist (D-36, D-37) |
+| RV-7 | A Business profile **MAY** expose a rating summary, but it is **derived by aggregating the Reviews of that Business's Branches** (D-34, D-55). No Review is stored against a Business |
+| RV-8 | **No Business-owner review endpoint exists**, and no Business-account endpoint exists, because no business account exists in V1 (D-12, D-54) |
+| RV-9 | Published Reviews are returned **newest first** by default (D-34, SUM-9) |
 
 ### 3.5 Review reports
 
@@ -389,8 +398,10 @@ ground from the published list. A report alone never unpublishes a Review
 
 Deletion is explicitly confirmed, audited, and acknowledged by email (C-36,
 C-39). Response windows and the required export format are **PENDING
-COUNSEL** (L-7). The fate of published Reviews afterwards is **Open (D-34,
-L-21)**.
+COUNSEL** (L-7). A published Review authored by the deleted Customer follows
+the **withdrawal** model fixed by D-34 — it ceases to be publicly visible —
+but **how long any internal record is retained remains PENDING COUNSEL
+(L-21, D-46)** and this contract specifies no period.
 
 ---
 
@@ -467,12 +478,18 @@ failure.
 | ID | Question | Status |
 | --- | --- | --- |
 | TRD OT-08 | Offset versus keyset pagination for large lists | Open — technical decision |
-| D-34 | Review subject, scale, limits, edit window, moderation timing | Open — affects §3.4 semantics, not its shape |
 | D-35 | Structured guest suggestions | Open — free-text reports only today |
 | D-33 | Telegram identity relationship | Open — §3.1 AU-4/AU-5 |
 | D-44 | Services/products/pricing representation | Open — profile field shape deferred |
 | D-13 | Identity linking | Open — no auto-merge behaviour specified |
 | D-04 | Opening-hours model | Open — `open_status` contract is stable regardless |
+
+**D-34 closed at the M0 schema gate on 2026-10-07** and no longer appears
+above. §3.4 now states the Branch subject, the 1–5 rating, optional text,
+one active Review per Customer per Branch, the 30-day edit window,
+pre-publication moderation and withdrawal semantics. Text length, rate
+limits and anomaly thresholds remain **server configuration** rather than
+contract, and review retention remains **PENDING COUNSEL** (L-21, D-46).
 | L-7 | Rights-request response windows and export format | **PENDING COUNSEL** |
 | — | Rate-limit values | Configuration; never published |
 
@@ -481,4 +498,4 @@ failure.
 ## Decision references
 
 D-04, D-06, D-10, D-12, D-13, D-18, D-33, D-34, D-35, D-36, D-37, D-44,
-D-48, D-50, D-54.
+D-46, D-48, D-50, D-54, D-55.

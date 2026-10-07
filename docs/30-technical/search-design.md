@@ -285,7 +285,7 @@ Order within a match stage is determined by these, and **nothing else**:
 | Match location (name versus description) | A name match is a stronger signal | §3.2 |
 | Verification state and recency | The trust layer the product promises | C-12, D-08 |
 | Completeness | A complete Listing serves the User better | D-09 |
-| Rating average and count together | Never average alone — one five-star Review is not better than forty four-star ones | D-34 |
+| Rating average and count together | Never average alone — one five-star Review is not better than forty four-star ones. The average is the **arithmetic mean of Published ratings on the 1–5 scale** (D-34); **fixing the scale does not fix its ranking weight**, which stays open under D-09 | D-34, D-09 |
 | Distance | Only when the User asked for proximity | C-07 |
 | Deterministic tiebreaker | Stable pagination | SRCH-6 |
 
@@ -293,7 +293,7 @@ Order within a match stage is determined by these, and **nothing else**:
 
 | ID | Rule |
 | --- | --- |
-| OR-1 | **No weights are specified in this document.** Inventing them would decide D-09 and parts of D-34 by accident |
+| OR-1 | **No weights are specified in this document.** Inventing them would decide D-09 by accident. D-34 fixed the **rating scale and the summary computation**; it did **not** decide how heavily rating counts in ranking, and **MUST NOT** be read as having done so |
 | OR-2 | Weights live in **configuration**, are reviewable, and are changed deliberately (TRD TR-196) |
 | OR-3 | **No commercial input may enter the ordering function.** Not Campaign state, not spend, not impressions, not clicks (D-10, TRD TR-41) |
 | OR-4 | Ranking inputs are explainable in plain language on a public page (C-18, PRD SEO/trust) |
@@ -402,15 +402,25 @@ Detail: [`performance-and-caching.md`](performance-and-caching.md).
 | D-06 | Alias catalogue content | Managed data, not a code question |
 | D-08 | Verification tiers and interval | Open — affects a ranking input |
 | D-09 | Completeness definition and ranking weight | **Open — the central ranking question** |
-| D-34 | Rating scale and summary computation | Open — affects a ranking input |
 | D-40 | Launch-area boundary | Open — affects Area data |
-| D-56 / D-57 | Category catalogue and cardinality | Open — affects classification text |
 | — | Ranking weights | **Deliberately unspecified** (OR-1) |
 | — | Amharic morphological matching | Deferred (§5.3) |
 | — | External search engine | Deferred (§12) |
+
+**Closed at the M0 schema gate on 2026-10-07.** **D-34** fixed the rating
+scale (integer 1–5) and the summary computation (arithmetic mean of
+Published ratings, no weighting), and **D-56** and **D-57** fixed the
+catalogue model and category cardinality. Their effect on this document:
+
+| Decision | Effect on search |
+| --- | --- |
+| **D-34** | The rating input is well defined. **Its ranking weight is still Open (D-09)** — a settled scale is not a settled weight |
+| **D-55** | The **Branch** is the physical, searchable location: Area, Sub-city, Landmark and coordinates are Branch attributes, so proximity and area filtering operate on Branches. A **Business** result aggregates its Branches |
+| **D-56** | The classification text indexed for matching comes from a **centrally curated** catalogue with controlled Aliases, not from user-created values, so the indexed vocabulary is bounded and reviewable |
+| **D-57** | A Listing has **one primary Category and zero or more secondaries**, so classification matching has a well-defined target set. A primary match **MAY** be treated as stronger than a secondary match; **by how much is a weight, and remains unspecified (OR-1, D-09)** |
 
 ---
 
 ## Decision references
 
-D-04, D-06, D-08, D-09, D-10, D-18, D-34, D-40, D-56, D-57.
+D-04, D-06, D-08, D-09, D-10, D-18, D-34, D-40, D-55, D-56, D-57.
