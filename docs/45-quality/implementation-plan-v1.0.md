@@ -261,11 +261,11 @@ complete. `BLOCKED` = do not proceed past the stated line.
 | Area | Status | Can code start? | Can production use? | Blocking dependency |
 | --- | --- | ---: | ---: | --- |
 | Foundation | `READY` | **Yes** | **Yes** | — |
-| Database | `READY WITH OPEN ITEMS` | **Yes, partly** | **No** | Migration machinery is ready; **directory tables need D-55, D-56, D-57**; **Review tables need D-34** |
+| Database | `READY` | **Yes** | **No** | Migration machinery is ready and **M0 cleared the four schema decisions**. Production use follows the launch gate |
 | Public Web | `READY` | **Yes** | **No** | Structure is specified; exact colours and the logo are open (D-53); production use follows the launch gate |
 | Telegram | `READY WITH OPEN ITEMS` | **Yes** | **No** | D-38 navigation model; D-33 identity — neither is required for a surface |
 | Customer Auth | `READY WITH OPEN ITEMS` | **Yes** | **No** | Providers fixed (D-48); linking rules open (D-13); OTP and session values open (OT-01, OT-02) |
-| Reviews | `BLOCKED` | **No** | **No** | **D-34.** The Review subject, scale, edit window and deletion semantics shape the table |
+| Reviews | `READY` | **Yes** | **No** | **D-34 approved 2026-10-07.** Subject, scale, states, window and deletion semantics are specified (`data-model.md` §6.1, TRD TR-59…TR-74) |
 | Operations Console | `READY WITH OPEN ITEMS` | **Yes, in development** | **No** | **D-45.** Privileged staff functionality must not be treated as safe to operate until it is resolved |
 | Security | `READY WITH OPEN ITEMS` | **Yes** | **No** | Public-surface controls are specified; **the staff mechanism is D-45** |
 | Privacy | `BLOCKED` | **Yes, against synthetic data** | **No** | **L-5** lawful basis; **L-21 / D-46** retention. Real personal data may not be processed |
@@ -282,8 +282,13 @@ complete. `BLOCKED` = do not proceed past the stated line.
 
 ### 6.2 What can begin safely, now
 
-Each item below is genuinely independent of D-34, D-55, D-56, D-57 and D-45.
-Nothing here creates a product table, a product endpoint or a product rule.
+Each item below is genuinely independent of **every remaining** open
+decision, including D-45. Nothing here creates a product table, a product
+endpoint or a product rule.
+
+**Since M0, this is no longer the only safe list.** The work in §6.3 is now
+also available, because the four decisions that gated it were approved on
+**2026-10-07**.
 
 | # | Work | Why it is independent | Traces to |
 | --- | --- | --- | --- |
@@ -310,20 +315,35 @@ Nothing here creates a product table, a product endpoint or a product rule.
 | IMP-6.4 | **Only genuinely independent work belongs in this list.** If an item needs to know what a Business, Branch, Category or Review *is*, it belongs in §6.3 |
 | IMP-6.5 | Items 1–17 are permitted, **not required**. An abstraction still needs a requirement behind it, and §11 forbids building infrastructure for a feature that does not yet exist |
 
-### 6.3 What can begin only after the schema decisions
+### 6.3 Unblocked by M0 — 2026-10-07
+
+Everything in this table was previously gated on D-34, D-55, D-56 or D-57.
+All four were approved on 2026-10-07, so **this work may now begin**, within
+the boundaries the approved decisions set.
+
+| Work | Was blocked by | Now proceeds within |
+| --- | --- | --- |
+| `business` and `branch` tables and their repositories | D-55 | The attribute boundary in `data-model.md` §3.2, including DM-R1 — no attribute may change level for convenience |
+| `category`, `subcategory`, `alias` tables and the listing↔category relation | D-56, D-57 | Exactly two levels; one primary Category, zero or more secondaries, no duplicates, **no artificial maximum** |
+| Taxonomy **reference-data framework** | D-56 | The framework may be built. The **catalogue content** is curated by Bulbula as an operations task and **must not** be invented or shipped in a migration (TR-177) |
+| Category filtering | D-56, D-57 | The primary/secondary distinction is available to filtering; **ranking weights remain unspecified** (D-09) |
+| Public Business profile composition | D-55 | Brand attributes from the Business, operational attributes from the selected Branch |
+| Review table, `ReviewModeration`, `ReviewReport` | D-34 | `data-model.md` §6.1 and TRD TR-59…TR-74 |
+| Review repository and service planning | D-34 | The same |
+| Rating summary and its computation | D-34 | Unweighted mean of `published` ratings; Business figures aggregate Branch Reviews |
+| Review APIs | D-34 | `api-spec-v1.0.md` §3.4, RV-1…RV-9 |
+| Review moderation model | D-34 | Pre-publication: `pending` → `published` or `rejected`, with later removal still available |
+| Search document and its refresh | D-55, D-56, D-57 | It denormalises the fields those decisions now place definitively |
+
+**Still genuinely gated, and not by these four:**
 
 | Work | Blocked by | Why |
 | --- | --- | --- |
-| `business` and `branch` tables and their repositories | **D-55** | Which attributes bind to Branch versus Business decides the columns |
-| Opening-hours structure | **D-04**, and D-55 for placement | §3.9 of the data model is deliberately unspecified |
-| `category`, `subcategory`, `alias` tables and the listing↔category relation | **D-56, D-57** | Depth, catalogue size and cardinality decide the relation and its constraints |
-| Taxonomy seed and reference data | **D-56** | The catalogue is content, not schema (TR-177) |
-| `area`, `sub_city` tables and their seed | D-40 for *content* only | The **structure** is settled; the boundary is not |
-| Public Business profile composition | **D-55** | The profile is the projection of whatever Branch ends up holding |
-| Review, moderation and report tables | **D-34** | Subject, scale, states, timestamps and deletion semantics are all in scope of the decision |
-| Rating summary and its computation | **D-34** | The computation method is explicitly open |
-| Search document and its refresh | D-55, D-56, D-57 | It denormalises exactly the fields those decisions place |
-| Any API resource shaped by the above | same | The contract shape is fixed; the field set is not |
+| Opening-hours **structure** | **D-04** | `data-model.md` §3.9 is deliberately unspecified. D-55 settled only that hours live on the **Branch** |
+| Services, products and pricing **structure** | **D-44** | Same pattern: D-55 settled the level, not the shape |
+| `area`, `sub_city` **seed content** | **D-40** | The structure is settled; the boundary is not |
+| A **retention period** for a withdrawn Review | **L-21 / D-46** | **PENDING COUNSEL.** D-34 settled the mechanism, not the duration |
+| Operations console for **production use** | **D-45** | Unchanged by M0 |
 
 ### 6.4 What must remain blocked
 
@@ -353,7 +373,7 @@ the security model and the operations model — not copied from a template.
 
 ```text
                          ┌──────────────────────────────┐
-                         │ M0  Decision / schema gate   │  D-34, D-55, D-56, D-57
+                         │ M0  Decision / schema gate   │  D-34 ✓ D-55 ✓ D-56 ✓ D-57 ✓
                          └───────────────┬──────────────┘
                                          │
         ┌────────────────────────────────┼────────────────────────────────┐
@@ -373,12 +393,12 @@ the security model and the operations model — not copied from a template.
                          │
              ┌───────────▼────────────┐
              │ Taxonomy + Locations   │   Category, Subcategory, Alias, Area, Sub-city
-             │ (reference data)       │   ← D-56, D-57 · D-40 for content
+             │ (reference data)       │   D-56 ✓ D-57 ✓ · D-40 for content only
              └───────────┬────────────┘
                          │
              ┌───────────▼────────────┐
              │ Directory core         │   Business, Branch, Listing state, media refs
-             │                        │   ← D-55
+             │                        │   D-55 ✓ · D-04, D-44 for shape
              └───────┬────────┬───────┘
                      │        │
         ┌────────────▼──┐  ┌──▼──────────────┐
@@ -397,7 +417,7 @@ the security model and the operations model — not copied from a template.
         └────────┬───────────────────┘        └──────────────────────────┘
                  │
         ┌────────▼────────┐   ┌──────────────────┐
-        │ Saves           │   │ Reviews + reports│  ← D-34  (hard gate)
+        │ Saves           │   │ Reviews + reports│  D-34 ✓ (gate cleared)
         └────────┬────────┘   └────────┬─────────┘
                  │                     │
                  └──────────┬──────────┘
@@ -434,12 +454,12 @@ the security model and the operations model — not copied from a template.
 
 | Placement | Reason |
 | --- | --- |
-| **Taxonomy and Locations before Directory** | A Business cannot be classified or placed without them. They are also the cheapest real tables to build and the first honest test of the migration discipline |
+| **Taxonomy and Locations before Directory** | A Business cannot be classified or placed without them. They are also the cheapest real tables to build and the first honest test of the migration discipline. *This ordering was originally reinforced by Business and Branch being gated on D-55 and D-57; that gate is gone, and the ordering now rests only on the genuine dependency* |
 | **Directory before Search** | The search document denormalises directory and taxonomy fields; building it first would mean rebuilding it (TR-45) |
 | **Public profile before Search** | A profile page is reachable by slug with **no** search; search without a destination is untestable. The profile is the smaller and more complete slice |
 | **Operations lifecycle alongside the public profile, not after** | Publication state is **on Business** (data model §3.3). Nothing can be published without the Permission and Verification gates, so the gates arrive with the entity (TR-49, TR-50) |
 | **Identity after the public surface** | The complete discovery journey must work with **no** session and **no** cookie (invariant 12). Building identity first invites a design where anonymity is an afterthought |
-| **Saves before Reviews** | Saves are a two-column relation with no open decision. Reviews are blocked on D-34. Doing the unblocked one first proves the authenticated path end to end |
+| **Saves before Reviews** | Saves are the smaller slice — a two-column relation — so they prove the authenticated path end to end at the lowest cost. *The original reason, that Reviews were blocked on D-34, no longer applies: D-34 was approved on 2026-10-07. The ordering is kept on its own merits, not as a workaround* |
 | **Reviews before Moderation** | A moderation queue with nothing to moderate cannot be tested meaningfully |
 | **Console after the public domain** | The console is a view over domain that must already exist. Building it first produces screens over nothing and tempts direct SQL |
 | **Advertising late** | It touches ranking integrity, which is the single most important invariant. It should land on a stable, well-tested ranking path |
@@ -535,7 +555,7 @@ appears when the code that belongs in it does.
 | **Services** | Tree read; create, edit, hide, merge with redirect |
 | **APIs** | `/categories`, `/categories/{slug}`, `/ops/categories*` |
 | **Tests** | Unit on slug stability and two-level enforcement; feature on merge-and-redirect; integrity test that deletion is refused while classified |
-| **Blocked by** | **D-56** (catalogue, depth, size) · **D-57** (cardinality per Listing) |
+| **Blocked by** | **Nothing.** D-56 and D-57 were approved on 2026-10-07. The **catalogue content** remains an operations deliverable and **must not** be shipped in a migration (TR-177) |
 | **Downstream** | Directory, Search, Advertising targeting, SEO |
 
 ### 8.6 Locations
@@ -563,7 +583,8 @@ appears when the code that belongs in it does.
 | **Services** | Profile composition; lifecycle transitions; duplicate detection; correction recording |
 | **APIs** | `/businesses/{slug}`, `/businesses/{slug}/branches`, `/businesses/nearby`, `/ops/businesses*`, `/ops/branches*` |
 | **Tests** | State-machine unit tests; feature tests for PR-1…PR-6; integrity tests for TR-49, TR-50, TR-52, TR-53, TR-57 |
-| **Blocked by** | **D-55** (attribute boundary) · D-04 (hours) · D-44 (services/products) · D-09 (completeness) |
+| **Blocked by** | D-04 (hours **structure**) · D-44 (services and products **structure**) · D-09 (completeness definition) |
+| **No longer blocked by** | **D-55** — closed at the M0 gate on 2026-10-07; the attribute boundary is specified in `data-model.md` §3.2 |
 | **Downstream** | Search, Reviews, Saves, Advertising, Analytics, SEO |
 
 ### 8.8 Operations (provenance and quality)
@@ -617,10 +638,10 @@ appears when the code that belongs in it does.
 | **Depends on** | Identity, Directory, Notifications, Audit |
 | **Entities** | Review, ReviewModeration, ReviewReport, Save, rating summary (derived) |
 | **Services** | Submit, edit, delete own Review; moderate; report; save and unsave |
-| **APIs** | `/businesses/{slug}/reviews`, `/me/reviews`, `/me/saves`, `/reviews/{id}/reports`, `/ops/queues/reviews` |
+| **APIs** | `/branches/{id}/reviews`, `/me/reviews`, `/me/saves`, `/reviews/{id}/reports`, `/ops/queues/reviews` |
 | **Tests** | Invariants 9, 10 and 11; uniqueness enforced in the **database**, not only in code (TR-160); **no** reply affordance anywhere (TR-67) |
-| **Blocked by** | **D-34** — subject, scale, text limits, edit window, deletion semantics, moderation timing, rating computation |
-| **Note** | **Saves are not blocked by D-34** and are implementable as soon as Identity and Directory exist |
+| **Blocked by** | **Nothing.** D-34 was approved on 2026-10-07. Maximum text length, rate limits and anomaly thresholds are **configuration** and **must not** be pinned in a test (TST-4.5); the **retention period** for a withdrawn Review remains **PENDING COUNSEL** (L-21, D-46) |
+| **Note** | Saves remain independent of Reviews and are implementable as soon as Identity and Directory exist |
 | **Downstream** | Trust indicators, Analytics, Moderation operations |
 
 ### 8.12 Notifications and email
@@ -662,7 +683,7 @@ appears when the code that belongs in it does.
 | **Services** | Read and update profile; export; request and confirm deletion |
 | **APIs** | `/me`, `/me/saves`, `/me/reviews`, `/me/data`, `/me/deletion` |
 | **Tests** | Deletion cascade correctness — Saves go, **audit and moderation history stay** (TR-167) |
-| **Blocked by** | **L-7 PENDING COUNSEL** for windows and export format · D-34 for the fate of published Reviews after deletion |
+| **Blocked by** | **L-7 PENDING COUNSEL** for windows and export format · **L-21 / D-46 PENDING COUNSEL** for how long a withdrawn Review is retained. The deletion *behaviour* itself — withdrawal — is settled by D-34 |
 | **Downstream** | Privacy compliance |
 
 ### 8.15 Audit
@@ -725,16 +746,32 @@ appears when the code that belongs in it does.
 
 ## 9. Data-model gate
 
-**This is the most consequential section of the plan.** The final audit
-concluded that four decisions — **D-34, D-55, D-56, D-57** — are the only open
-items that shape tables, and that they should be taken before any schema work
-begins.
+> ## `M0 — COMPLETE`
+>
+> | Decision | Status |
+> | --- | --- |
+> | **D-34** Review mechanics | ✓ **Approved 2026-10-07** |
+> | **D-55** Business versus Branch attribute boundary | ✓ **Approved 2026-10-07** |
+> | **D-56** Category catalogue production | ✓ **Approved 2026-10-07** |
+> | **D-57** Category cardinality per Listing | ✓ **Approved 2026-10-07** |
+>
+> **The four decisions that blocked schema definition have now been
+> approved. Schema implementation may proceed within the boundaries defined
+> by the approved decisions and the remaining open decisions.**
 
-**This section does not decide them.** It makes their consequences explicit so
-that the owner can resolve them efficiently, and so that an implementation
-agent can see exactly where a table stops being safe to create.
+The gate was cleared the way IMP-9.4 requires — by **register entries**, not
+by a conversation. The four entries are in
+[`../60-decisions/decision-register.md`](../60-decisions/decision-register.md)
+§1, approved on **2026-10-07** under "Owner approval during M0
+implementation/schema gate".
+
+This section is kept rather than deleted. The analysis below is what made
+the decisions answerable, and §9.2 now records **what was decided** so that
+an implementation agent reads the boundary, not the history of the question.
 
 ### 9.1 Why these four and not the other thirty-four
+
+The test that selected them, unchanged:
 
 | Test | Result |
 | --- | --- |
@@ -749,109 +786,108 @@ them as deliberate holes with a documented default, an adapter, or a
 configuration key. Changing them later is a data or configuration change, not
 a migration of a shipped table.
 
-### 9.2 Schema Decision Gate — D-34 (Reviews)
+**That analysis held.** The four that shaped tables were taken; the rest
+remain open and remain non-blocking.
 
-| Aspect | Position |
+### 9.2 What was decided — the schema boundary
+
+This is the operative subsection. An implementation agent needs **this**,
+not the pre-decision analysis.
+
+#### D-34 — Review mechanics
+
+| Aspect | Approved position |
 | --- | --- |
-| **Current status** | **Open**, Class B, owner decision. Not approved |
-| **Exact question** | Review mechanics: per-business versus per-branch subject; the edit window; deletion semantics; the rating scale; whether rating-only reviews are permitted; and whether moderation precedes publication |
-| **Affected entities** | Review, ReviewModeration, ReviewReport, and the derived rating summary on Business |
-| **Affected columns** | `subject_type` + `subject_id`; `rating` (scale and whether text is required); `text` length limits; `published_at`, `edited_at`, `deleted_at`; the `state` set |
-| **Affected relationships** | Whether a Review points at Business or at Branch — and therefore whether the rating summary aggregates per brand or per place |
-| **Affected indexes and constraints** | The uniqueness constraint. "One Review per Customer per subject" is enforced in the database (TR-160), and its column list **is** the decision |
-| **Affected API resources** | `POST /businesses/{slug}/reviews`, `GET /businesses/{slug}/reviews`, `/me/reviews`, and the rating object inside every search result and profile response. **The contract shape is stable; the semantics are not** (RV-3, RV-4) |
-| **Affected UX** | Where the review form appears on a multi-branch profile; whether the rating shown is the brand's or the branch's; what "edit" offers and for how long; what a deleted Review leaves behind |
-| **Affected tests** | Invariants 9, 10 and 11; the uniqueness test; every acceptance test for C-13, C-25 and C-35. **A test must not pin an open value** (TST-4.5) |
-| **Affected migration sequence** | The Review table must come **after** Directory, and its subject foreign key cannot be written until the subject is known. Guessing and migrating later is an expand → migrate → contract across deployments on a table holding user-authored content |
-| **Implementation risk** | **High.** This is not a column rename. Choosing Branch after shipping Business-level reviews re-parents user-generated content and silently changes every rating already displayed |
+| **Subject** | A Review belongs to a **Branch**. No Review is stored against a Business; Business-level figures are **aggregates** across its Branches |
+| **Rating** | A **required integer from 1 to 5**, enforced in the database |
+| **Text** | **Optional** — a rating-only Review is valid and complete |
+| **Uniqueness** | **At most one active Review per Customer per Branch**, enforced in the database over `(customer_id, branch_id)`. Re-reviewing is an **edit**, never a second row |
+| **Text length** | **Not decided, deliberately.** A maximum is **configuration**, not schema |
+| **Edit window** | **30 days from creation**, enforced server-side. An accepted edit returns the Review to `pending` for re-moderation |
+| **Author deletion** | **Withdrawal — a soft delete.** Public visibility ceases and the Review leaves every summary; the internal record may be retained for retention, audit, abuse and legal purposes |
+| **Retention of that record** | **Not decided — PENDING COUNSEL (L-21, D-46).** It **must not** be invented in code or in a test |
+| **Moderation order** | **Pre-publication.** `pending` → approval → `published`; a `rejected` Review is never public. Post-publication **removal** remains available |
+| **Rating summary** | **Arithmetic mean of currently `published` ratings, unweighted.** `pending`, `rejected`, `removed` and `deleted` are excluded |
+| **Default ordering** | **Newest `published` first** |
+| **Minimum account age** | **None** |
+| **Appeals** | Administrator-handled. **No deadline is set** |
+| **Rate limits, anomaly thresholds** | **Configuration.** No values are set |
+| **D-39** | **Not closed by D-34.** Commercial–editorial integrity remains open and still blocks the first paid Campaign |
 
-```text
-Schema blocked until D-34 is resolved
-```
+**Specified in:** `data-model.md` §6.1 and §6.5 · TRD TR-59…TR-74 ·
+`api-spec-v1.0.md` §3.4 RV-1…RV-9 · `review-policy.md` §2, §4, §9.
 
-**What may still proceed while D-34 is open**
+#### D-55 — Business versus Branch attribute boundary
 
-| Permitted | Why |
+| Level | Attributes |
 | --- | --- |
-| Saves (C-14, C-34) | A `(customer, business)` relation with no open question |
-| The authenticated-write path itself, proven through Saves | Exercises session, CSRF, authorization and idempotency without a Review table |
-| The moderation **queue mechanics** as a generic work queue | The queue is platform machinery; the moderated thing is not |
-| Review **policy text** in `review-policy.md` | Already written; unaffected |
-| Read-only "no reviews yet" profile state | The rating summary is **absent** when there are none (TR-63), which is the already-specified empty case |
+| **Business** | Name, description, website, brand-level and public social links, and other genuinely brand-level attributes |
+| **Branch** | Address, Area, Sub-city, Landmark, latitude, longitude, phone, branch email, opening hours, branch-specific services, products and pricing, and other location-specific operational information |
 
-### 9.3 Schema Decision Gate — D-55, D-56, D-57 (shape model)
+Reviews attach to a **Branch**; Business rating figures are derived.
+Location-meaningful analytics attach to a **Branch**; Business analytics are
+aggregates. **Media may attach to either.**
 
-The live register definitions, quoted from §2.2:
+> **The rule that outlives the list:** an attribute **must not** be moved
+> between the Business and Branch levels for implementation convenience. A
+> move requires a decision (`data-model.md` DM-R1).
 
-| ID | Question as recorded |
-| --- | --- |
-| **D-55** | Which attributes bind to Branch versus Business (hours, contact, reviews, analytics) |
-| **D-56** | Category catalogue production: sourcing, depth per branch, initial size |
-| **D-57** | Category cardinality per listing (one primary plus N secondary) |
-
-#### D-55 — Branch versus Business attribute boundary
-
-| Aspect | Position |
-| --- | --- |
-| **Current status** | **Open**, Class B. Not approved. The conceptual model `Business → one or more Branch` **is** approved (D-03); only the attribute boundary is open |
-| **Exact question** | Which of hours, contact points, reviews and analytics live on Branch and which on Business |
-| **Affected entities** | Business, Branch — and, through the review subject, Review |
-| **Affected columns** | `phone`, `secondary_phone`, `email`, the opening-hours structure, and any analytics keying. The data model's **stated default** is contact and hours on Branch, brand attributes on Business |
-| **Affected relationships** | Whether the profile reads contact from one place or many; whether "open now" is a branch property aggregated upward |
-| **Affected indexes and constraints** | "Exactly one primary Branch per Business" is already fixed. What is not fixed is whether a contact-point uniqueness or presence constraint belongs on Branch |
-| **Affected API resources** | The profile response and `/businesses/{slug}/branches`; PR-4 — contact actions appear only where a contact point exists |
-| **Affected UX** | Single-branch profiles must **not** look like a special case (BM-2). If contact sits on Branch, the single-branch profile flattens it; if it sits on Business, the multi-branch profile must disambiguate |
-| **Affected tests** | C-08, C-09, C-11 acceptance tests; the open-now exclusion rule for unknown hours (TR-56) |
-| **Affected migration sequence** | Business and Branch are created in the same migration pair. Moving a contact column afterwards is an expand → migrate → contract on published data |
-| **Implementation risk** | **Medium-high.** The default is documented and defensible, so the cost of being wrong is a data migration rather than a redesign — but it touches the most-read table in the product |
+**D-04 and D-44 are not closed by this.** D-55 settles the *level* at which
+hours and services live; their *structure* remains open.
 
 #### D-56 — Category catalogue production
 
-| Aspect | Position |
+| Aspect | Approved position |
 | --- | --- |
-| **Current status** | **Open**, Class B. Not approved |
-| **Exact question** | How the catalogue is sourced, how deep it goes, and how large it starts |
-| **Affected entities** | Category, Subcategory, Alias |
-| **Affected columns** | None directly — the two-level structure is fixed by D-06. What it affects is whether the structure is **sufficient** |
-| **Affected relationships** | Whether two levels genuinely cover the launch area's trades, or whether the catalogue will strain against the two-level rule |
-| **Affected indexes and constraints** | Slug uniqueness **within level** is fixed; catalogue size affects index selectivity and the autocomplete bound |
-| **Affected API resources** | `/categories`, `/categories/{slug}`, and the category facets in `/search` |
-| **Affected UX** | Category browsing depth, homepage featured categories, the autocomplete suggestion mix |
-| **Affected tests** | C-04 and C-23 acceptance tests; the merge-and-redirect test |
-| **Affected migration sequence** | **The catalogue is content, not schema** (TR-177). A migration must **not** carry it. It is seeded by a console command or operations entry |
-| **Implementation risk** | **Low for schema, high for content.** The table can be built safely; what cannot be built safely is a seed that pretends to be the catalogue |
+| **Ownership** | Bulbula **centrally owns and manually curates** the catalogue |
+| **Source** | Produced from the real launch-area business inventory and genuine discovery and search needs |
+| **Depth** | **Exactly two levels** — Category → Subcategory (consistent with D-06) |
+| **User-created entries** | **None.** No User or Operator creates a Category outside administrative catalogue management |
+| **Labels** | **English required**; Amharic supported where available; controlled Aliases supported |
+| **Gaps** | Resolved by an **Administrator-controlled catalogue change**, not by a field invention |
+| **Nature** | **Reference data, not application schema.** A catalogue change **must not** require a code change or a migration where the model already supports it |
+| **Not decided** | The number of Categories or Subcategories, any coverage percentage, a launch date, and the catalogue list itself. **None of these may be invented** |
+
+**Consequence for implementation:** the taxonomy tables and the
+reference-data framework may be built now. A seed migration that ships a
+catalogue is a **defect** (TR-177, REL-6.10). Development fixtures must be
+obviously synthetic.
 
 #### D-57 — Category cardinality per Listing
 
-| Aspect | Position |
+| Constraint | Approved position |
 | --- | --- |
-| **Current status** | **Open**, Class B. Not approved |
-| **Exact question** | How many Categories a Listing may carry — one primary plus N secondary, and what N is |
-| **Affected entities** | The `business_category` join |
-| **Affected columns** | `business_id`, `category_id`, `is_primary` |
-| **Affected relationships** | The join already supports one primary plus N secondary **without pre-deciding N** (data model §3.4) |
-| **Affected indexes and constraints** | **This is the real content of the decision.** A partial or functional uniqueness guaranteeing exactly one primary per Business; and whether N is bounded in the database, in the service, or not at all |
-| **Affected API resources** | The `categories` array on profile and search responses; ad targeting by category |
-| **Affected UX** | How many category chips a card shows; which category a breadcrumb uses |
-| **Affected tests** | A constraint test for the single primary; a bound test if N is enforced |
-| **Affected migration sequence** | The join table is created with Directory. A later N bound is an added constraint, which can fail on existing rows |
-| **Implementation risk** | **Low.** The documented join design absorbs either answer. The only genuine exposure is enforcing a bound after data exists |
+| **Primary** | Every Listing has **exactly one** Primary Category, **required** for every published Listing |
+| **Secondary** | **Zero or more.** Zero is permitted |
+| **Duplicates** | A Category **must not** appear twice for one Listing |
+| **Overlap** | The Primary **must not** also be a Secondary |
+| **Maximum** | **No artificial numeric maximum.** None may be invented, and none is exposed to Users |
+| **Depth** | The taxonomy stays two levels; compatible with D-56 |
 
-#### Dependency table
+**Specified in:** `data-model.md` §3.4 · PRD BM-7 · `listing-operations-v1.0.md`
+LO-6.9, which makes a Primary Category mandatory before publication.
 
-| Decision | Entity impact | Relationship impact | Migration impact | API impact | Can code proceed? |
-| --- | --- | --- | --- | --- | --- |
-| **D-34** | Review, ReviewModeration, ReviewReport, rating summary | Review subject → Business **or** Branch; aggregation level | Review tables cannot be created; subject FK and uniqueness are the decision | Semantics of `/businesses/{slug}/reviews`, `/me/reviews`; the rating object everywhere | **No** for Review tables. **Yes** for Saves, the authenticated-write path, and queue mechanics |
-| **D-55** | Business, Branch | Where contact and hours hang; how open-now aggregates | Business and Branch migrations cannot be finalised | Profile and branches responses; PR-4, PR-5 | **No** for directory tables. **Yes** for Taxonomy, Locations, Media and all §6.2 work |
-| **D-56** | Category, Subcategory, Alias | Whether two levels suffice in practice | **No** schema impact; a seed migration would be a defect (TR-177) | Category tree size and facet behaviour | **Yes** for the tables. **No** for the catalogue content |
-| **D-57** | `business_category` join | One primary plus N secondary; the bound on N | Join table is safe; a **later** bound can fail on existing rows | `categories` array; ad targeting | **Yes** for the join. **No** for a cardinality constraint |
+#### Dependency table — after M0
+
+| Decision | Entity impact | Migration impact | Can code proceed? |
+| --- | --- | --- | --- |
+| **D-34** | Review, ReviewModeration, ReviewReport, rating summary | Review tables may be created, with `branch_id`, the 1–5 check and the per-Branch uniqueness index | **Yes** |
+| **D-55** | Business, Branch | Both migrations may be finalised against the §3.2 boundary | **Yes** |
+| **D-56** | Category, Subcategory, Alias | Tables yes; **catalogue content never in a migration** | **Yes** for the tables and the framework. **No** for the content |
+| **D-57** | `business_category` join | The join and its constraints may be created together, including the single-primary constraint | **Yes** |
+
+### 9.3 Rules that survive the gate
+
+Clearing M0 removes four blockers. It does not relax the discipline that
+made them visible.
 
 | Rule | Statement |
 | --- | --- |
-| IMP-9.1 | **Do not create a table whose columns are the subject of an open decision.** Create the tables above it and below it instead |
-| IMP-9.2 | **Do not encode a provisional answer in a migration.** The data model's stated defaults are *documentation of a pending question*, not permission to ship them |
-| IMP-9.3 | **Do not pin an open value in a test.** Asserting a five-point scale, an edit window or a secondary-category bound converts an open decision into a silent one (TST-4.5) |
-| IMP-9.4 | The gate is cleared by a **register entry**, not by a conversation, a comment or this document |
+| IMP-9.1 | **Do not create a table whose columns are the subject of an open decision.** D-04 and D-44 are still open: the hours structure and the services, products and pricing structure **must not** be invented. Create the tables above and below them instead |
+| IMP-9.2 | **Do not encode a provisional answer in a migration.** A documented default is *documentation of a pending question*, not permission to ship it |
+| IMP-9.3 | **Do not pin an open value in a test.** The rating scale, the 30-day window and the single-primary constraint are now **settled** and may be asserted. The maximum text length, rate limits, anomaly thresholds and any retention period are **not**, and asserting them converts an open decision into a silent one (TST-4.5) |
+| IMP-9.4 | The gate is cleared by a **register entry**, not by a conversation, a comment or this document. For these four, those entries exist |
+| IMP-9.5 | **Closing four decisions closes four decisions.** It does not close the remaining product and technical decisions, the legal items, staff authentication (D-45), Telegram identity (D-33), the launch threshold (D-30n) or production readiness |
 
 ### 9.4 Migration strategy
 
@@ -892,12 +928,12 @@ criteria are met.
 
 | ID | Milestone | Content | Entry condition | Exit condition |
 | --- | --- | --- | --- | --- |
-| **M0** | **Decision and schema gate** | Resolve, or explicitly defer with a recorded consequence, **D-34, D-55, D-56, D-57** | This plan is read | Register entries exist; §9 tables are re-read against them |
+| **M0** | **Decision and schema gate** — ✅ **COMPLETE 2026-10-07** | Resolve **D-34, D-55, D-56, D-57** | This plan is read | **Met.** All four are Approved register entries; §9.2 records the resulting schema boundary |
 | **M1** | **Foundation** | §6.2 items: outbound-HTTP gateway, clock, correlation, CSRF, validation primitives, output encoding, error shapes, pagination, queue, audit writer, migration discipline, test and accessibility harnesses, view primitives | None — may start **before** M0 | All new namespaces guarded by architecture assertions; gate green |
-| **M2** | **Core directory** | Taxonomy, Locations, Business, Branch, classification, media references, **public Business profile** | **M0 cleared for D-55, D-56, D-57** | A real Business profile renders on Web and in the Mini App, from the database, with the publication gates enforced |
+| **M2** | **Core directory** | Taxonomy, Locations, Business, Branch, classification, media references, **public Business profile** | **Met** — M0 cleared D-55, D-56 and D-57 on 2026-10-07 | A real Business profile renders on Web and in the Mini App, from the database, with the publication gates enforced |
 | **M3** | **Discovery** | Search, autocomplete, filters, category and area pages, category × area, nearby, open-now, homepage | M2 | Invariant 1 is an executing test; zero-result recovery works |
 | **M4** | **Customer identity** | Google, email OTP, sessions, profile, **Saves** | M1; M2 for a Business to save | A Guest can complete the whole discovery journey with **no** session, and an authenticated Customer can Save |
-| **M5** | **Reviews and reports** | Review submission, edit, delete, moderation pipeline, review reports, guest problem reports | **M0 cleared for D-34**; M4 | Invariants 9, 10 and 11 execute; uniqueness is enforced in the database |
+| **M5** | **Reviews and reports** | Review submission, edit, delete, moderation pipeline, review reports, guest problem reports | **M0 cleared D-34 on 2026-10-07**; M4 | Invariants 9, 10 and 11 execute; **per-Branch** uniqueness is enforced in the database |
 | **M6** | **Operations console** | Staff identity and authorization, listing lifecycle, verification, taxonomy, locations, moderation, report triage, audit reader | M2, M5; **D-45 for production use** | Every mutating request audited; O-1…O-8 tested; **operational use still gated** |
 | **M7** | **Web and Telegram completion** | Surface-specific behaviour, navigation model, SEO, sharing, static pages, host adapters | M3 | Surface parity tested per capability; the Mini App degrades to Guest on validation failure |
 | **M8** | **Advertising** | Packages, placements, campaigns, inventory, delivery records, labelled sponsored slots — **built disabled** | M3, M6 | Invariants 1, 7 and 8 execute; activation is impossible without the §16 checks |
@@ -977,11 +1013,19 @@ Database foundation
 ```
 
 **Why not the obvious slice.** The intuitive first slice is
-`Business → Branch → Listing → public profile`. It is the right **second**
-slice, and it is **not available first**, because Business and Branch columns
-are the direct subject of **D-55**, and the listing↔category relation is the
-subject of **D-57**. Starting there would mean either waiting for M0 or
-guessing — and IMP-9.2 forbids the guess.
+`Business → Branch → Listing → public profile`. It remains the right
+**second** slice — but for a different reason than when this plan was
+written.
+
+*Originally* it was unavailable, because Business and Branch columns were
+the direct subject of **D-55** and the listing↔category relation the subject
+of **D-57**. **M0 removed that gate on 2026-10-07**, so the second slice is
+now merely *second*, not *blocked*.
+
+It stays second on its own merits: a Business cannot be classified or placed
+until Categories and Areas exist, so taxonomy and locations are a genuine
+prerequisite rather than a workaround. The first slice is also the cheaper
+and safer first exercise of the full stack.
 
 **Why this slice is nonetheless a real slice and not busywork.**
 
@@ -990,7 +1034,7 @@ guessing — and IMP-9.2 forbids the guess.
 | Genuinely useful | Category and Area browsing are C-04 and C-05 — two of the forty approved capabilities, and part of the SEO surface |
 | Small enough to be safe | Five reference tables, no personal data, no authentication, no mutation on the public path |
 | Large enough to prove the architecture | It exercises **every** layer: migration → repository → domain → application service → controller → server-rendered view → JSON API → both surfaces → tests |
-| Unblocked | **D-56** affects the *catalogue content*, not the table. **D-40** affects *area content*, not the structure. Neither blocks the schema (§9.3) |
+| Unblocked | **D-56** was approved on 2026-10-07 and in any case affects the *catalogue content*, not the table. **D-40** affects *area content*, not the structure. Neither blocks the schema (§9.2) |
 | Produces reusable ground | Slug handling, Amharic-capable text storage, "hide without unclassifying", empty-state suppression and the redirect record are all needed by every later slice |
 
 **What the slice must contain**
@@ -1017,15 +1061,18 @@ guessing — and IMP-9.2 forbids the guess.
 | --- | --- |
 | A real category catalogue | **D-56.** Development uses an obviously synthetic fixture set |
 | A confirmed Area set | **D-40.** Same |
-| A listing↔category join | **D-57**, and there is no Business yet |
-| A cardinality constraint | **D-57** |
+| A listing↔category join | **There is no Business yet.** The join belongs to the second slice; D-57 no longer blocks it |
+| A cardinality constraint | **Belongs with the join**, in the second slice. D-57 settled the constraint set (§9.2); it is created **with** the join, not retrofitted |
 | Search over categories | M3. Browsing is not search |
 | Any ops endpoint for taxonomy | M6, and it needs staff identity |
 
 ### 11.2 The second slice
 
-Named here so the first slice is built toward it. **It may not start until M0
-clears D-55.**
+Named here so the first slice is built toward it. **M0 cleared D-55 on
+2026-10-07, so this slice is unblocked** and may follow the first
+immediately. It is built against the attribute boundary in `data-model.md`
+§3.2 — and **D-04** and **D-44** are still open, so the hours structure and
+the services, products and pricing structure are **not** invented here.
 
 ```text
 Business → Branch → publication state → public Business profile
@@ -1203,7 +1250,7 @@ Mapped to milestones. **None of this is implemented in this phase.**
 | **G-PRV-4 Privacy notice** | Before launch | The notice cannot be written without G-PRV-2 | **PENDING COUNSEL** |
 | **G-PRV-5 Vendor and transfer review** | Before any third party receives data — Google, the email provider, hosting, backups, maps | Transfer assessment and the residency question | **PENDING COUNSEL**; also D-42, D-42b |
 | **G-PRV-6 Rights handling** | M9 (C-36) | Export format, response windows, identity-verification standard | **PENDING COUNSEL (L-7)** |
-| **G-PRV-7 Account deletion** | M9 | Deletion cascade correct: Saves removed; **audit and moderation history preserved** | Specified (TR-167); the fate of published Reviews is **Open (D-34)** |
+| **G-PRV-7 Account deletion** | M9 | Deletion cascade correct: Saves removed; Reviews **withdrawn** (D-34); **audit and moderation history preserved** | Specified (TR-167, DL-4). The **retention period** for the withdrawn record is **PENDING COUNSEL** (L-21, D-46) |
 | **G-PRV-8 Location handling** | M3 (nearby) | Coordinates used in-request and **never stored**; no Guest identifier | Specified and testable (TR-201, TR-202) |
 
 | Rule | Statement |
@@ -1324,7 +1371,7 @@ production legal readiness
 
 | Class | Items | Effect |
 | --- | --- | --- |
-| **Blocks implementation** | **D-34, D-55, D-56, D-57** (data model) · **D-45** (console production use only) | §9, §15 |
+| **Blocks implementation** | **D-45** (console production use only). *D-34, D-55, D-56 and D-57 left this class on 2026-10-07 — §9* | §9, §15 |
 | **Does not block implementation** | D-04, D-08, D-09, D-13, D-14, D-16, D-17, D-19, D-20, D-21, D-23, D-25, D-27, D-33, D-35, D-38, D-40, D-41, D-42b, D-43, D-44, D-53 — each has a documented default, an adapter, a configuration key, or affects only content or a later surface | Build proceeds |
 | **Blocks production launch** | All counsel items · **D-31**, **D-30n**, **D-42** | §17 |
 | **Blocks the first paid Campaign** | **D-39**, **D-11**, L-17, L-20, readiness criteria 65–70 | §16 |
@@ -1334,10 +1381,10 @@ production legal readiness
 
 | Risk | Impact | Dependency | Mitigation | Status |
 | --- | --- | --- | --- | --- |
-| **IMR-1** Schema built on a guessed answer to **D-34** | User-authored content re-parented later; every displayed rating silently changes | D-34 | Hard gate at M5; Saves prove the authenticated path instead; no Review table before the register entry | **Open — product decision** |
-| **IMR-2** Directory tables built on a guessed **D-55** | Expand → migrate → contract on the most-read table in the product | D-55 | Hard gate at M2; taxonomy and locations first; the documented default is recorded as *pending*, not adopted | **Open — product decision** |
-| **IMR-3** Catalogue seeded as if **D-56** were answered | A fabricated taxonomy becomes the de-facto decision | D-56 | Catalogue is content, never a migration (TR-177); development fixtures are obviously synthetic | **Open — product decision** |
-| **IMR-4** Cardinality constraint added after data exists (**D-57**) | The constraint fails to apply, or silently is not enforced | D-57 | Join table now, bound later and only with a backfill plan | **Open — product decision** |
+| **IMR-1** Schema built on a guessed answer to **D-34** | User-authored content re-parented later; every displayed rating silently changes | D-34 | **Risk closed 2026-10-07.** D-34 is approved and §9.2 states the schema boundary; the Review table is built from the decision, not ahead of it | **Closed — decision approved** |
+| **IMR-2** Directory tables built on a guessed **D-55** | Expand → migrate → contract on the most-read table in the product | D-55 | **Risk closed 2026-10-07.** The boundary is approved and stated in `data-model.md` §3.2. The residual risk is an attribute being moved later for convenience, which DM-R1 forbids without a decision | **Closed — decision approved** |
+| **IMR-3** Catalogue **content** fabricated and shipped as if it were the curated catalogue | A fabricated taxonomy becomes the de-facto catalogue | D-56 | **Still live, and now the main taxonomy risk.** D-56 approved the *model*, not the content: the catalogue is centrally curated reference data, never a migration (TR-177, REL-6.10), and development fixtures must be obviously synthetic | **Open — operational decision** |
+| **IMR-4** Cardinality constraint added after data exists (**D-57**) | The constraint fails to apply, or silently is not enforced | D-57 | **Largely closed 2026-10-07.** D-57 is approved, so the constraints — one primary, no duplicates, no maximum — are created **with** the join rather than retrofitted. The residual risk is only an implementation that defers them | **Closed — decision approved** |
 | **IMR-5** **D-45** unresolved while console code grows | A provisional staff login becomes permanent by inertia | D-45 | Provisional login explicitly labelled; console production use gated; schema already accommodates a factor | **Open — security decision** |
 | **IMR-6** Counsel items unresolved at code-complete | A finished product that cannot lawfully launch | L-5, L-21, L-7, L-2, L-8, L-10, L-12, L-15, L-16, L-18, L-3, L-4 | Counsel engaged in parallel with the build; synthetic data throughout; no invented legal behaviour | **PENDING COUNSEL** |
 | **IMR-7** Data residency unresolved | The hosting purchase cannot be made; architecture may need a different target | L-2, D-42, D-42b | Deployment is a late milestone; the design assumes a constrained shared host either way | **PENDING COUNSEL** |
@@ -1361,7 +1408,7 @@ production legal readiness
 
 | Track | Owner | Content |
 | --- | --- | --- |
-| **M0 — decision gate** | **Owner** | Resolve, or explicitly defer with a recorded consequence, **D-34, D-55, D-56, D-57**. §9 is written to make this efficient: each decision is reduced to its entities, columns, relationships, constraints, API surface, UX surface, tests and migration consequence |
+| **M0 — decision gate** | **Owner** | ✅ **Satisfied 2026-10-07.** **D-34, D-55, D-56 and D-57** were approved and recorded in the register; §9.2 now carries the resulting schema boundary instead of the question |
 | **M1 — foundation** | **Implementation** | The seventeen items in §6.2. None of them touches a product table, so none of them waits |
 
 **Then, and only then, the first vertical slice** in §11.1 — the taxonomy and
@@ -1413,7 +1460,7 @@ plan the tests               (which levels, which invariants)
 
 | Rule | Statement |
 | --- | --- |
-| IMP-20.1 | **Check §9 before writing a migration.** If the table's columns are the subject of D-34, D-55, D-56 or D-57, stop |
+| IMP-20.1 | **Check §9 before writing a migration.** D-34, D-55, D-56 and D-57 are settled and §9.2 states the boundary to build to. If the table's columns are the subject of a **still-open** decision — notably **D-04** (hours structure) or **D-44** (services, products and pricing) — stop |
 | IMP-20.2 | **Check §6.2 and §6.3 before starting.** Knowing which of the three categories the work falls in is the whole point of this plan |
 | IMP-20.3 | **Read the repository, not a previous report.** The sandbox has rolled back repeatedly; GitHub and the working tree are the truth |
 
@@ -1486,10 +1533,7 @@ If question 1 or question 2 cannot be answered, the correct output is a
 
 | ID | Item | Status |
 | --- | --- | --- |
-| D-34 | Review mechanics — the hard gate on the Review schema | **Open — product decision** |
-| D-55 | Branch versus Business attributes — the hard gate on the directory schema | **Open — product decision** |
-| D-56 | Category catalogue production — gates content, not the table | **Open — product decision** |
-| D-57 | Category cardinality per Listing — gates the constraint, not the join | **Open — product decision** |
+| Category **catalogue content** | Curated centrally under D-56; the model is settled, the content is not produced | **Open — operational decision** |
 | D-45 | Staff authentication strength — gates console **production use** | **Open — security decision** |
 | D-39 | Advertising integrity controls — gates the first paid Campaign | **Open — product decision** |
 | D-11 | Billing mechanics | **Open — product decision** |
@@ -1548,6 +1592,6 @@ The article map is maintained in
 
 D-02, D-03, D-04, D-06, D-08, D-09, D-10, D-11, D-12, D-13, D-14, D-15,
 D-15r, D-16, D-17, D-18, D-19, D-20, D-21, D-23, D-24, D-25, D-26, D-27,
-D-29, D-30n, D-31, D-33, D-34, D-35, D-38, D-39, D-40, D-41, D-42, D-42b,
-D-43, D-44, D-45, D-46, D-48, D-49, D-50, D-51, D-52, D-53, D-54, D-55,
-D-56, D-57.
+D-29, D-30n, D-31, D-33, D-34, D-35, D-38, D-39, D-40, D-41, D-42,
+D-42b, D-43, D-44, D-45, D-46, D-48, D-49, D-50, D-51, D-52, D-53, D-54,
+D-55, D-56, D-57.

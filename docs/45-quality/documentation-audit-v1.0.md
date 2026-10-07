@@ -336,7 +336,7 @@ documentation already says this. It is a build instruction, not a defect.
 | --- | --- | --- | --- |
 | Business → one or more Branch, exactly one primary | §3.1–3.2 | D-03, glossary, PRD | **Yes** |
 | Listing as a publication concept, not an account | §3.3 | D-54, D-50 | **Yes** |
-| Review boundary (per business vs per branch) | §6.1 | **Open (D-34)** everywhere | **Yes** |
+| Review boundary (per business vs per branch) | §6.1 | **Open (D-34)** everywhere at the time of audit; **resolved to Branch on 2026-10-07** | **Yes** |
 | Save privacy — no counts, no social signal | §6.4 | C-14, SCC-2.9, UXP | **Yes** |
 | PermissionRecord as a publication gate | §4.1 | D-50, LO | **Yes** |
 | Provenance internal only | §3, §9 | TR-25, PCP-3 | **Yes** |
@@ -796,7 +796,7 @@ All Critical, High and Medium findings are fixed.
 
 | Class | Items |
 | --- | --- |
-| **Blocks implementation** | **D-34, D-55, D-56, D-57** (all shape the data model) · **D-45** (operations console only) |
+| **Blocks implementation** | **D-45** (operations console only). *At the time of this audit this class also held D-34, D-55, D-56 and D-57; all four were approved on 2026-10-07 — see the addendum at §34.* |
 | **Does not block implementation** | D-14, D-33, D-53, D-40, D-08, D-13, D-04, D-16, D-17, D-20, D-21, D-23, D-25, D-41, D-42b — each has a documented default, an interface, or affects only a later surface |
 | **Blocks production launch** | **All legal items** (L-2, L-3, L-4, L-5, L-7, L-8, L-10, L-12, L-15, L-16, L-18, L-21) · **D-31**, **D-30n**, **D-42** |
 | **Blocks the first paid Campaign** | **D-39**, **D-11**, **L-17**, **L-20**, and production-readiness criteria 65–70 |
@@ -805,7 +805,7 @@ All Critical, High and Medium findings are fixed.
 
 | Domain | Status | Reason |
 | --- | --- | --- |
-| **Product** | `READY WITH OPEN ITEMS` | C-01…C-40 defined, traced and bounded. **D-34, D-55, D-56, D-57 must be answered before the corresponding tables are built**, but the rest of the product is specified |
+| **Product** | `READY WITH OPEN ITEMS` | C-01…C-40 defined, traced and bounded. At the time of audit **D-34, D-55, D-56 and D-57** had to be answered before the corresponding tables were built; **all four were approved on 2026-10-07** (§34). The remaining open items do not shape tables |
 | **Business** | `READY WITH OPEN ITEMS` | Packages, placements and integrity rules specified. No price approved; D-11 open. Neither blocks building the directory |
 | **UX/UI** | `READY WITH OPEN ITEMS` | Components, states, flows, content and accessibility are specified. D-53 leaves exact colours and the logo open; semantic tokens make structure implementable now |
 | **Technical** | `READY` | TRD, architecture, data model, API and the seven TD invariants are complete, mutually consistent and match the repository. Every external dependency has a local or no-vendor default |
@@ -825,8 +825,9 @@ Security is blocked only for the operations console; Privacy and Legal block
 *processing real personal data*, which means they block **launch**, not
 development. Building the schema, the directory, search, the public Web
 surface and the Telegram surface against synthetic data is unblocked —
-provided D-34, D-55, D-56 and D-57 are answered before the tables they shape
-are created.
+and the condition attached here at the time of audit, that D-34, D-55, D-56
+and D-57 be answered before the tables they shape are created, **has since
+been satisfied** (§34).
 
 ## 33. Final audit conclusion
 
@@ -872,6 +873,31 @@ to watch: findings recorded but not applied.
 
 **Four decisions should be taken before any schema work begins: D-34, D-55,
 D-56 and D-57.** They are the only open items that shape tables.
+
+> **This recommendation was acted on.** All four were approved on
+> **2026-10-07**. See the addendum at §34.
+
+---
+
+## 34. Addendum — 2026-10-07, the M0 schema gate
+
+This audit is a record of what was true when it was carried out, and its
+body is left as written. This addendum records what changed afterwards, so
+that the document is not read as current where it is not.
+
+| Decision | Outcome approved 2026-10-07 |
+| --- | --- |
+| **D-34** | A Review belongs to a **Branch**; rating is a required integer **1–5**; text optional; **one active Review per Customer per Branch**; **30-day** edit window with re-moderation; **pre-publication** moderation; author deletion is **withdrawal**; summary is the **unweighted mean of Published ratings**; **newest first**; no minimum account age |
+| **D-55** | Brand-level attributes on the **Business**, location-specific operational attributes on the **Branch**; Reviews and location analytics are Branch-level with Business figures derived; an attribute **must not** move level for convenience |
+| **D-56** | The catalogue is **centrally curated reference data** over exactly two levels, with no user-created entries |
+| **D-57** | Exactly **one primary Category** per published Listing, **zero or more secondaries**, no duplicates, **no artificial maximum** |
+
+**The audit's central finding therefore stands resolved:** the four
+decisions that shaped tables have been taken, and schema work is no longer
+gated on them. Nothing else in this audit is changed by that. **D-45** still
+blocks the operations console for production use, the legal items still
+block launch, and **D-39**, **D-11**, **L-17** and **L-20** still block the
+first paid Campaign.
 
 ---
 

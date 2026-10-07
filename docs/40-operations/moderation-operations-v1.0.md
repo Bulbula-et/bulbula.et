@@ -344,7 +344,7 @@ created here.**
 
 | ID | Item | Marker |
 | --- | --- | --- |
-| D-34 (residual) | Maximum review-text length, rate-limit values, anomaly thresholds | **Open — configuration.** D-34 closed the mechanics on 2026-10-07 and deliberately set no values |
+| D-34 (residual) | Maximum review-text length, rate-limit values, anomaly thresholds | **Open — implementation detail.** D-34 closed the mechanics on 2026-10-07 and deliberately set no values |
 | MOD-6 | Appeal mechanism and any time limit | **Open — operational decision.** The Administrator is the authority; no deadline is invented |
 | D-39 | Separation of commercial relationships from moderation — **blocks the first paid Campaign** | **Open (D-39)** — product decision |
 | D-14 | Which permission covers which moderation action | **Open (D-14)** — product decision |

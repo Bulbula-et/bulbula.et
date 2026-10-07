@@ -189,7 +189,7 @@ pull request**.
 | REL-6.7 | **A backup is taken before running migrations in production** | MG-7, BK-8 |
 | REL-6.8 | **A migration never depends on application classes that may change.** It is a historical record | MG-8 |
 | REL-6.9 | **Migrations stay in portable SQL**, or branch by engine, because the test suite runs on SQLite | TR-173 |
-| REL-6.10 | **A migration must not contain business data beyond reference data the system needs.** The Category catalogue is content, not schema — **Open (D-56)** | TR-177 |
+| REL-6.10 | **A migration must not contain business data beyond reference data the system needs.** **D-56 settles this:** the Category catalogue is **reference data, not application schema**, so catalogue changes **must not** require a code change or a migration where the model already supports them. A seed migration that ships the catalogue is a defect | TR-177, D-56 |
 | REL-6.11 | **MG-5 is what makes a code-only rollback safe**, because the old code still works against the expanded schema | RB-3, DS-5 |
 
 ---
@@ -306,7 +306,7 @@ pull request**.
 | D-42 / D-42b | Hosting vendor and data location — **no production environment exists yet** | **Open — product decision** |
 | D-23 | Production secret custody | **Open — technical decision** |
 | D-26 | Coverage and mutation gates as the domain grows | **Open — quality decision** |
-| D-56 | Category catalogue as content rather than schema (REL-6.10) | **Open — product decision** |
+| — | Category catalogue as reference data rather than schema | **Closed 2026-10-07 (D-56).** REL-6.10 now states the rule rather than deferring it |
 | — | Length and content of the observation window (REL-8.7) | **Open — operational decision** |
 | — | Form of the release record (REL-5.3) | **Open — implementation detail** |
 | — | Whether a public changelog exists (REL-5.4) | **Open — operational decision** |
