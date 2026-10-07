@@ -259,8 +259,15 @@ SD-3). Every change is audited.
 | Delete an Area | **Refused** while Branches are assigned | C-24 |
 | Merge Areas | Reassigns Branches and leaves a redirect | SEO-4 |
 
-**Open.** The Category catalogue (D-56), Categories per Listing (D-57),
-and the launch-area boundary (D-40). The console must make all three
+**Settled (D-56, D-57).** The Category catalogue is **centrally owned and
+manually curated by Bulbula** and is maintained **here, as data** — adding,
+renaming, merging or hiding a Category **must not** require a code change or
+a deployment. There are **no user-created** Categories. Each Listing takes
+**exactly one primary Category**, mandatory before publication, and **zero
+or more secondary Categories** with **no artificial maximum**; the console
+prevents duplicates and prevents the primary also being a secondary.
+
+**Open.** The launch-area boundary (D-40). The console must keep Areas
 editable as data rather than assuming any particular answer.
 
 ---
@@ -288,7 +295,10 @@ grounds · prior decisions on this author's Reviews `[P]`.
 | OPX-8.4 | Decisions are recorded append-only and are visible to the author with the ground | C-25, C-35 |
 | OPX-8.5 | A rejected Review is **not silently deleted**; the author is told | UFL-B5.8 |
 | OPX-8.6 | **Staff must not write Reviews from staff accounts**, and the console provides no affordance to do so | `review-policy.md` §7 |
-| OPX-8.7 | Whether moderation precedes publication is **Open (D-34)**; the queue supports both orders |
+| OPX-8.7 | **Moderation precedes publication** (D-34). The queue holds Reviews in `pending`; approval publishes them and rejection means they were never public. Removing an already-published Review stays available as a separate action |
+| OPX-8.8 | A queued Review shows **which Branch it concerns**, not only the Business, because the Review belongs to the Branch (D-34, D-55) |
+| OPX-8.9 | A Review with a rating and **no text** is a valid Review and is presented as such in the queue, not as an empty or broken item (D-34) |
+| OPX-8.10 | An **edited** Review re-enters the queue and is marked as an edit of an already-published Review, so the moderator sees the change in context (D-34) |
 | OPX-8.8 | **There is no owner-reply moderation surface** — owner replies do not exist | D-12, D-54 |
 
 ---
@@ -505,13 +515,11 @@ Shared hosting, one server, no cache service (TD-05), no worker (TD-06).
 | D-14 | Operator / Administrator permission split | all |
 | D-25 | Media storage and limits | §6 |
 | D-27 | Analytics granularity and retention | §11 |
-| D-34 | Review mechanics and moderation order | §8 |
 | D-35 | Structured guest suggestions | §9 |
 | D-40 | Launch-area boundary | §7.2 |
 | D-43 | Permission-record contents | §3 |
 | D-44 | Services, products and pricing fields | §3 |
 | D-45 | Staff authentication mechanism | §13 |
-| D-56 / D-57 | Category catalogue and cardinality | §7.1 |
 | L-16 / L-17 / L-20 | Ad disclosure, invoicing, VAT, licence | §10 — **PENDING COUNSEL** |
 | L-18 | Photography rights | §6 — **PENDING COUNSEL** |
 | L-21 | Retention | §11, §12 — **PENDING COUNSEL** |
@@ -522,4 +530,4 @@ Shared hosting, one server, no cache service (TD-05), no worker (TD-06).
 
 D-02, D-03, D-06, D-08, D-09, D-10, D-11, D-12, D-14, D-18, D-24, D-25,
 D-27, D-34, D-35, D-36, D-37, D-39, D-40, D-43, D-44, D-45, D-50, D-54,
-D-56, D-57.
+D-55, D-56, D-57.

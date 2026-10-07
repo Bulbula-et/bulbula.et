@@ -745,7 +745,15 @@ the policy ground where rejected (C-25) · edit and delete.
 ground, and whether an appeal route exists. A rejected Review is **not
 silently deleted**. Deletion requires confirmation (§31).
 
-**Open.** Scale, limits, edit window and deletion semantics — **D-34**.
+**Review model (D-34).** Ratings are **1 to 5**. **Review text is
+optional**, and a rating-only Review is displayed as a complete Review. A
+Review belongs to a **Branch**, and the block names the Branch it covers.
+Reviews are **newest first**. A submitted Review is **awaiting review before
+it appears publicly**, and the screen says so rather than implying it is
+already live. A Review can be **edited for 30 days after posting**, and the
+screen warns that an edit returns it for review. Deleting a Review
+**withdraws** it from public view. Maximum text length is **server
+configuration** and is read from the server, never hard-coded.
 
 **Relevant C-xx.** C-13, C-25, C-35. **Relevant D-xx.** D-34.
 
@@ -760,10 +768,11 @@ account · links to the privacy notice.
 
 **Content rules.** Deletion states **what will and will not be removed
 before it happens**, requires explicit confirmation, revokes every session
-and sends an email confirmation (UFL-B9). The fate of published Reviews is
-**Open (D-34, L-21)** and the screen must state the **decided** outcome,
-not a guess. Response windows and export format are **PENDING COUNSEL
-(L-7)**.
+and sends an email confirmation (UFL-B9). Published Reviews are
+**withdrawn** — no longer publicly visible, no longer counted in any rating
+(D-34) — and the screen says so. It **must not** state how long any internal
+record is kept: that is **PENDING COUNSEL** (L-21, D-46). Response windows
+and export format are **PENDING COUNSEL (L-7)**.
 
 **Error state.** A failed export says so and offers retry; it never
 silently produces nothing.
@@ -959,13 +968,10 @@ screens above, C-19…C-29 in the operations console document.
 | D-25 | Media limits | Business profile gallery |
 | D-28 | Logo | header on all screens |
 | D-33 | Telegram identity | Sign in inside the Mini App |
-| D-34 | Review mechanics and deletion semantics | Business profile, My Reviews, Privacy |
 | D-35 | Structured guest suggestions | Report form |
 | D-38 | Mini App navigation model | all |
 | D-40 | Launch-area boundary | Areas index, Area, Category × Area |
 | D-46 | Minimum age | Sign in, Profile — **PENDING COUNSEL** |
-| D-55 | Branch versus Business attributes | Business profile |
-| D-56 / D-57 | Category catalogue and cardinality | Categories index, Category, breadcrumbs |
 | — | Minimum-content threshold for SEO-9 | Category × Area — **Open — product detail** |
 | L-5…L-7, L-21, L-22 | Privacy notice and terms content | Static pages — **PENDING COUNSEL** |
 

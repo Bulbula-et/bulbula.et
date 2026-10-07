@@ -48,7 +48,8 @@ is a defect.
 | SCC-2.5 | **Filters** — the same set, the same meanings, the same results | C-02 |
 | SCC-2.6 | **Organic ranking** — the same order for the same query | SUR-4, SRCH-6 |
 | SCC-2.7 | **Sponsored/organic separation** — label, container, segregation, collapse-when-unsold | LB-1…LB-8, PL-5 |
-| SCC-2.8 | **Review rules** — who may write, one per subject, moderation states, policy grounds | D-12, D-34 |
+| SCC-2.8 | **Review rules** — who may write, the **Branch** subject, the **1–5** rating, optional text, **one active Review per Customer per Branch**, the **30-day** edit window and its re-moderation, **pre-publication** moderation states, withdrawal on deletion, and policy grounds | D-12, D-34 |
+| SCC-2.9 | **Category cardinality** — exactly one primary Category and zero or more secondaries, with **no artificial maximum** exposed on either surface | D-57 |
 | SCC-2.9 | **Save behaviour** — private, no counts, idempotent, identity-scoped | C-14, UR-18 |
 | SCC-2.10 | **Report behaviour** — Listing reports Guest-safe, Review reports authenticated | TS-2, `interaction-permissions.md` §3 |
 | SCC-2.11 | **Authentication identity** — one Customer, one session concept | SUR-3, C-32, TD-02 |
@@ -210,12 +211,19 @@ that do not are the two documented exceptions.
 | --- | --- | --- |
 | D-33 | Telegram identity relationship | Owner decision — not taken here |
 | D-38 | Mini App navigation model | **Open — implementation detail** |
-| D-34 | Review mechanics | Owner decision — affects both surfaces identically |
 | D-21 | Maps provider | Owner decision — affects adaptation 6 |
 | D-24 | Notification channels | Owner decision — email only in V1 |
+
+**D-34, D-55, D-56 and D-57 closed on 2026-10-07** and are no longer open
+here. They are **server-owned rules** under SCC-2, so Web and the Telegram
+Mini App behave **identically**: the same Branch subject, the same 1–5
+scale, the same optional text, the same 30-day edit window, the same
+pre-publication moderation and the same category cardinality. **Neither
+surface may define a platform-specific product rule**, and neither may
+hard-code a value the server owns.
 
 ---
 
 ## Decision references
 
-D-12, D-21, D-24, D-33, D-34, D-38, D-39, D-48, D-49.
+D-12, D-21, D-24, D-33, D-34, D-38, D-39, D-48, D-49, D-55, D-56, D-57.
