@@ -136,7 +136,7 @@ responses · email content.
 | ID | Rule |
 | --- | --- |
 | SEC-2.8 | **A validated Telegram launch context establishes a surface, not an identity** (TR-113, TM-7.3) |
-| SEC-2.9 | **A third-party response is untrusted input**, including from Google and the email provider |
+| SEC-2.9 | **A third-party response is untrusted input**, including from Google and the email provider (D-48) |
 | SEC-2.10 | **The client never supplies a role, permission, price, ranking position or identity claim** the server honours |
 
 ---
@@ -317,7 +317,7 @@ Bulbula requirement without a stated reason.
 | 1 | `frame-ancestors 'none'` and `X-Frame-Options: DENY` **prevent the Telegram Mini App from being embedded** | **Open — security decision (OT-05).** Must be resolved before the Mini App ships; see APP §7 |
 | 2 | `style-src 'unsafe-inline'` is present for the pre-launch page | **Open — implementation detail.** Must be removed or justified when real templates land |
 | 3 | `deployment.md` EN-4 and BK-6 cite the residency requirement as **Art. 20**; the enacted text places it at **Art. 22** | Documentation defect; corrected here. The requirement itself stands |
-| 4 | The PRD cites **D-46a** and **D-46b**, which do not exist in the decision register | Documentation defect; this phase cites **D-46** only |
+| 4 | The PRD and `review-policy.md` cite two lettered sub-identifiers of **D-46** that do not exist in the decision register | Documentation defect; this phase cites **D-46** only |
 
 ---
 
