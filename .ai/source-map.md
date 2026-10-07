@@ -1,7 +1,7 @@
 # Source Map
 
 ```text
-Source baseline:   9730b5426efffdd6756075d97354319d1686b74a
+Source baseline:   b68ce5acf32afd6b525226a90343e3196f258a0e
 Last derived from: 2026-10-07
 Context status:    Current
 ```
@@ -114,6 +114,9 @@ authority (AI-G-07).
 | Where the project stands | `progress-tracker.md` | **Git and the GitHub API** |
 | Why an early option was rejected | — | `docs/00-discovery/product-decision-brief-v0.2.md`, `v0.3.md` |
 | Phase 2 understanding | — | `docs/00-discovery/` (5 files) |
+| Is the documentation consistent, and what is still blocking? | `progress-tracker.md` §5 | `docs/45-quality/documentation-audit-v1.0.md` |
+| Is `.ai/` still true to `docs/`? | — | `tools/verify-ai-context.py` **(executable)** |
+| Is `docs/` internally consistent? | — | `tools/verify-docs.py` **(executable)** |
 
 > **Discovery documents are historical.** They contain superseded numbering
 > (for example `L-1`, `L-9`, `L-11`, `L-13`, `L-14`, and Apple sign-in).
