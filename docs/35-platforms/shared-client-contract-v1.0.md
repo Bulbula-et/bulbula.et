@@ -28,6 +28,7 @@ what may be adapted, and the rule that separates the two.
 | SCC-1.3 | A difference that changes what a User is **told** — a label, a disclosure, a status — is also a product decision | LB-1…LB-8 |
 | SCC-1.4 | "It is easier on this surface" is never a sufficient reason to diverge | PA-2.5 |
 | SCC-1.5 | An adaptation must be **forced by the host platform**, confined to the adapter inventory, and recorded with the constraint that forces it | TR-110 |
+| SCC-1.6 | This contract is enforceable because both surfaces are **one application**, not two products kept in step by discipline | PD-01, D-49 |
 
 ---
 
@@ -135,7 +136,7 @@ Only these. Each entry states the host constraint that forces it.
 | C-17 | Sharing | Yes | Yes | 5 sharing |
 | C-18 | Static and policy pages | Yes | Yes | 1 chrome (footer vs account menu) |
 | C-19…C-29 | Operations | Yes | **No** | Exception |
-| C-30 | Google authentication | Yes | Yes | 7 auth entry (presented second; external-browser hand-off) |
+| C-30 | Google authentication (D-48) | Yes | Yes | 7 auth entry (presented second; external-browser hand-off) |
 | C-31 | Email OTP | Yes | Yes | 7 auth entry (presented first) |
 | C-32 | Unified identity | Yes | Yes | Transport only (cookie vs bearer) |
 | C-33 | Customer profile | Yes | Yes | — |
@@ -173,6 +174,7 @@ that do not are the two documented exceptions.
 | Different result counts or page sizes | SCC-2.2 |
 | A weaker or relocated Sponsored label | SCC-2.16, LB-2 |
 | Sponsored density tuned per surface | PD-16 |
+| Ad sales influencing listing data on either surface | D-39 |
 | Different Review rules or limits | SCC-2.8 |
 | Save counts or social affordances on one surface | UR-18 |
 | A Telegram-only capability of any kind | SUR-4 |

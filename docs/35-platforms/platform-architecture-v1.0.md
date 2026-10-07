@@ -699,4 +699,4 @@ conventions; no normative browser claim in this set rests on a blog post.
 ## Decision references
 
 D-10, D-15, D-16, D-17, D-19, D-20, D-21, D-24, D-25, D-27, D-33, D-38,
-D-39, D-45, D-48, D-49, D-52, D-53.
+D-39, D-42, D-45, D-48, D-49, D-52, D-53.

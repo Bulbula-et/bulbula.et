@@ -26,6 +26,8 @@ SEO in [`platform-seo-v1.0.md`](platform-seo-v1.0.md); performance in
 | ID | Rule | Source |
 | --- | --- | --- |
 | WP-1.1 | **Server-rendered HTML is the primary path.** The browser receives content, not instructions to fetch content | PD-03, MOB-5, SEO-1 |
+| WP-1.1a | The Web surface is **one application with the Mini App**, not a separate build target | PD-01, D-49 |
+| WP-1.1b | The Web is **designed mobile-first**; desktop is the widened case, never the reference case | D-52, MOB-1 |
 | WP-1.2 | **The Web surface never calls its own HTTP API.** Web controllers invoke application services in process | **TD-01** |
 | WP-1.3 | **No SPA requirement.** No client-side router, no hydration step, no build pipeline the shared host cannot run | D-16, DSN-12.7 |
 | WP-1.4 | **JavaScript is optional for core discovery**: search, browse, profiles and pagination all work without it | MOB-5, C-37 |
@@ -227,6 +229,7 @@ Capability-based, not a version matrix (PD-13).
 | WP-7.1 | The console is **Web-only**, at `/ops/*` | `scope-v1.md` §1.5 |
 | WP-7.2 | It is **never linked from a public page**, never mentioned in public navigation, never indexed | OPX-0.5, SEO-8 |
 | WP-7.3 | Staff authentication is **separate** from Customer authentication; its strength is **Open (D-45)** | ST-2, D-45 |
+| WP-7.3a | Staff nevertheless use the **same two approved methods** — Google and email OTP. No separate password system exists | D-48 |
 | WP-7.4 | It meets the same WCAG 2.2 AA bar and hides no data at smaller widths | OPX-0.9, DSN-8.4 |
 | WP-7.5 | Console responses are `no-store` | TR-120 |
 | WP-7.6 | Console load must not degrade public performance | OPX-16.5 |
