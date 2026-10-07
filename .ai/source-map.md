@@ -1,7 +1,7 @@
 # Source Map
 
 ```text
-Source baseline:   b68ce5acf32afd6b525226a90343e3196f258a0e
+Source baseline:   33f58e0e1619c7e5b952eede2382ae3c5e2ccf8c
 Last derived from: 2026-10-07
 Context status:    Current
 ```
@@ -115,6 +115,9 @@ authority (AI-G-07).
 | Why an early option was rejected | — | `docs/00-discovery/product-decision-brief-v0.2.md`, `v0.3.md` |
 | Phase 2 understanding | — | `docs/00-discovery/` (5 files) |
 | Is the documentation consistent, and what is still blocking? | `progress-tracker.md` §5 | `docs/45-quality/documentation-audit-v1.0.md` |
+| **What do we build first, and what does it depend on?** | `progress-tracker.md` §5 | **`docs/45-quality/implementation-plan-v1.0.md`** |
+| **Is this table safe to create yet?** | — | **`docs/45-quality/implementation-plan-v1.0.md` §9 — the schema decision gate (D-34, D-55, D-56, D-57)** |
+| **Can this area go to production, or only to development?** | — | **`docs/45-quality/implementation-plan-v1.0.md` §6.1** |
 | Is `.ai/` still true to `docs/`? | — | `tools/verify-ai-context.py` **(executable)** |
 | Is `docs/` internally consistent? | — | `tools/verify-docs.py` **(executable)** |
 
@@ -148,7 +151,7 @@ authority (AI-G-07).
 | `IR-` | Incident response | `docs/50-security/incident-response-v1.0.md` |
 | `DI- RET- DSR- PBD- PG- PNR- VT- REG-` | Privacy | `docs/55-privacy/` |
 | `OM- LO- MO- AO- SUP- ANO- OBS- BR- BC-` | Operations | `docs/40-operations/` |
-| `QS- TST- REL- PRR- MNT-` | Quality | `docs/45-quality/` |
+| `QS- TST- REL- PRR- MNT- IMP- IMR-` | Quality | `docs/45-quality/` |
 | **`AI-G-`** | **Local AI guardrail** | **`.ai/ai-workflow-rules.md` — derived, never a decision** |
 
 **`AI-G-` is the only prefix this directory may create.** Everything else is

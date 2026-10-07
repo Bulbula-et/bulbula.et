@@ -1,7 +1,7 @@
 # Progress Tracker
 
 ```text
-Source baseline:   b68ce5acf32afd6b525226a90343e3196f258a0e
+Source baseline:   33f58e0e1619c7e5b952eede2382ae3c5e2ccf8c
 Last derived from: 2026-10-07
 Context status:    Current
 ```
@@ -21,7 +21,7 @@ not built.
 
 | Reality | Detail |
 | --- | --- |
-| Documentation | **69 files · 33,484 lines** across 11 directories |
+| Documentation | **71 files · 36,016 lines** across 11 directories |
 | Application code | **49 files in `src/`** — HTTP kernel, routing, config, logging, view, database, diagnostics |
 | Business features | **None.** No Business, Listing, Category, Review, Save, Search, Campaign or account exists |
 | Routes | `GET /` · `GET /health` · `GET /health/ready` · `GET /api/v1/health` · `GET /api/v1/health/ready` |
@@ -46,17 +46,17 @@ not built.
 | **3.5** | Security, privacy and compliance | `docs/phase-3-security-privacy` | **#20** → `docs/phase-3-platform-specifications` | Open |
 | **3.6** | Operations, quality, release, production readiness | `docs/phase-3-operations-quality` | **#21** → `docs/phase-3-security-privacy` | Open |
 | **3.7** | **`.ai/` implementation context system** | `docs/phase-3-ai-context` | **#22** → `docs/phase-3-operations-quality` | Open |
-| **3.8** | **Final documentation audit and reconciliation** | `docs/phase-3-final-audit` | *this branch* | **In progress** |
-| 3.9 | *Not yet defined in the repository* | — | — | — |
+| **3.8** | **Final documentation audit and reconciliation** | `docs/phase-3-final-audit` | **#23** → `docs/phase-3-ai-context` | Open |
+| **3.9** | **Implementation plan and build readiness** | `docs/phase-3-implementation-plan` | *this branch* | **In progress** |
 
 **The chain is stacked and nothing is merged:**
 
 ```text
-main ← #12 ← #13 ← #14 ← #15 ← #16 ← #17 ← #19 ← #20 ← #21 ← #22 ← (3.8)
+main ← #12 ← #13 ← #14 ← #15 ← #16 ← #17 ← #19 ← #20 ← #21 ← #22 ← #23 ← (3.9)
 ```
 
 Merging out of order, or merging any of these without the owner's
-instruction, breaks the chain. **Do not merge PR #21 or PR #22.**
+instruction, breaks the chain. **Do not merge PR #21, PR #22 or PR #23.**
 
 ---
 
@@ -64,18 +64,18 @@ instruction, breaks the chain. **Do not merge PR #21 or PR #22.**
 
 | Directory | Files | Lines | Produced by |
 | --- | --- | --- | --- |
-| `docs/00-discovery/` | 5 | 6,492 | Phase 2 |
+| `docs/00-discovery/` | 5 | 6,500 | Phase 2 |
 | `docs/10-product/` | 7 | 4,153 | Phase 3.1 |
 | `docs/15-business/` | 2 | 445 | Phase 3.1 |
 | `docs/20-ux-ui/` | 10 | 6,036 | Phase 3.3 |
-| `docs/30-technical/` | 8 | 4,584 | Phase 3.2 |
+| `docs/30-technical/` | 8 | 4,601 | Phase 3.2 |
 | `docs/35-platforms/` | 9 | 2,807 | Phase 3.4 |
-| `docs/40-operations/` | 9 | 2,853 | Phase 3.6 |
-| `docs/45-quality/` | 5 | 1,318 | Phase 3.6 |
+| `docs/40-operations/` | 9 | 2,885 | Phase 3.6 |
+| `docs/45-quality/` | 7 | 3,791 | Phase 3.6, plus the audit (3.8) and the implementation plan (3.9) |
 | `docs/50-security/` | 6 | 1,956 | Phase 3.5 |
-| `docs/55-privacy/` | 7 | 2,287 | Phase 3.5 |
+| `docs/55-privacy/` | 7 | 2,289 | Phase 3.5 |
 | `docs/60-decisions/` | 1 | 553 | Phase 2.3, maintained since |
-| **Total** | **69** | **33,484** | |
+| **Total** | **71** | **36,016** | |
 
 ---
 

@@ -1,7 +1,7 @@
 # Product Context
 
 ```text
-Source baseline:   b68ce5acf32afd6b525226a90343e3196f258a0e
+Source baseline:   33f58e0e1619c7e5b952eede2382ae3c5e2ccf8c
 Last derived from: 2026-10-07
 Context status:    Current
 ```
