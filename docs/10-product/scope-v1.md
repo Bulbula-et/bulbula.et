@@ -30,16 +30,16 @@ Approved by D-01. Each capability is specified in
 | 1 | Homepage | C-01 | — |
 | 2 | Search | C-02 | D-09 |
 | 3 | Search autocomplete | C-03 | — |
-| 4 | Category and subcategory browsing | C-04 | D-56, D-57 |
+| 4 | Category and subcategory browsing | C-04 | — D-56 and D-57 are **closed** |
 | 5 | Location / area browsing | C-05 | D-40 |
-| 6 | Category × area pages | C-06 | D-56 |
+| 6 | Category × area pages | C-06 | — D-56 is **closed** |
 | 7 | Nearby / distance discovery | C-07 | — |
-| 8 | Business profile pages | C-08 | D-44, D-55 |
-| 9 | Opening hours and open status | C-09 | D-04, D-55 |
+| 8 | Business profile pages | C-08 | D-44 — D-55 is **closed** |
+| 9 | Opening hours and open status | C-09 | D-04 — D-55 is **closed**; hours are Branch-level |
 | 10 | Google Maps embed and open-in-maps | C-10 | D-21 |
-| 11 | Business contact actions | C-11 | D-55 |
+| 11 | Business contact actions | C-11 | — D-55 is **closed**; phone and branch email are Branch-level |
 | 12 | Trust indicators | C-12 | D-08 |
-| 13 | Reviews (read and write) | C-13 | D-34, D-36, D-37 |
+| 13 | Reviews (read and write) | C-13 | D-36, D-37 — D-34 is **closed** |
 | 14 | Save | C-14 | — |
 | 15 | Report a problem / suggest a correction | C-15 | D-35 |
 | 16 | Sponsored placements | C-16 | D-10 detail |
@@ -54,9 +54,9 @@ Approved by D-01. Each capability is specified in
 | 20 | Listing editing | C-20 | D-14 |
 | 21 | Verification and quality control | C-21 | D-08 |
 | 22 | Media management | C-22 | D-25 |
-| 23 | Category management | C-23 | D-06, D-56, D-57 |
+| 23 | Category management | C-23 | — D-06, D-56 and D-57 are all **closed** |
 | 24 | Location management | C-24 | D-40 |
-| 25 | Review moderation | C-25 | D-34 |
+| 25 | Review moderation | C-25 | — D-34 is **closed**; moderation is pre-publication |
 | 26 | Report management | C-26 | D-35 |
 | 27 | Advertising and campaign management | C-27 | D-11, D-39 |
 | 28 | Operational analytics | C-28 | D-27 |
@@ -71,7 +71,7 @@ Approved by D-01. Each capability is specified in
 | 32 | Unified Bulbula identity | C-32 | D-13, D-33 |
 | 33 | Customer profile | C-33 | D-51 |
 | 34 | Save management | C-34 | — |
-| 35 | Customer review management | C-35 | D-34 |
+| 35 | Customer review management | C-35 | — D-34 is **closed** |
 | 36 | Account deletion and privacy controls | C-36 | D-46 |
 
 ### 1.4 Cross-cutting (4)
@@ -165,7 +165,6 @@ capability. Full list in the decision register §2.
 | D-25 | Media storage and limits | Data model |
 | D-27 | Analytics granularity and retention | Data model |
 | D-33 | Telegram identity (**open evaluation**) | Mini App auth design |
-| D-34 | Review mechanics detail | UX / data model |
 | D-35 | Guest structured suggestions | UX |
 | D-39 | Ad/editorial integrity controls | Implementation |
 | D-41 | Transactional email provider | Implementation |
@@ -173,9 +172,14 @@ capability. Full list in the decision register §2.
 | D-43 | Permission record contents and retention | Data model |
 | D-44 | Services / products / pricing representation | Data model |
 | D-45 | Staff authentication strength (**open**) | TRD / security |
-| D-55 | Branch vs Business attribute boundary | Data model |
-| D-56 | Category catalogue production | Content |
-| D-57 | Category cardinality per Listing | Data model |
+
+**Closed at the M0 schema gate on 2026-10-07:** **D-34** (Review mechanics),
+**D-55** (Business versus Branch attribute boundary), **D-56** (Category
+catalogue production) and **D-57** (Category cardinality per Listing) were
+approved and have left this table. They are recorded in
+[`../60-decisions/decision-register.md`](../60-decisions/decision-register.md)
+§1. The category **catalogue content** remains an operations task under D-56;
+it is not a scope question.
 
 ---
 
@@ -195,6 +199,6 @@ Not scope questions, but they gate PRD approval and launch.
 ## Decision references
 
 D-01, D-02, D-04, D-06, D-08, D-09, D-10, D-11, D-12, D-13, D-14, D-15,
-D-18, D-21, D-24, D-25, D-27, D-30, D-31, D-33, D-34, D-35, D-36, D-37,
-D-39, D-40, D-41, D-42, D-43, D-44, D-45, D-46, D-47, D-48, D-49, D-50,
-D-51, D-54, D-55, D-56, D-57.
+D-15r, D-18, D-21, D-24, D-25, D-27, D-30n, D-31, D-33, D-34, D-35,
+D-36, D-37, D-39, D-40, D-41, D-42, D-43, D-44, D-45, D-46, D-47, D-48,
+D-49, D-50, D-51, D-54, D-55, D-56, D-57.

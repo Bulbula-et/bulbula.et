@@ -631,8 +631,10 @@ detail is unresolved it is marked **Open — implementation/product detail
   Then that Category is not offered as a navigable destination.
   ```
 - **Dependencies:** C-02, C-05, C-06, C-23, C-37.
-- **Out of scope:** The category catalogue itself — **Open (D-56)**; the
-  number of Categories a Listing may carry — **Open (D-57)**.
+- **Out of scope:** The category **catalogue content** itself — curated
+  centrally by Bulbula as reference data (D-56), produced as an operations
+  task, not specified here. Every Listing carries **exactly one primary
+  Category and zero or more secondary Categories** (D-57).
 - **Decisions:** D-01, D-06, D-56, D-57.
 
 ---
@@ -694,8 +696,9 @@ detail is unresolved it is marked **Open — implementation/product detail
   And no thin page is exposed to search engines.
   ```
 - **Dependencies:** C-04, C-05, C-37.
-- **Out of scope:** The minimum-content threshold value — **Open
-  (D-56)**.
+- **Out of scope:** The minimum-content threshold value — **Open —
+  implementation detail**; it is configuration, not taxonomy, and D-56
+  does not fix it.
 - **Decisions:** D-01, D-06, D-56.
 
 ---
@@ -752,9 +755,11 @@ detail is unresolved it is marked **Open — implementation/product detail
   3. User performs a contact action (C-11), Saves (C-14), writes a Review
      (C-13), shares (C-17) or reports a problem (C-15).
 - **Alternative flows:** Multi-branch Business → branch selection is
-  presented; which attributes vary per Branch is **Open (D-55)**. Services,
-  products and pricing are displayed when captured; their representation is
-  **Open (D-44)**.
+  presented. **Address, Area, Sub-city, Landmark, coordinates, phone, branch
+  email, opening hours and branch-specific services, products and pricing
+  are Branch-level; name, description, website and brand-level social links
+  are Business-level (D-55).** Services, products and pricing are displayed
+  when captured; their **representation** is **Open (D-44)**.
 - **Error and empty states:** Missing optional data **MUST** be omitted
   silently rather than shown as "unknown" clutter. An unpublished or removed
   Listing **MUST** return a not-found response and **MUST NOT** be indexable.
@@ -810,9 +815,10 @@ detail is unresolved it is marked **Open — implementation/product detail
   And its profile shows that hours are not confirmed.
   ```
 - **Dependencies:** C-02, C-08, C-20.
-- **Out of scope:** The hours data model — split shifts, exceptions, public
-  holidays, 24-hour operation — **Open (D-04)**. Which Branch-level hours
-  may diverge is **Open (D-55)**.
+- **Out of scope:** The hours data **structure** — split shifts, exceptions,
+  public holidays, 24-hour operation — **Open (D-04)**. **Hours are
+  Branch-level and may differ per Branch (D-55);** only their structure
+  remains open.
 - **Decisions:** D-01, D-04, D-55.
 
 ---
@@ -865,7 +871,8 @@ detail is unresolved it is marked **Open — implementation/product detail
   2. The User performs one.
   3. The product records an anonymous analytics event (C-38).
 - **Alternative flows:** Multi-branch Business → actions apply to the
-  selected Branch; which contact points are Branch-level is **Open (D-55)**.
+  selected Branch. **Phone and branch email are Branch-level; the website
+  and brand-level social links are Business-level (D-55).**
 - **Error and empty states:** Contact point absent → the action **MUST** be
   omitted, not shown disabled. All contact points absent → the profile
   **MUST** still present location and hours, and **SHOULD** surface the
@@ -968,10 +975,19 @@ detail is unresolved it is marked **Open — implementation/product detail
   Then it is recorded with actor, timestamp and reason.
   ```
 - **Dependencies:** C-08, C-25, C-30, C-31, C-39; `review-policy.md`.
+- **Review model (D-34, approved).** A Review belongs to a **Branch**. The
+  Rating is a **required integer from 1 to 5**; review text is **optional**,
+  so **rating-only Reviews are supported**. A Customer may hold **at most
+  one active Review per Branch**; re-reviewing is an **edit**. The author may
+  edit for **30 days**, and an edit **re-enters moderation**. **Moderation is
+  pre-publication.** Author deletion is a **withdrawal**, not destructive
+  erasure. The rating summary is the **arithmetic mean of Published
+  ratings**, and Reviews are ordered **newest Published first**. There is
+  **no minimum account age**.
 - **Out of scope:** Business-owner replies — **not V1** (D-12, D-54). Review
-  photos — **Deferred (D-36)**. Helpful voting — **Deferred (D-37)**.
-  One-per-Business vs one-per-Branch, edit window, deletion semantics and
-  rating-only Reviews — **Open — implementation/product detail (D-34)**.
+  photos — **Deferred (D-36)**. Helpful voting — **Deferred (D-37)**. The
+  maximum text length, rate-limit values and anomaly thresholds are
+  **configuration** and are deliberately unset; see `review-policy.md` §9.2.
 - **Decisions:** D-01, D-12, D-34, D-36, D-37, D-48, D-54.
 
 ---
@@ -1394,9 +1410,17 @@ Full lifecycle narrative: [`listing-operations.md`](listing-operations.md).
   Then the Subcategory and its Listings are matched.
   ```
 - **Dependencies:** C-02, C-03, C-04, C-06, C-29, C-37.
-- **Out of scope:** The initial catalogue — **Open (D-56)**; categories per
-  Listing — **Open (D-57)**. Taxonomy depth beyond two levels is out of V1
-  (D-06).
+- **Catalogue model (D-56, approved).** Bulbula centrally owns and manually
+  curates the catalogue, produced from the real launch-area business
+  inventory. **Catalogue content is reference data, not schema:** adding,
+  removing or reclassifying a Category **MUST NOT** require a code change or
+  a migration where the model already supports it.
+- **Cardinality (D-57, approved).** Exactly **one primary Category** per
+  published Listing, plus **zero or more secondary Categories**, with no
+  artificial maximum.
+- **Out of scope:** The catalogue **content** itself — an operations task
+  under D-56, not a specification item. Taxonomy depth beyond two levels is
+  out of V1 (D-06).
 - **Decisions:** D-06, D-18, D-56, D-57.
 
 ---
@@ -1466,9 +1490,13 @@ Full lifecycle narrative: [`listing-operations.md`](listing-operations.md).
   Then the notification states the reason without exposing reporter identity.
   ```
 - **Dependencies:** C-13, C-26, C-29, C-39; `review-policy.md`.
-- **Out of scope:** Pre- vs post-publication moderation and the detailed
-  rules — see `review-policy.md`; unresolved sub-details are marked **Open
-  (D-34)** there.
+- **Moderation order (D-34, approved).** **Pre-publication.** A submitted
+  Review enters `pending` and becomes `published` only on approval; a
+  rejected Review never becomes public. Post-publication removal remains
+  available. Detailed rules are in `review-policy.md` §4–§5.
+- **Out of scope:** Rate-limit values, anomaly thresholds and the appeal
+  time limit — **configuration and operational detail**, deliberately
+  unset.
 - **Decisions:** D-12, D-34.
 
 ---
@@ -1881,9 +1909,12 @@ No Apple Sign In** (D-48). The rationale and the full actor matrix are in
   And it no longer contributes to the rating summary.
   ```
 - **Dependencies:** C-13, C-25, C-32; `review-policy.md`.
-- **Out of scope:** Edit window length, deletion semantics (hard delete
-  versus withdrawal) and whether edits require re-moderation — **Open
-  (D-34)**, specified in `review-policy.md` as open items.
+- **Review management (D-34, approved).** The edit window is **30 days from
+  creation**; an edit **returns the Review to moderation**; author deletion
+  is a **withdrawal** that ends public visibility without destructive
+  erasure. Specified in `review-policy.md` §4.
+- **Out of scope:** How long a withdrawn Review's internal record is kept —
+  **PENDING COUNSEL** (L-21, D-46).
 - **Decisions:** D-12, D-34.
 
 ---
@@ -1925,8 +1956,9 @@ No Apple Sign In** (D-48). The rationale and the full actor matrix are in
 - **Dependencies:** C-29, C-33, C-39; §21.
 - **Out of scope:** The legally required response windows, the exact rights
   set, and whether exports must follow a prescribed format — **PENDING
-  COUNSEL** (D-46, L-7). What happens to published Reviews after
-  deletion is **Open — product/legal (D-34, L-21)**.
+  COUNSEL** (D-46, L-7). On account deletion a published Review ceases to be
+  publicly visible under the **withdrawal model fixed by D-34**; **how long
+  any internal record is retained remains PENDING COUNSEL (L-21, D-46)**.
 - **Decisions:** D-34, D-46, D-51.
 
 ### 12.4 Cross-cutting
@@ -2197,10 +2229,10 @@ Business  (the entity Bulbula describes)
 | BM-1 | Every Business **MUST** have at least one Branch | D-03 |
 | BM-2 | A single-location business is modelled as **one Business with exactly one Branch** — never as a special case | D-03 |
 | BM-3 | A Business **MUST NOT** be modelled as a Branch of itself, and the product **MUST NOT** expose "Business" and "Branch" as alternative entity types to Users | D-03 |
-| BM-4 | Attributes are held at the level where they are true. Which attributes are Business-level and which are Branch-level is **Open (D-55)** | D-55 |
+| BM-4 | Attributes are held at the level where they are true. **Business-level:** name, description, website, brand-level public social links. **Branch-level:** address, Area, Sub-city, Landmark, coordinates, phone, branch email, opening hours, branch-specific services, products and pricing. **Reviews and location-specific analytics are Branch-level; Business-level figures are aggregates.** Media may attach to either. An attribute **MUST NOT** be moved between levels for implementation convenience | D-55 |
 | BM-5 | A Listing exists only when a Business has been published. An unpublished Business has records, not a Listing | — |
 | BM-6 | Services, products and pricing are captured where the Business provides them; their representation is **Open (D-44)** | D-44 |
-| BM-7 | Category assignment is at Business level unless D-57 resolves otherwise | D-06, D-57 |
+| BM-7 | Category assignment is at **Listing level** — exactly **one primary Category** and **zero or more secondary Categories**, no duplicates, the primary never repeated as a secondary, and **no artificial maximum** | D-06, D-57 |
 
 ### 14.2 Provenance
 
@@ -2268,7 +2300,8 @@ binding points:
 | Helpful voting | **Deferred** | D-37 |
 | Moderation | Staff, against a published policy, with recorded reasons | D-12 |
 | Suppression | Bulbula **MUST NOT** selectively suppress negative Reviews; suppression is a regulatory risk in its own right | R-01 |
-| Unresolved details | Marked **Open — implementation/product detail (D-34)** in `review-policy.md`; **no policy is invented here** | D-34 |
+| Review model | **Branch subject · required integer Rating 1–5 · optional text · one active Review per Customer per Branch · 30-day edit window returning to moderation · pre-publication moderation · withdrawal-style author deletion · mean of Published ratings · newest Published first · no minimum account age** | D-34 |
+| Remaining detail | Maximum text length, rate limits, anomaly thresholds and the appeal time limit are **configuration**; retention of a withdrawn Review is **PENDING COUNSEL** (L-21, D-46). See `review-policy.md` §9.2 | D-34, D-46 |
 
 ---
 
@@ -2305,7 +2338,7 @@ and search design, informed by real query data.
 | Area match or proximity | Local intent dominates in this product (R-14) | **[C]** |
 | Distance from the User, when available | Only when location permission is granted | **[C]** |
 | Verification state and freshness | The product's differentiator is accuracy | **[C]**, interval **Open (D-08)** |
-| Rating summary and review volume | A quality signal, subject to anti-abuse rules | **[C]**, mechanics **Open (D-34)** |
+| Rating summary and review volume | A quality signal, subject to anti-abuse rules | **[C]**; the summary is the **mean of Published ratings** (D-34), but its **ranking weight is Open (D-09)** |
 | Listing completeness | A proxy for usefulness of the destination page | **[C]** as an input; **weight Open (D-09)** |
 | Open-now status | Being closed reduces usefulness at the moment of search (R-14) | **[C]** as an input |
 
@@ -2837,8 +2870,22 @@ Complete matrix: [`interaction-permissions.md`](interaction-permissions.md).
 
 Marked in place throughout §12 and listed in `scope-v1.md` §4: D-04, D-08,
 D-09, D-11, D-13, D-14, D-16, D-17, D-19, D-20, D-21, D-23, D-25, D-26,
-D-27, D-28, D-33, D-34, D-35, D-38, D-39, D-41, D-42, D-43, D-44, D-45,
-D-55, D-56, D-57.
+D-27, D-28, D-33, D-35, D-38, D-39, D-41, D-42, D-42b, D-43, D-44, D-45.
+
+### 29.2.1 Closed at the M0 schema gate — 2026-10-07
+
+**D-34** (Review mechanics), **D-55** (Business versus Branch attribute
+boundary), **D-56** (Category catalogue production) and **D-57** (Category
+cardinality per Listing) were approved and are no longer open. Their
+outcomes are stated in §12 (C-04, C-08, C-09, C-11, C-13, C-23, C-25, C-35),
+§24 (BM-4, BM-7) and §25, and recorded in
+[`../60-decisions/decision-register.md`](../60-decisions/decision-register.md)
+§1.
+
+Closing these four does **not** close the rest. In particular **D-39**
+(advertising–editorial integrity controls) remains open, the maximum review
+text length, rate limits and anomaly thresholds remain **configuration**,
+and review retention remains **PENDING COUNSEL** (L-21, D-46).
 
 ### 29.3 Deferred
 

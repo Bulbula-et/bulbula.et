@@ -63,9 +63,9 @@ G = Guest · C = Customer · O = Operator · A = Administrator
 | Use contact actions (C-11) | ✅ | ✅ | ✅ | ✅ | Guest-safe |
 | See trust indicators (C-12) | ✅ | ✅ | ✅ | ✅ | Guest-safe |
 | **Read** Reviews (C-13) | ✅ | ✅ | ✅ | ✅ | Guest-safe |
-| **Write** a Review (C-13) | ❌ | ✅ | ❌¹ | ❌¹ | Authenticated-required |
-| Edit own Review (C-35) | ❌ | ✅ | ❌ | ❌ | Authenticated-required |
-| Delete own Review (C-35) | ❌ | ✅ | ❌ | ❌ | Authenticated-required |
+| **Write** a Review (C-13) | ❌ | ✅ | ❌¹ | ❌¹ | Authenticated-required; the subject is a **Branch**, at most one active Review per Customer per Branch (D-34) |
+| Edit own Review (C-35) | ❌ | ✅ | ❌ | ❌ | Authenticated-required; **within 30 days of creation**, and the edit re-enters moderation (D-34) |
+| Delete own Review (C-35) | ❌ | ✅ | ❌ | ❌ | Authenticated-required; deletion is a **withdrawal**, not destructive erasure (D-34) |
 | Save a Business (C-14) | ❌ | ✅ | — | — | Authenticated-required |
 | View Saved list (C-34) | ❌ | ✅ | — | — | Authenticated-required |
 | Report a problem with a Listing (C-15) | ✅ | ✅ | ✅ | ✅ | Guest-safe |
@@ -212,4 +212,4 @@ Direction only; no V1 artefact may anticipate them (PRD H-4).
 
 ## Decision references
 
-D-02, D-05, D-10, D-12, D-14, D-45, D-48, D-49, D-50, D-54.
+D-02, D-10, D-12, D-14, D-34, D-45, D-48, D-50, D-54.
