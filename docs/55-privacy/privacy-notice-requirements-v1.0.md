@@ -120,13 +120,13 @@ non-obvious, even where Art. 24 does not expressly enumerate them.
 | PNR-4.15 | **Deleted data persists in backups until they expire** | RET-8.7 |
 | PNR-4.16 | **Content already copied by search engines or others cannot be recalled by Bulbula** | DSR-10.2 |
 | PNR-4.17 | **Staff access to personal data is restricted and logged** | PG-10.1 |
-| PNR-4.18 | **What happens to your Reviews if you delete your account** | **Blocked on D-34** |
+| PNR-4.18 | **What happens to your Reviews if you delete your account** — they stop being publicly visible and no longer count towards any rating (D-34); **how long an internal record is kept is still to be confirmed** | D-34; period **PENDING COUNSEL** (L-21, D-46) |
 
 | ID | Rule |
 | --- | --- |
 | PNR-4.19 | **PNR-4.9, PNR-4.10 and PNR-4.11 are commitments, not marketing.** Once published they constrain the product permanently |
 | PNR-4.20 | **PNR-4.15 and PNR-4.16 are limits.** Stating them is uncomfortable and necessary (DSR-10.8) |
-| PNR-4.21 | **PNR-4.18 cannot be written until D-34 is decided** — and the user must be told the answer **before** confirming deletion, not after |
+| PNR-4.21 | **PNR-4.18 can now state the outcome** — withdrawal from public view (D-34) — and the user must be told it **before** confirming deletion, not after. It **must not** state a retention period while **L-21 and D-46 are PENDING COUNSEL**; a vague promise is worse than an honest "still being confirmed" |
 
 ---
 
@@ -213,7 +213,7 @@ non-obvious, even where Art. 24 does not expressly enumerate them.
 | ECA complaint channel | — | **Unknown** |
 | Automated decision-making conclusion | PG §8 | **PENDING COUNSEL** |
 | Minimum age | D-46 | **PENDING COUNSEL** |
-| Review deletion semantics | D-34 | **Open — product decision** |
+| Review retention after withdrawal | L-21 / D-46 | **PENDING COUNSEL.** The *semantics* are settled by D-34 — withdrawal — but no period may be published |
 | Controller contact details | — | **Open — implementation detail** |
 | Registration status | L-3 | **PENDING COUNSEL** |
 
@@ -231,7 +231,7 @@ non-obvious, even where Art. 24 does not expressly enumerate them.
 | --- | --- | --- |
 | **L-6** | **Required notice content and wording** | **PENDING COUNSEL** — the central gap |
 | L-5 / L-7 / L-21 / L-2 / L-10 / L-12 / L-4 / L-3 | Each feeds a required notice element | **PENDING COUNSEL** |
-| D-34 | Review deletion semantics — PNR-4.18 | **Open — product decision** |
+| L-21 / D-46 | Retention period behind PNR-4.18 | **PENDING COUNSEL.** D-34 closed the semantics on 2026-10-07 |
 | D-46 | Minimum age | **PENDING COUNSEL** |
 | D-41 / D-42b / D-21 | Vendors to be named as recipients | **Open** |
 | — | Whether a cookie or local-storage notice is required | **Open — implementation detail** |

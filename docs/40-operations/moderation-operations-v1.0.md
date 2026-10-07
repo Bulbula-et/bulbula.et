@@ -30,7 +30,7 @@ Below `review-policy.md`, the PRD and the register.
 | --- | --- |
 | MO-0.1 | **`review-policy.md` is the policy. This document is the practice.** Where they differ, the policy wins |
 | MO-0.2 | **No moderation ground is invented here.** The published grounds in `review-policy.md` §5.1 are exhaustive |
-| MO-0.3 | **Where review mechanics are Open (D-34), they stay open.** Operations must work under either answer |
+| MO-0.3 | **D-34 settled the review mechanics on 2026-10-07** and this document now follows them. Where something genuinely remains open — the maximum text length, rate-limit values, anomaly thresholds and the appeal time limit — **it stays open**, and operations must not settle it by habit |
 | MO-0.4 | **No response-time target is stated.** Targets are **PENDING PILOT** |
 
 ---
@@ -113,7 +113,10 @@ commerce:
 | MO-3.6 | **Decisions record policy basis, actor and time** | MOD-5, TS-9 |
 | MO-3.7 | **The author is notified of rejection or removal, with the reason** | LC-2, OPX-8.5 |
 | MO-3.8 | **Rejected and removed Reviews do not contribute to the rating summary** | LC-3, SUM-4 |
-| MO-3.9 | **Whether moderation precedes or follows publication is Open (D-34).** The queue supports both and the practice must not hard-code an assumption | LC-4, OPX-8.7 |
+| MO-3.9 | **Moderation precedes publication** (D-34, LC-4). The flow is `submit → Pending → moderation → Published or Rejected`. A Review in `Pending` is **not publicly visible**, and a **Rejected** Review is never published | LC-4, OPX-8.7 |
+| MO-3.10a | **Removal after publication remains available.** A Published Review may later be removed on a published ground; pre-publication moderation does not make publication final | MOD-2, LC-3 |
+| MO-3.10b | **A rating-only Review is a valid Review.** The absence of text is not a ground for rejection (D-34) | MOD-2 |
+| MO-3.10c | **A Review concerns a Branch.** The queue and every moderation record identify the Branch, not only the Business (D-34, D-55) | SUBJ-1 |
 
 ### 3.2 The published grounds
 
@@ -152,9 +155,9 @@ grounds · prior decisions on this author's Reviews `[P]`.
 
 | ID | Rule | Status |
 | --- | --- | --- |
-| MO-3.16 | Whether an edit returns a Review to moderation is **Open (D-34)** | LC-5 |
-| MO-3.17 | Whether author deletion is a hard delete or a withdrawal retaining an internal record is **Open (D-34)**, and interacts with retention after account deletion — **PENDING COUNSEL (L-21, D-46)** | LC-6 |
-| MO-3.18 | **Operations must not resolve either by habit.** Until decided, the behaviour is whatever the product does, and it is not relied upon | MO-0.3 |
+| MO-3.16 | **An edit returns the Review to moderation** (D-34, LC-5). The edited Review re-enters `Pending` and is assessed afresh. The author may edit for **30 days from creation** | LC-5, LC-8 |
+| MO-3.17 | **Author deletion is a withdrawal, not a hard delete** (D-34, LC-6). Public visibility ceases and the Review leaves every rating summary; the internal record may be retained for retention, audit, abuse and legal purposes. **How long it is retained, and the treatment of Reviews after account deletion, remain PENDING COUNSEL (L-21, D-46)** | LC-6 |
+| MO-3.18 | **Operations must not invent a retention period** for a withdrawn Review. Until counsel answers, the record is kept and no deletion schedule is applied by habit | MO-0.3, L-21 |
 
 ---
 
@@ -212,10 +215,10 @@ interference.
 | ID | Control | Status |
 | --- | --- | --- |
 | MO-5.1 | **Authentication is required to write** | AB-1 — settled |
-| MO-5.2 | **Rate limits on submissions per Customer per period**; values **Open (D-34)** | AB-2 |
-| MO-5.3 | **One Review per Customer per subject**, edited rather than re-posted; the *subject* is **Open (D-34)** | AB-3 |
+| MO-5.2 | **Rate limits on submissions per Customer per period.** The values are **configuration**, not schema, and D-34 deliberately sets none; they are tuned operationally and recorded when set | AB-2 |
+| MO-5.3 | **At most one active Review per Customer per Branch**, edited rather than re-posted (D-34) | AB-3 |
 | MO-5.4 | **Duplicate and near-duplicate text detection** across Reviews | AB-4 |
-| MO-5.5 | **Anomaly surfacing**: bursts on one Business, or from one account; thresholds **Open (D-34)** | AB-5 |
+| MO-5.5 | **Anomaly surfacing**: bursts on one Branch or Business, or from one account. Thresholds are **configuration** and D-34 deliberately sets none | AB-5 |
 | MO-5.6 | **Staff review anomalous patterns before summaries shift materially** | AB-6, TS-12 |
 | MO-5.7 | **Separation of commercial relationships from moderation is Open (D-39)** and **must be resolved before the first paid Campaign** | AB-7, ADV-12 |
 | MO-5.8 | **No automated removal** | AB-9 |
@@ -286,7 +289,7 @@ created here.**
 | ID | Rule | Source |
 | --- | --- | --- |
 | MO-8.1 | **Appeals are handled by an Administrator** | MOD-6 |
-| MO-8.2 | **The appeal mechanism and any time limit are Open (D-34)** — this document does not supply them | MOD-6 |
+| MO-8.2 | **D-34 confirms the Administrator as the appeal authority but sets no deadline.** The appeal mechanism and any time limit remain an **open operational decision**, and this document does not supply them | MOD-6 |
 | MO-8.3 | **The author is told the ground for the adverse outcome**, which is what makes contesting it possible at all | LC-2 |
 | MO-8.4 | **An appeal is decided by someone other than the original decision-maker where one exists.** With one staff member, that is a recorded accepted risk, as elsewhere | OM-3.8 |
 | MO-8.5 | **An appeal outcome is recorded with its own reasoning**, not as an amendment to the original |
@@ -341,7 +344,8 @@ created here.**
 
 | ID | Item | Marker |
 | --- | --- | --- |
-| D-34 | Review subject, edit window, deletion semantics, rating-only, moderation order, rate-limit values, anomaly thresholds, appeal mechanism | **Open (D-34)** — product decision |
+| D-34 (residual) | Maximum review-text length, rate-limit values, anomaly thresholds | **Open — configuration.** D-34 closed the mechanics on 2026-10-07 and deliberately set no values |
+| MOD-6 | Appeal mechanism and any time limit | **Open — operational decision.** The Administrator is the authority; no deadline is invented |
 | D-39 | Separation of commercial relationships from moderation — **blocks the first paid Campaign** | **Open (D-39)** — product decision |
 | D-14 | Which permission covers which moderation action | **Open (D-14)** — product decision |
 | L-15 | Review liability, defamation and takedown process | **PENDING COUNSEL** |
@@ -355,4 +359,4 @@ created here.**
 
 ## Decision references
 
-D-05, D-12, D-14, D-34, D-36, D-37, D-39, D-46, D-54.
+D-05, D-12, D-14, D-34, D-36, D-37, D-39, D-46, D-54, D-55.

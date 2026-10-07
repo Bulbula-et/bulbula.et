@@ -43,7 +43,7 @@ refusal grounds and identity-verification standards are PENDING COUNSEL
 | 25 | **Access** | Yes | **Open (L-7)** |
 | 26 | Access exceptions | Yes | **PENDING COUNSEL** |
 | 27 | **Rectification** | Yes — the most frequently exercised in practice | **Open** |
-| 28 | **Erasure** | Yes | **PENDING COUNSEL (D-34)** |
+| 28 | **Erasure** | Yes | **PENDING COUNSEL (L-21, D-46)** — the Review mechanism is settled (D-34, DSR-6.3); the retention period is not |
 | 29 | **Object** | Yes | **Open** |
 | 30 | **Restriction** | Yes | **Open** |
 | 31 | **Automated decisions** | Analysis in PG §8 | **PENDING COUNSEL** |
@@ -144,7 +144,9 @@ the preceding year**.
 | --- | --- | --- |
 | DSR-6.1 | **A Customer can delete their account**, and the route is discoverable, not hidden | PRIV-5 |
 | DSR-6.2 | **Deletion removes account data, Saves and session records** | RET-4.1, RET-4.12 |
-| DSR-6.3 | **What happens to Reviews is D-34, open.** The options — delete, anonymise, retain attributed — have materially different privacy consequences, and the choice must be **told to the user before they confirm** | D-34 |
+| DSR-6.3 | **The option taken is withdrawal** (D-34): the Review stops being publicly visible and leaves every rating summary, while an internal record may be retained for retention, audit, abuse and legal purposes. This must be **told to the user before they confirm**, in those terms | D-34 |
+| DSR-6.3a | **It is not yet erasure.** How long the withdrawn record is retained, and whether it is finally anonymised or destroyed, is **PENDING COUNSEL (L-21, D-46)**. The product **must not** describe withdrawal as permanent deletion, and **must not** state a period it does not have | L-21, D-46 |
+| DSR-6.3b | A Review concerns a **Branch** (D-34, D-55); an erasure request about a Review is handled against that Review, not against the Business as a whole | D-55 |
 | DSR-6.4 | **Removing a published personal contact point is an erasure-type request** and must work with no account | DSR-2.2 |
 | DSR-6.5 | **Removing an identifiable person from a photograph** is honoured by removing or replacing the photograph | PBD-9.9 |
 | DSR-6.6 | **Deletion propagates** to caches, derived media, search indexes and exports | PBD-11.6 |
@@ -230,7 +232,7 @@ charge and without excessive delay.
 | --- | --- | --- |
 | **L-7** | **Rights procedures, response windows, verification standards, refusal grounds** | **PENDING COUNSEL** — the central gap |
 | L-6 | Notice content, including how rights are described | **PENDING COUNSEL** |
-| D-34 | Reviews after account deletion | **Open — product decision.** Blocks DSR-6.3 |
+| L-21 / D-46 | **Retention period** for a withdrawn Review, and whether it ends in anonymisation or destruction | **PENDING COUNSEL.** D-34 closed the mechanism on 2026-10-07 and DSR-6.3 now states it |
 | L-21 | Retention of request records | **PENDING COUNSEL** |
 | L-15 | Review takedown and liability — interacts with erasure | **PENDING COUNSEL** |
 | L-18 | Photography — interacts with DSR-6.5 | **PENDING COUNSEL** |
@@ -267,4 +269,4 @@ charge and without excessive delay.
 
 ## Decision references
 
-D-02, D-18, D-24, D-34, D-54.
+D-02, D-18, D-24, D-34, D-46, D-54, D-55.
