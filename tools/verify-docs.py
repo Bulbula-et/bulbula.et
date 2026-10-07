@@ -27,6 +27,13 @@ DOCS = ROOT / "docs"
 REGISTER = DOCS / "60-decisions" / "decision-register.md"
 DISCOVERY = DOCS / "00-discovery"
 
+# The audit document reports on defects, so it must be able to quote a wrong
+# article number, a retired identifier or a forbidden term verbatim. It is
+# exempt from the citation-style checks for the same reason the historical
+# discovery layer is: it is a record *about* the corpus, not part of it.
+# It is NOT exempt from control metadata, decision references or link checks.
+META = DOCS / "45-quality" / "documentation-audit-v1.0.md"
+
 # Documents that are deliberately historical. They are read for reasoning,
 # never for current rules, and they are not edited to erase history.
 HISTORICAL_STATUSES = {"Superseded", "Approved — historical record (frozen)"}
@@ -141,6 +148,8 @@ def check_decision_ids(docs: dict[Path, str]) -> set[str]:
 
     unknown: dict[str, set[str]] = {}
     for p, t in docs.items():
+        if p == META:
+            continue
         for did in re.findall(r"\bD-\d+[a-z]?\b", t):
             if did not in real:
                 unknown.setdefault(did, set()).add(p.name)
@@ -155,7 +164,7 @@ def check_decision_ids(docs: dict[Path, str]) -> set[str]:
 
     leaked = []
     for p, t in docs.items():
-        if DISCOVERY in p.parents:
+        if DISCOVERY in p.parents or p == META:
             continue
         for rid in RETIRED_IDS:
             for m in re.finditer(rf"\b{re.escape(rid)}\b", t):
@@ -241,7 +250,7 @@ def check_links(docs: dict[Path, str]) -> None:
     path_re = re.compile(r"`(docs/[A-Za-z0-9._/\-]+\.md)`")
     dangling: dict[str, set[str]] = {}
     for p, t in docs.items():
-        if DISCOVERY in p.parents:
+        if DISCOVERY in p.parents or p == META:
             continue
         for ref in set(path_re.findall(t)):
             if (ROOT / ref).exists():
@@ -265,7 +274,7 @@ def check_forbidden(docs: dict[Path, str], terms: list[str], label: str) -> None
     """6/7. Forbidden stack and features appear only in negative framing."""
     offenders = []
     for p, t in docs.items():
-        if DISCOVERY in p.parents:
+        if DISCOVERY in p.parents or p == META:
             continue
         lines = strip_code(t).splitlines()
         headings: dict[int, str] = {}
@@ -352,7 +361,7 @@ def check_legal_sourcing(docs: dict[Path, str]) -> None:
     # Residency is Art. 22, never Art. 20 alone.
     wrong = []
     for p, t in docs.items():
-        if DISCOVERY in p.parents:
+        if DISCOVERY in p.parents or p == META:
             continue
         for i, line in enumerate(t.splitlines(), 1):
             if not re.search(r"Art\.? ?20\b", line):
