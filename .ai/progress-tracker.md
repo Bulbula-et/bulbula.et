@@ -1,9 +1,9 @@
 # Progress Tracker
 
 ```text
-Source baseline:   33f58e0e1619c7e5b952eede2382ae3c5e2ccf8c
-Last derived from: 2026-10-07
-Context status:    Needs review
+Source baseline:   b5d606612c10e2a7a3c284b69fafab507f0b92fb
+Last derived from: 2026-10-08
+Context status:    Current
 ```
 
 > **This is the one file in `.ai/` designed to change often.**
@@ -139,7 +139,7 @@ Full lists: `docs/60-decisions/decision-register.md` (60 tracked items),
 
 ---
 
-## 6. Quality baseline at `9730b54`
+## 6. Quality baseline at `b5d6066`
 
 ```text
 composer test  →  exit 0

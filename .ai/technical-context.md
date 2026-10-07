@@ -1,9 +1,9 @@
 # Technical Context
 
 ```text
-Source baseline:   33f58e0e1619c7e5b952eede2382ae3c5e2ccf8c
-Last derived from: 2026-10-07
-Context status:    Needs review
+Source baseline:   b5d606612c10e2a7a3c284b69fafab507f0b92fb
+Last derived from: 2026-10-08
+Context status:    Current
 ```
 
 **Derived from** `docs/30-technical/trd-v1.0.md` · `architecture.md` ·
