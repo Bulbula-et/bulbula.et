@@ -23,8 +23,8 @@ operationalises them and changes neither.**
 
 **Out of scope.** Pricing (owner decision, none approved), billing
 mechanics (**Open — D-11**), advertising copy standards (**Open —
-commercial policy**), tax and invoicing (**PENDING COUNSEL — L-17,
-L-20**).
+operational decision**, a commercial-policy matter), tax and invoicing
+(**PENDING COUNSEL — L-17, L-20**).
 
 ## Authority and precedence
 
@@ -307,10 +307,10 @@ ADV-10).
 | Invoicing | Manual; no payment gateway | D-11 |
 | Billing records in the console | **Open (D-11)** | — |
 | Prices | **No price approved** | Owner decision |
-| Refunds and make-goods | **Open — commercial policy**; not invented here | — |
-| Prohibited advertiser categories | **Open — commercial policy**; a decision, not an assumption | — |
+| Refunds and make-goods | **Open — operational decision** (commercial policy); not invented here | — |
+| Prohibited advertiser categories | **Open — operational decision** (commercial policy); a decision, not an assumption | — |
 | Tax and regulatory obligations on advertising revenue | **PENDING COUNSEL (L-17, L-20)** | — |
-| Advertising content standards | **Open — commercial policy** | — |
+| Advertising content standards | **Open — operational decision** (commercial policy) | — |
 
 | ID | Rule |
 | --- | --- |
