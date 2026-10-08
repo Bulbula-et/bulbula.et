@@ -420,15 +420,45 @@ def check_no_invented_automation(texts: dict[str, str]) -> None:
               ", ".join(unknown))
 
 
-def check_docs_untouched() -> None:
-    """11. This phase must not modify docs/."""
-    status = git("status", "--porcelain", "docs")
-    if status is None:
-        check(True, "11. docs/ unmodified", "skipped: git unavailable")
+def check_baseline_freshness(texts: dict[str, str]) -> None:
+    """11. .ai/ must not claim Current against an outdated docs/ baseline.
+
+    Replaces the Phase 3.7 "docs/ is untouched" check, which was specific to
+    the phase that created .ai/. The durable rule is the one in .ai/README.md
+    section 7 and in the Phase 3.8 audit: if docs/ has moved since the recorded
+    baseline commit, every derived file must either be refreshed to the new
+    commit or downgraded to "Needs review" / "Stale".
+    """
+    sha_re = re.compile(r"Source baseline:\s+([0-9a-f]{40})")
+    status_re = re.compile(r"Context status:\s+(Current|Needs review|Stale)")
+
+    shas = {m.group(1) for t in texts.values() if (m := sha_re.search(t))}
+    if not shas:
+        check(False, "11. baseline freshness", "no baseline recorded")
         return
-    changed = [ln for ln in status.splitlines() if ln.strip()]
-    check(not changed, "11. docs/ unmodified in the working tree",
-          "; ".join(changed[:5]))
+    baseline = next(iter(shas))
+
+    # Has docs/ changed between the recorded baseline and the working tree?
+    committed = git("diff", "--name-only", baseline, "HEAD", "--", "docs")
+    uncommitted = git("status", "--porcelain", "--", "docs")
+    if committed is None or uncommitted is None:
+        check(True, "11. baseline freshness", "skipped: git unavailable")
+        return
+
+    drifted = sorted(
+        {ln.strip() for ln in committed.splitlines() if ln.strip()}
+        | {ln.strip().split(maxsplit=1)[-1]
+           for ln in uncommitted.splitlines() if ln.strip()}
+    )
+
+    stale_claims = [
+        name for name, t in texts.items()
+        if (m := status_re.search(t)) and m.group(1) == "Current"
+    ]
+    ok = not drifted or not stale_claims
+    check(ok, "11. no .ai/ file claims Current against a moved docs/ baseline",
+          f"{len(drifted)} docs/ file(s) changed since {baseline[:7]}: "
+          + ", ".join(drifted[:4]) if not ok else "")
 
 
 # -------------------------------------------------------------------- main
@@ -450,7 +480,7 @@ def main() -> int:
         check_contradictions(texts)
         check_progress_tracker(texts)
         check_no_invented_automation(texts)
-    check_docs_untouched()
+    check_baseline_freshness(texts)
 
     width = max(len(label) for _, label in results)
     failures = 0

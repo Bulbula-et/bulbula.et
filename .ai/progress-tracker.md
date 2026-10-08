@@ -1,7 +1,7 @@
 # Progress Tracker
 
 ```text
-Source baseline:   9730b5426efffdd6756075d97354319d1686b74a
+Source baseline:   b68ce5acf32afd6b525226a90343e3196f258a0e
 Last derived from: 2026-10-07
 Context status:    Current
 ```
@@ -45,18 +45,18 @@ not built.
 | — | *Superseded first attempt at 3.4* | `docs/phase-3-platforms` | **#18** | **Closed, not merged** |
 | **3.5** | Security, privacy and compliance | `docs/phase-3-security-privacy` | **#20** → `docs/phase-3-platform-specifications` | Open |
 | **3.6** | Operations, quality, release, production readiness | `docs/phase-3-operations-quality` | **#21** → `docs/phase-3-security-privacy` | Open |
-| **3.7** | **`.ai/` implementation context system** | `docs/phase-3-ai-context` | *this branch* | **In progress** |
-| 3.8 | Final documentation audit | — | — | Not started |
+| **3.7** | **`.ai/` implementation context system** | `docs/phase-3-ai-context` | **#22** → `docs/phase-3-operations-quality` | Open |
+| **3.8** | **Final documentation audit and reconciliation** | `docs/phase-3-final-audit` | *this branch* | **In progress** |
 | 3.9 | *Not yet defined in the repository* | — | — | — |
 
 **The chain is stacked and nothing is merged:**
 
 ```text
-main ← #12 ← #13 ← #14 ← #15 ← #16 ← #17 ← #19 ← #20 ← #21 ← (3.7)
+main ← #12 ← #13 ← #14 ← #15 ← #16 ← #17 ← #19 ← #20 ← #21 ← #22 ← (3.8)
 ```
 
 Merging out of order, or merging any of these without the owner's
-instruction, breaks the chain. **Do not merge PR #21.**
+instruction, breaks the chain. **Do not merge PR #21 or PR #22.**
 
 ---
 

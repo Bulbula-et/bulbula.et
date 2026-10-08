@@ -188,16 +188,26 @@ decision and carries no owner authority. The full list is in
 
 ## 10. Verifier
 
-`.ai/` is checked by `tools/verify-ai-context.py`, run from the repository
-root:
+Two repository-local verifiers run from the repository root:
 
 ```bash
-python3 tools/verify-ai-context.py
+python3 tools/verify-ai-context.py   # this directory
+python3 tools/verify-docs.py         # the whole of docs/
 ```
 
-It verifies the file set, source-baseline metadata, that every `D-xx`
-mentioned is real, that no fictional decision IDs exist, that no forbidden V1
-feature has drifted in, that no context file claims authority over formal
-documents, and that the progress tracker matches verified Git state.
+`verify-ai-context.py` verifies the file set, source-baseline metadata, that
+every `D-xx` mentioned is real, that no fictional decision IDs exist, that no
+forbidden V1 feature has drifted in, that no context file claims authority
+over formal documents, that the progress tracker matches verified Git state,
+and — check 11 — that **no file here claims `Context status: Current` when
+`docs/` has moved since the recorded baseline commit**. That last check is
+what keeps this directory honest; if it fails, refresh the context rather
+than editing the check.
 
-It does not replace, weaken or modify any existing quality gate.
+`verify-docs.py` verifies the formal tree itself: control metadata, the
+authority model, decision and requirement identifiers, capability coverage,
+links, forbidden stack and features, fabricated figures, legal sourcing,
+pending markers and terminology.
+
+Neither replaces, weakens or modifies any existing quality gate. Both are
+read-only.

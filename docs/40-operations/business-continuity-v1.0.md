@@ -259,6 +259,22 @@ data makes doing nothing the worst option.
 
 ---
 
+## Legal and regulatory references
+
+| Reference | Relevance | Classification |
+| --- | --- | --- |
+| Proclamation 1321/2024, Art. 16 | Integrity and confidentiality; availability loss may itself be a breach (BC-4.5) | Confirmed — statute/regulation |
+| Art. 43, Art. 44 | Breach assessment and notification, 72 hours from awareness (BC §8) | Confirmed — statute/regulation |
+| Art. 50 | Duty to destroy so data cannot be intelligibly reconstructed; binds wind-down (BC-7.4) | Confirmed — statute/regulation |
+| Retention and destruction schedule on wind-down | BC-7.4 | **PENDING COUNSEL (L-21)** |
+| Whether and how a wind-down must be notified | BC-7.5 | **PENDING COUNSEL** |
+
+The article map lives in
+[`../55-privacy/privacy-governance-v1.0.md`](../55-privacy/privacy-governance-v1.0.md)
+§11. This document cites it; it does not interpret it.
+
+---
+
 ## Decision references
 
 D-02, D-14, D-21, D-23, D-25, D-41, D-42, D-42b, D-46, D-48, D-54.

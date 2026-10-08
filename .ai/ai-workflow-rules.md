@@ -4,7 +4,7 @@
 > These rules are binding on every coding agent working on Bulbula.
 
 ```text
-Source baseline:   9730b5426efffdd6756075d97354319d1686b74a
+Source baseline:   b68ce5acf32afd6b525226a90343e3196f258a0e
 Last derived from: 2026-10-07
 Context status:    Current
 ```
