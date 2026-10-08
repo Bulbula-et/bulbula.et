@@ -83,7 +83,7 @@ person, not by the label on the field.*
 | ID | Field | Classification | Purpose | Source | Visibility | Retention |
 | --- | --- | --- | --- | --- | --- | --- |
 | DI-3.1 | **Email address** | **Personal** | Identity, sign-in, transactional notification | Customer, or Google (D-48) | **Private** | While account exists; then **PENDING COUNSEL (L-21)** |
-| DI-3.2 | **Display name** | **Personal** | Attribution of Reviews | Customer | **Public where a Review is published** | With the account; Review attribution per D-34 |
+| DI-3.2 | **Display name** | **Personal** | Attribution of Reviews | Customer | **Public where a Review is published** — and it is **the only identity element exposed**; the email address and account identifier are never shown (D-34) | With the account. On deletion the Review is **withdrawn** and the attribution ceases to be public (D-34); the retention of the internal record is **PENDING COUNSEL** (L-21, D-46) |
 | DI-3.3 | **Google account identifier** | **Personal** — an online identifier | Linking a Google sign-in to an account | Google | **Internal** | While the link exists |
 | DI-3.4 | **Account creation timestamp** | **Personal** in context | Support, abuse investigation | System | **Internal** | With the account |
 | DI-3.5 | **Account status** | **Personal** in context | Access control | System/staff | **Internal** | With the account |
@@ -168,7 +168,8 @@ person, not by the label on the field.*
 | DI-5.10 | **A Review is personal data about at least two parties** — the author and anyone named in it. Deletion requests may come from either |
 | DI-5.11 | **Reviews are public and indexed.** That is the point of them, and it raises the stakes of every moderation decision |
 | DI-5.12 | **Saves must never leak into a public cache, a share URL, a sitemap or an aggregate small enough to identify** (PCP-4) |
-| DI-5.13 | **D-34 (Reviews after account deletion) is open** and is the single largest unresolved question in this section |
+| DI-5.13 | **A Review is held against a Branch, not a Business** (D-34, D-55). The inventory entry for review content is therefore Branch-scoped, and a Business-level rating is a **derived aggregate** holding no additional personal data |
+| DI-5.14 | **On deletion a Review is withdrawn, not destroyed** (D-34). The remaining unresolved question in this section is **how long** the withdrawn record is retained — **PENDING COUNSEL (L-21, D-46)** |
 
 ---
 
@@ -312,7 +313,7 @@ data, content and metadata**.
 
 | ID | Item | Status |
 | --- | --- | --- |
-| D-34 | Reviews after account deletion | **Open — product decision.** Biggest gap here |
+| L-21 / D-46 | **Retention period** for a withdrawn Review | **PENDING COUNSEL.** The biggest remaining gap here; D-34 closed the mechanism on 2026-10-07 |
 | D-27 | Analytics granularity, raw events, search-term logging | **Open — privacy decision** |
 | D-43 | Permission record contents and retention | **Open — privacy decision** |
 | D-08 | Verification rules — what evidence is recorded about whom | **Open — product decision** |
@@ -353,4 +354,4 @@ data, content and metadata**.
 ## Decision references
 
 D-02, D-08, D-10, D-11, D-18, D-21, D-25, D-27, D-33, D-34, D-41, D-42,
-D-42b, D-43, D-48, D-51, D-54.
+D-42b, D-43, D-46, D-48, D-51, D-54, D-55.

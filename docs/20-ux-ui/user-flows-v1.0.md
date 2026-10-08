@@ -194,8 +194,13 @@ remain findable every other way (`search-design.md` DS-7).
 | UFL-A5.5 | The map **does not block the page**; address and landmark are sufficient alone (MOB-5, UXP-8.5) |
 
 **Multi-branch.** A branch selector appears. The selected Branch drives
-hours, address, map and contact actions. Which attributes vary per Branch
-is **Open (D-55)**; the selector is specified so either answer works.
+**address, Area, Sub-city, Landmark, map, hours, phone, branch email and
+branch-specific services and pricing**; the Business name, description,
+website and brand-level social links stay constant across Branches (D-55).
+**Reviews and the rating shown in the Reviews block belong to the selected
+Branch**; any Business-level rating figure is labelled as covering **all
+branches** so the User is never shown an aggregate and a branch figure
+without knowing which is which (D-34).
 
 ---
 
@@ -221,9 +226,13 @@ is **Open (D-55)**; the selector is specified so either answer works.
 | UFL-A6.5 | Reporting a Review requires an account; tapping it as a Guest starts B1 and returns here |
 | UFL-A6.6 | The marked-up rating matches the visible rating exactly (SEO-6, R-15) |
 
-**Open (D-34):** rating scale, text limits, whether moderation precedes
-publication. The flow states the resulting state rather than assuming
-immediate publication (`api-spec-v1.0.md` RV-3).
+**Review context (D-34).** The block shows **the selected Branch's**
+Reviews, with the Branch named so the context is unambiguous. Ratings are
+on a **1 to 5** scale. A Review with a rating and no text is a **normal,
+complete Review** and is rendered as such — never as incomplete or empty.
+Reviews are listed **newest first**. Moderation **precedes publication**, so
+the flow states the resulting state rather than assuming immediate
+publication (`api-spec-v1.0.md` RV-3).
 
 ---
 
@@ -436,8 +445,13 @@ Profile ──▶ "Write a review" ──┬─ Guest ──▶ sign in ──�
 | --- | --- | --- |
 | UFL-B5.1 | Authenticated Customers only | D-12 |
 | UFL-B5.2 | **One Review per Customer per subject.** A second attempt opens the existing Review for editing rather than creating a duplicate | TRD TR-160, AB-3 |
-| UFL-B5.3 | The result screen **states the resulting state**. The interface **must not assume immediate publication** — moderation timing is **Open (D-34)** | `api-spec-v1.0.md` RV-3 |
-| UFL-B5.4 | Rating scale, text limits, edit window and deletion semantics are **Open (D-34)**, read from configuration, never hard-coded in the client | RV-4 |
+| UFL-B5.3 | **Moderation precedes publication** (D-34). The result screen states plainly that the Review has been submitted and is awaiting review, and the interface **must not** assume immediate publication or imply the Review is already visible | `api-spec-v1.0.md` RV-3 |
+| UFL-B5.4 | The rating is a **required choice from 1 to 5**; submission without it is blocked with an inline message. **Review text is optional** — the form **must not** require it, and **must not** present a rating-only Review as incomplete (D-34) | RV-4 |
+| UFL-B5.5 | The subject is a **Branch**. Where a Business has several Branches, the form **names the Branch being reviewed** before submission (D-34, D-55) | RV-2a |
+| UFL-B5.6 | A Customer who already has an active Review for that Branch is taken to **edit** it rather than shown an error about duplicates (D-34, RV-2) | RV-2 |
+| UFL-B5.7 | The edit affordance is available for **30 days after the Review was created** and the screen says so in plain language — for example that a Review can be edited for 30 days after posting. After the window it is absent, not disabled-with-no-reason (D-34) | RV-4a |
+| UFL-B5.8 | Editing a published Review **returns it to review**, and the interface says so **before** the edit is submitted, so the Customer is not surprised that their Review left public view (D-34) | RV-3a |
+| UFL-B5.9 | Maximum text length, rate limits and thresholds are **server configuration** and are read from the server, never hard-coded in the client (D-34) | RV-4c |
 | UFL-B5.5 | The review policy is linked from the form before submission | `review-policy.md`, C-18 |
 | UFL-B5.6 | **No photo upload** (D-36). **No helpful voting** (D-37) |
 | UFL-B5.7 | Deleting own Review requires confirmation stating what happens | UFL-0.6 |
@@ -542,7 +556,7 @@ Privacy ──▶ Delete account
 | UFL-B9.2 | Explicit confirmation; no single-tap deletion | UFL-0.6 |
 | UFL-B9.3 | **Every session is revoked** | DL-2 |
 | UFL-B9.4 | An email confirmation is sent | C-36, C-39 |
-| UFL-B9.5 | The fate of published Reviews is **Open — product detail** and **PENDING COUNSEL** (D-34, L-21). The screen must state the actual outcome once decided and **must not guess now** | DL-4 |
+| UFL-B9.5 | Published Reviews are **withdrawn** on account deletion — they stop being publicly visible and leave every rating summary (D-34), and the screen says so plainly. **How long any internal record is kept is PENDING COUNSEL (L-21, D-46)**; the screen **must not** promise a period or imply immediate permanent erasure | DL-4 |
 | UFL-B9.6 | Response windows and export format are **PENDING COUNSEL (L-7)** |
 | UFL-B9.7 | Signing in again later creates a **new** Customer with no prior data, and the screen says so | DL-6 |
 
@@ -658,7 +672,7 @@ a delete: the URL and history survive (TR-53, UXP-7.8).
 | UFL-C4.2 | A decision without a policy ground cannot be submitted |
 | UFL-C4.3 | Report volume is context, **never** an automatic trigger (REP-3) |
 | UFL-C4.4 | Policy changes and appeals are **Administrator** (`interaction-permissions.md` §4) |
-| UFL-C4.5 | Whether moderation precedes publication is **Open (D-34)**; the queue supports both |
+| UFL-C4.5 | **Moderation precedes publication** (D-34): the queue holds `pending` Reviews, approval publishes, and a rejected Review is never public. Post-publication removal of an already-published Review remains available |
 
 ---
 
@@ -696,8 +710,16 @@ escalations are Administrator (`interaction-permissions.md` §4).
 | Delete an Area | **Refused** while Branches are assigned |
 
 Bulk taxonomy changes queue a rebuild of affected search documents and say
-so (`search-design.md` SD-3). **Open:** the catalogue itself (D-56) and
-cardinality per Listing (D-57).
+so (`search-design.md` SD-3).
+
+**Classification (D-56, D-57).** The catalogue is **centrally curated by
+Bulbula** and edited here as data — no Operator or User creates a Category
+outside this screen. A Listing is given **exactly one primary Category**,
+required before publication, plus **any number of secondary Categories**.
+The form **must not** present an artificial maximum, and it **must** prevent
+the same Category being chosen twice or appearing as both primary and
+secondary. The **catalogue content itself** is an operations task, not a
+specification item.
 
 ---
 
@@ -797,14 +819,12 @@ Customer does not delete audit entries (TR-167).
 | D-21 | Maps strategy and fallback | A4, A5 |
 | D-25 | Media limits | C1, C2 |
 | D-27 | Analytics granularity | C8 |
-| D-34 | Review mechanics and deletion semantics | A6, B5, B9, C4 |
 | D-35 | Structured guest suggestions | A8 |
 | D-38 | Mini App navigation model | all |
 | D-41 | Email provider | B2 |
 | D-43 | Permission-record contents | C1 |
 | D-44 | Services / products / pricing | A5, C1 |
 | D-46 | Minimum age | B3 |
-| D-55 | Branch versus Business attributes | A5 |
 | TRD OT-02 | OTP parameters | B2 |
 | L-7 | Rights-request windows | B9 |
 | L-21 | Retention | B9 |

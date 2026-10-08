@@ -56,9 +56,9 @@ fourth actor is out of scope (D-54).
 
 | Term | Definition | Deprecated synonyms |
 | --- | --- | --- |
-| **Review** | A Customer's published evaluation of a Business, consisting of a Rating and optional review text | comment, feedback, testimonial, post |
-| **Rating** | The numeric score a Customer assigns within a Review | score, stars (acceptable in UI copy only), grade |
-| **Rating summary** | The aggregate rating displayed for a Business, computed from its Reviews | average rating, overall score |
+| **Review** | A Customer's evaluation of a **Branch**, consisting of a required Rating and optional review text. A Review always concerns one Branch, never a Business directly (D-34, D-55) | comment, feedback, testimonial, post |
+| **Rating** | The score a Customer assigns within a Review: an **integer from 1 to 5**, required (D-34) | score, stars (acceptable in UI copy only), grade |
+| **Rating summary** | The aggregate rating displayed for a Branch or a Business: the **arithmetic mean of currently Published Review ratings** in that scope, with no weighting. A Business summary **aggregates its Branches' Reviews** (D-34) | average rating, overall score |
 | **Save** | **The canonical name for the single capability** by which a Customer marks a Business for later. One capability, one verb (D-01 capability 14) | **favorite, favourite, like, bookmark, wishlist, follow** — all deprecated |
 | **Saved list** | The collection of Businesses a Customer has Saved | favorites list, my list |
 | **Report** | A User-submitted notification that something is wrong — either a data problem on a Listing or abusive content in a Review | flag, complaint, abuse report |
@@ -148,4 +148,5 @@ identifiable natural person, **never** by where it appears.
 
 ## Decision references
 
-D-01, D-03, D-06, D-08, D-09, D-10, D-15, D-18, D-29, D-49, D-50, D-51, D-54.
+D-01, D-03, D-06, D-08, D-09, D-10, D-15, D-18, D-29, D-30, D-31, D-34,
+D-49, D-50, D-51, D-54, D-55.

@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | **Document** | Decision Register |
-| **Version** | v1.0 |
+| **Version** | v1.1 |
 | **Status** | Approved |
 | **Date** | 2026-10-07 |
 | **Owner** | Project owner (Bulbula) |
@@ -44,19 +44,24 @@ this register, this register wins and the other document is wrong.
 **[U]** Unknown · **[X]** Conflict. A decision recorded as **Approved** here
 is **[C]** everywhere else.
 
-### Counts at v1.0
+### Counts at v1.1
 
 | Category | Count |
 | --- | --- |
-| **Approved** | **19** |
+| **Approved** | **23** |
 | **Closed** | 1 |
 | **Open — Class A** (all three also Pending external) | 3 |
-| **Open — Class B** | 23 |
+| **Open — Class B** | 19 |
 | **Open — Class C** | 7 |
 | **Deferred — Class D** | 4 |
 | **Scheduled** (pilot execution, D-31) | 1 |
 | **Merged or split into other IDs** (D-07, D-22) | 2 |
 | **Total tracked** | **60** |
+
+Counts are recomputed from the entries themselves, not carried forward.
+**v1.1 moved D-34, D-55, D-56 and D-57 from Class B to Approved**, so
+Approved rose by four and Class B fell by four; the total is unchanged
+because no identifier was created or retired.
 
 ---
 
@@ -114,8 +119,8 @@ supersedes.
   a brand. Modelling the branch from the start costs one table and makes
   multi-location support a data task rather than a migration.
 - **Affected:** Data model, profiles, search, reviews, analytics, SEO, URLs
-- **Related open items:** D-55 (branch attribute boundary), D-34 (review
-  attachment level)
+- **Related:** D-55 (attribute boundary, **Approved**), D-34 (review
+  attachment level — Reviews belong to the Branch, **Approved**)
 
 ### D-05 — V1 discovery surfaces
 
@@ -147,8 +152,8 @@ supersedes.
   SEO irreversibly.
 - **Affected:** Navigation, search, SEO/URLs, listings, ad targeting,
   operations console
-- **Related open items:** D-56 (catalogue production), D-57 (category
-  cardinality per listing)
+- **Related:** D-56 (catalogue production, **Approved**), D-57 (category
+  cardinality per listing, **Approved**)
 
 ### D-10 — Advertising model for V1
 
@@ -183,8 +188,9 @@ supersedes.
   control; auditability is required to defend against both fake reviews and
   accusations of suppression.
 - **Affected:** Reviews, moderation, ranking, accounts, trust
-- **Related open items:** D-34 (per-business vs per-branch, edit window,
-  deletion, rating-only), D-36 (review photos), D-37 (helpful voting)
+- **Related:** D-34 (subject, edit window, deletion, rating-only —
+  **Approved**). **Related open items:** D-36 (review photos), D-37 (helpful
+  voting)
 
 ### D-15 — First-launch client surfaces
 
@@ -279,6 +285,66 @@ supersedes.
 - **Affected:** Authentication, cost, launch risk
 - **Related open items:** D-47 (Apple login for a future iOS client,
   Deferred)
+
+### D-34 — Review mechanics
+
+- **Decision:** The V1 Review model is fixed as follows.
+  **Subject:** a Review belongs to a **Branch**, never directly to a
+  Business. A multi-branch Business therefore has branch-level Reviews, and
+  a Business-level rating summary is an **aggregate** derived from its
+  Branches' Reviews wherever the product specification calls for one.
+  **Rating:** an integer from **1 to 5**, required for every Review.
+  **Uniqueness:** one Customer may hold at most one active Review per
+  Branch; reviewing the same Branch again is an **edit** of the existing
+  Review, never a second Review.
+  **Text:** optional — **rating-only Reviews are supported**. The maximum
+  text length is an implementation/configuration parameter and is not fixed
+  by this decision.
+  **Editing:** a Customer may edit their own Review for **30 days** after
+  creation; an edit **re-enters moderation** before it becomes or returns
+  to a Published state.
+  **Deletion:** author deletion is a **withdrawal / soft-deletion** model,
+  not immediate destructive erasure. Public visibility ceases per the
+  Review state model; an internal record may remain where retention, audit,
+  abuse prevention or legal obligation requires it. **The retention period
+  itself is governed by the privacy and legal documentation and is not
+  decided here.**
+  **Moderation:** V1 Review moderation is **pre-publication**. A submitted
+  Review enters `pending` and becomes `published` only on moderation
+  approval; rejected Reviews never become public. Post-publication removal
+  remains available for later moderation cases.
+  **Rating summary:** the **arithmetic mean of currently Published Review
+  ratings** for the applicable Branch or Business scope. Rejected, removed
+  and deleted Reviews do not contribute. **No weighting.**
+  **Public ordering:** **newest Published Review first.** Any alternative
+  ordering requires a later decision.
+  **Account age:** there is **no minimum account-age requirement** before a
+  Customer's first Review in V1; authentication and anti-abuse controls
+  still apply.
+  **Appeals:** handled by an Administrator. The appeal mechanism and any
+  time limit remain an operational configuration detail and are **not**
+  fixed here.
+  **Rate limits and anomaly thresholds:** remain **configuration**, not
+  schema, and no value is fixed here.
+- **Status:** **Approved** · **Date:** 2026-10-07
+- **Source:** Owner approval during M0 implementation/schema gate
+- **Rationale:** Address, hours and contact are facts about a place, so the
+  experience a Customer reviews is a place as well; attaching the Review to
+  the Branch makes a multi-location rating honest and makes the aggregate a
+  derivation rather than a fiction. Pre-publication moderation is the
+  defensible posture for a directory that cannot yet absorb the liability of
+  publishing unreviewed third-party content about named businesses.
+- **Affected:** Data model (Review, ReviewModeration, ReviewReport, rating
+  summary), review policy, moderation operations, API, UX, search ranking
+  inputs, privacy and retention documentation
+- **Resolves:** The LC-4 pre- versus post-publication question, in favour of
+  **pre-publication**; LC-5 (an edit returns to moderation); LC-6 (author
+  deletion is a withdrawal); AB-3 (the subject is the Branch); AB-8 (no
+  account-age requirement); SUM-6 (arithmetic mean of Published Reviews)
+- **Related open items:** D-36 (review photos, Deferred), D-37 (helpful
+  voting, Deferred), D-39 (commercial/editorial integrity — **separate and
+  unresolved; this decision does not close it**), D-46 and L-21 (retention
+  periods — **PENDING COUNSEL**)
 
 ### D-48 — Customer authentication providers for V1
 
@@ -401,6 +467,97 @@ supersedes.
   replies), architecture seams
 - **Related:** D-02 (listing ownership)
 
+### D-55 — Business versus Branch attribute boundary
+
+- **Decision:** Attributes bind to the level at which they are true.
+  **Business-level** attributes describe the brand or business identity as a
+  whole: business name, business description, website, brand-level public
+  social links, and other genuinely brand-level attributes.
+  **Branch-level** attributes describe a physical location: address, Area,
+  Sub-city, Landmark, latitude, longitude, phone, branch email, opening
+  hours, branch-specific services, branch-specific products, branch-specific
+  pricing, and other location-specific operational information.
+  **Reviews belong to the Branch** (D-34); Business-level rating aggregates
+  are derived from Branch Reviews.
+  **Analytics:** measurements whose meaning is tied to a physical location —
+  behavioural, contact and discovery events — belong to the **Branch**;
+  Business-level analytics aggregate Branch-level data.
+  **Media:** a media asset may attach to a **Business or a Branch**,
+  according to whether the image represents the business identity or a
+  physical location.
+  **Rule:** an attribute **MUST NOT** be moved between Business and Branch
+  for implementation convenience. This boundary is an approved product and
+  data-model rule.
+- **Status:** **Approved** · **Date:** 2026-10-07
+- **Source:** Owner approval during M0 implementation/schema gate
+- **Rationale:** A single-location business is then never a special case: it
+  simply has one Branch carrying the location facts. Placing location facts
+  on the brand would make multi-location support a migration instead of a
+  data task, which is precisely what D-03 was approved to avoid.
+- **Affected:** Data model (Business, Branch, MediaAttachment, analytics
+  keying), business profile presentation, contact actions, opening hours,
+  listing operations, search
+- **Related open items:** D-04 (the opening-hours **structure** — this
+  decision fixes only that hours live on the Branch), D-44 (the
+  representation of services, products and pricing — this decision fixes
+  only that branch-specific ones live on the Branch), D-09 (completeness
+  definition)
+
+### D-56 — Category catalogue production
+
+- **Decision:** **Bulbula centrally owns and manually curates** the
+  Category and Subcategory catalogue. The catalogue is produced from the
+  real launch-area business inventory and from genuine discovery and search
+  needs. Rules: exactly **two levels**, Category → Subcategory; **no
+  user-created Categories or Subcategories**; an **English label is
+  required**; an **Amharic label is supported** where available; controlled
+  Aliases are supported; the catalogue must be expressive enough to classify
+  the launch-area Businesses; taxonomy gaps found during operations are
+  resolved by **Administrator-controlled catalogue changes**. **Catalogue
+  content is reference data, not application schema** — adding, removing or
+  reclassifying catalogue content **MUST NOT** require a code change or a
+  schema migration where the existing model already supports it.
+- **Status:** **Approved** · **Date:** 2026-10-07
+- **Source:** Owner approval during M0 implementation/schema gate
+- **Rationale:** A curated catalogue built from observed local supply is the
+  cheapest lever on search quality and keeps URLs stable; separating
+  catalogue content from schema means the taxonomy can grow with the launch
+  area without a deployment.
+- **Affected:** Taxonomy data, navigation, search, SEO and URLs, operations
+  console category management, listing classification, migration policy
+  (TR-177), release management
+- **Deliberately not decided:** the number of Categories or Subcategories,
+  any coverage percentage, a catalogue completion date, and the catalogue
+  list itself. Those are **content and operations matters**, tracked through
+  listing operations, not through this decision
+- **Related open items:** D-40 (launch-area boundary, which shapes the
+  inventory the catalogue is drawn from), D-09 (completeness definition)
+
+### D-57 — Category cardinality per Listing
+
+- **Decision:** Every Listing has **exactly one Primary Category** and
+  **zero or more Secondary Categories**. Rules: exactly one Primary Category
+  is **required for every published Listing**; zero Secondary Categories is
+  permitted; one or more Secondary Categories is permitted; the **same
+  Category MUST NOT appear twice** for one Listing; the Primary Category
+  **MUST NOT** simultaneously appear as a Secondary Category; **no
+  artificial numeric maximum** is imposed on Secondary Categories in V1; the
+  taxonomy remains **two levels** deep; and assignment must remain
+  compatible with D-56. The relational design **MUST** support this without
+  inventing an arbitrary secondary-category limit.
+- **Status:** **Approved** · **Date:** 2026-10-07
+- **Source:** Owner approval during M0 implementation/schema gate
+- **Rationale:** One required Primary Category gives every Listing exactly
+  one stable breadcrumb, URL path and ranking classification, while optional
+  Secondary Categories let a genuinely multi-trade business be found without
+  fragmenting navigation. An invented maximum would be a guess with no
+  evidence behind it.
+- **Affected:** Data model (the Listing-to-Category join and its
+  constraints), category browsing, breadcrumbs, search filtering,
+  advertising targeting, operations console classification
+- **Related open items:** D-09 (whether classification contributes to
+  completeness or ranking weight)
+
 ---
 
 ## 2. Open decisions
@@ -416,7 +573,7 @@ alone, and all three may proceed in parallel with PRD drafting.
 | **D-30n** | The numeric launch bar (coverage, quality, freshness, verification, search quality, reliability, moderation readiness, capacity) | Owner, after the pilot | v0.4 §9 |
 | **D-40** | Confirmed administrative parent and practical boundary of the Bole Bulbula launch area | Local confirmation | v0.3 §19.2 |
 
-### 2.2 Class B — before UX design or the data model (23)
+### 2.2 Class B — before UX design or the data model (19)
 
 | ID | Question | Recommendation on record |
 | --- | --- | --- |
@@ -432,7 +589,6 @@ alone, and all three may proceed in parallel with PRD drafting.
 | **D-25** | Media storage provider, limits, formats | v0.3 §20.2 |
 | **D-27** | Analytics granularity, retention, raw-event policy | v0.3 §20 |
 | **D-33** | **Telegram identity integration — open evaluation** (see §5) | v0.3 §10.4 |
-| **D-34** | Review mechanics: per-business vs per-branch, edit window, deletion semantics, rating-only | v0.3 §16 |
 | **D-35** | Whether guests may submit structured edit suggestions | v0.3 §11.1 |
 | **D-38** | Mini App navigation model: full page loads vs fragment swaps | v0.3 §12.3 |
 | **D-39** | Integrity controls separating ad sales from staff-controlled listing data | v0.3 §15.3 |
@@ -440,12 +596,10 @@ alone, and all three may proceed in parallel with PRD drafting.
 | **D-43** | Permission record contents and retention | v0.3 §5.4 |
 | **D-44** | Services / products / pricing representation (absorbs the former D-07) | v0.3 §5.3 |
 | **D-45** | **Staff/admin authentication strength** — TOTP or stronger (see §6) | v0.3 §8.3 |
-| **D-55** | Which attributes bind to Branch vs Business (hours, contact, reviews, analytics) | v0.3 §17.1 |
-| **D-56** | Category catalogue production: sourcing, depth per branch, initial size | v0.3 §18 |
-| **D-57** | Category cardinality per listing (one primary + N secondary) | v0.3 §18.2 |
 
-*(Twenty-three rows; D-55…D-57 are new sub-decisions created by the approvals
-in §1 and are counted within Class B.)*
+*(Nineteen rows. **D-34, D-55, D-56 and D-57 left this table on 2026-10-07**,
+when the owner approved them at the M0 schema gate; they are now recorded in
+§1.)*
 
 ### 2.3 Class C — during implementation / TRD (7)
 
@@ -551,3 +705,4 @@ Deferred capabilities without decision IDs are listed in
 | Version | Date | Change |
 | --- | --- | --- |
 | v1.0 | 2026-10-07 | Register created from `product-decision-brief-v0.3.md` §26 and the Phase 2.3 owner approvals. 19 decisions Approved; D-48…D-57 assigned; D-32 Closed |
+| v1.1 | 2026-10-07 | **M0 schema gate.** Owner approved the four schema-shaping decisions: **D-34** (Review mechanics — Reviews belong to the Branch, 1–5 integer rating, optional text, 30-day edit window returning to moderation, withdrawal-style author deletion, pre-publication moderation, mean of Published ratings, newest first, no account-age bar), **D-55** (Business versus Branch attribute boundary), **D-56** (centrally curated two-level Category catalogue as reference data), **D-57** (exactly one Primary Category plus zero or more Secondary Categories, no artificial maximum). Each moved from Open Class B to Approved under its existing ID. Approved 19 → 23; Class B 23 → 19; total unchanged at 60. D-39, D-46 and every `L-` item remain unaffected |

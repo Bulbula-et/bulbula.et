@@ -230,7 +230,8 @@ product.
 | PBD-11.2 | **Art. 50 requires destruction preventing reconstruction in intelligible form** — a stronger standard than a status flag | Art. 50 |
 | PBD-11.3 | **Where a record must survive for accountability, what survives is the minimum**, not the whole record | SO-4.4 |
 | PBD-11.4 | **Deletion is honest about backups** (RET §8) | SO-8.10 |
-| PBD-11.5 | **What happens to Reviews on account deletion is D-34, open** — and it must be answered before launch, because it is the first question a deleting user asks | D-34 |
+| PBD-11.5 | **The mechanism is settled: a Review is withdrawn, not destroyed** (D-34). Public visibility ceases and it leaves every rating summary, while an internal record may persist for retention, audit, abuse and legal purposes. **How long that record persists is PENDING COUNSEL (L-21, D-46)** and must be answered before launch, because it is the first question a deleting user asks | D-34, D-46 |
+| PBD-11.6 | **A Review is personal data about the author, and it belongs to a Branch** (D-34, D-55). Publishing it exposes only the identity necessary for attribution — a display name — never the email address, never the account identifier, never any other Branch or Business linkage | PCP-3, D-55 |
 | PBD-11.6 | **Deletion must propagate to caches, derived media, search indexes and exports** | PBD-10.6 |
 | PBD-11.7 | **Art. 50(2) requires notifying processors of the destruction obligation** | Art. 50 |
 
@@ -284,7 +285,7 @@ Applied to every change touching personal data.
 
 | ID | Item | Status |
 | --- | --- | --- |
-| D-34 | Reviews after account deletion | **Open — product decision.** Blocks a clean deletion story |
+| L-21 / D-46 | **Retention period** for a withdrawn Review after account deletion | **PENDING COUNSEL.** D-34 settled the mechanism on 2026-10-07; the duration is the remaining gap in the deletion story |
 | D-27 | Analytics granularity and search-query logging | **Open — privacy decision** |
 | D-43 | Permission record contents, including photography | **Open — privacy decision** |
 | D-33 | Telegram identity | **Open — product decision** |
@@ -319,4 +320,4 @@ Applied to every change touching personal data.
 ## Decision references
 
 D-02, D-05, D-10, D-12, D-21, D-24, D-25, D-27, D-33, D-34, D-43, D-46,
-D-49, D-50, D-51, D-54.
+D-49, D-50, D-51, D-54, D-55.

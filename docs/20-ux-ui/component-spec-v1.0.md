@@ -451,7 +451,12 @@ otherwise interactive.
 **SEO.** Any structured-data rating must equal the visible one (SEO-6,
 R-15).
 
-**Dependencies.** None. **Scale is Open (D-34).**
+**Scale.** **Integer 1 to 5** (D-34). The control offers exactly five
+values, with no half-steps and no zero. A **rating-only** Review is valid,
+so a rating with no accompanying text renders as a complete Review, never as
+an empty state.
+
+**Dependencies.** None.
 
 ---
 
@@ -888,9 +893,12 @@ destructive action. **Required for:** deleting a Review, deleting an
 account, unpublishing a Listing, suspending a Campaign, closing a Business
 (WCAG 3.3.4).
 
-**Content rules.** State consequences honestly. Where an outcome is open —
-e.g. the fate of Reviews after account deletion (D-34, L-21) — the dialog
-must state the **actual decided** behaviour and must not guess (UFL-B9.5).
+**Content rules.** State consequences honestly. Deleting a Review is a
+**withdrawal**: the dialog says the Review will stop being publicly visible
+and will no longer count towards the rating (D-34). Where an outcome really
+is open — e.g. **how long** an internal record is kept after account
+deletion (L-21, D-46, **PENDING COUNSEL**) — the dialog must not guess a
+period (UFL-B9.5).
 
 **Dependencies.** Modal.
 
@@ -1257,10 +1265,8 @@ improvise (DSN-13.1).
 | D-21 | Maps | 20 |
 | D-25 | Media limits | 21 |
 | D-28 | Logo | 1 |
-| D-34 | Review mechanics | 14, 31 |
 | D-35 | Structured guest suggestions | 23 |
 | D-38 | Mini App navigation | 1, 29, 30 |
-| D-55 | Branch versus Business attributes | 11, 17, 18, 20 |
 | TRD OT-02 | OTP parameters | 33 |
 | L-18 / L-19 | Photo rights, maps terms | 20, 21 |
 
@@ -1269,5 +1275,5 @@ improvise (DSN-13.1).
 ## Decision references
 
 D-04, D-08, D-09, D-10, D-11, D-12, D-13, D-14, D-16, D-17, D-18, D-19,
-D-21, D-24, D-25, D-28, D-34, D-35, D-36, D-37, D-38, D-39, D-49, D-54,
-D-55.
+D-21, D-24, D-25, D-28, D-34, D-35, D-36, D-37, D-38, D-39, D-46, D-49,
+D-54.

@@ -66,7 +66,7 @@ above day-to-day practice.
 | --- | --- |
 | LO-1.11 | Every Business has at least one Branch; **exactly one is primary** (OPX-3.6, D-03) |
 | LO-1.12 | Each Branch requires an **Area and a Sub-city** (OPX-3.5, GEO-6) |
-| LO-1.13 | Which attributes belong to the Branch rather than the Business — hours, contact, reviews, analytics — is **Open (D-55)**. Collection records the fact and its place; it does not decide the model |
+| LO-1.13 | **D-55 fixes the boundary.** **Business-level:** name, description, website, brand-level public social links. **Branch-level:** address, Area, Sub-city, Landmark, coordinates, phone, branch email, opening hours, and branch-specific services, products and pricing. Reviews and location-meaningful analytics are **Branch-level**; Business figures are aggregates. Media may attach to either. Collection records each fact **at the level where it is true**, and **must not** move an attribute between levels for convenience |
 | LO-1.14 | A Landmark is optional and is recorded where it genuinely helps a User find the place |
 
 ### 1.4 Contact or visit
@@ -113,7 +113,7 @@ above day-to-day practice.
 | --- | --- | --- |
 | **Business name** | As the business writes it. Amharic forms recorded where they exist; transliterations captured as **Aliases**, not as the name | D-18 |
 | **Description** | Factual, written by the Operator from what the business says. **Not marketing copy, not a review** | — |
-| **Category / Subcategory** | Chosen from the controlled taxonomy only. **Never invented in the field.** A missing category is a taxonomy request to an Administrator | D-06, D-56, D-57 |
+| **Category / Subcategory** | Chosen from the **centrally curated** two-level catalogue only. **Never invented in the field** — there are no user-created Categories. A missing category is a taxonomy request to an Administrator, who changes the catalogue as **reference data**. Record **exactly one primary Category** plus **any number of secondary Categories**, with no duplicates and the primary never repeated as a secondary | D-06, D-56, D-57 |
 | **Area** | Chosen from curated Areas; **never free text** | GEO-6 |
 | **Sub-city** | Recorded for correctness even though it is secondary in the interface | — |
 | **Address** | As a person would give directions locally, plus the structured fields. A **home-based business's address is a person's home address** and is treated as personal data | DI-4.4 |
@@ -266,6 +266,7 @@ above day-to-day practice.
 | LO-6.3 | **Only the enumerated public field set is published.** Internal fields — provenance, Permission, verification evidence, personal-contact flags — never render | PCP-3, PCP-5 |
 | LO-6.4 | **Every publication is audited.** A failed audit write fails the action | OPX-5.6, TR-08 |
 | LO-6.5 | **No bulk-import path may bypass Permission, provenance or quality review** | OC-10 |
+| LO-6.9 | **A primary Category is mandatory before publication.** A Listing with no primary Category, or with more than one, **must not** be published (D-57). Secondary Categories are optional and have **no maximum** | D-57, DM §3.4 |
 
 ### 6.3 Failure conditions and unpublication
 
@@ -444,8 +445,6 @@ photo and media effort, coordinate accuracy, second-contact frequency.
 | D-04 | Opening-hours model | **Open (D-04)** — product decision |
 | D-43 | Permission record contents and retention | **Open (D-43)** — product decision |
 | D-44 | Services, products and pricing representation | **Open (D-44)** — product decision |
-| D-55 | Branch versus Business attribute boundary | **Open (D-55)** — product decision |
-| D-56 / D-57 | Category catalogue and cardinality per Listing | **Open** — product decision |
 | D-40 | Launch-area boundary | **Open (D-40)** — product decision |
 | D-25 | Media storage, formats, limits | **Open (D-25)** — technical decision |
 | D-09 | Completeness definition and weighting | **Open (D-09)** — product decision |
@@ -453,6 +452,16 @@ photo and media effort, coordinate accuracy, second-contact frequency.
 | D-30n / D-31 | Launch threshold; capacity | **PENDING PILOT** |
 | COR-5 | Target correction times | **PENDING PILOT** |
 | L-18 | Photography of premises and people | **PENDING COUNSEL** |
+
+**Closed at the M0 schema gate — 2026-10-07.** **D-55** (attribute
+boundary), **D-56** (catalogue production) and **D-57** (category
+cardinality) left this table and are applied in §1 (LO-1.13), §2 (the field
+set) and §6 (LO-6.9).
+
+**Unchanged by that closure:** the **catalogue content** is still produced
+as an operations task under D-56, and the **20-business pilot (D-31)**
+proceeds exactly as specified in §9 — **no pilot threshold is added or
+implied here**, and D-30n remains **PENDING PILOT**.
 | L-5 / D-46 | Whether refusals may be recorded, and withdrawal's legal force | **PENDING COUNSEL** |
 | — | Whether a prospect is a tracked entity | **Open — implementation detail** |
 | — | How the single-person review risk is recorded and reviewed | **Open — operational decision** |

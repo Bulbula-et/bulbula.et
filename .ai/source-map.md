@@ -1,8 +1,8 @@
 # Source Map
 
 ```text
-Source baseline:   33f58e0e1619c7e5b952eede2382ae3c5e2ccf8c
-Last derived from: 2026-10-07
+Source baseline:   b5d606612c10e2a7a3c284b69fafab507f0b92fb
+Last derived from: 2026-10-08
 Context status:    Current
 ```
 
@@ -116,7 +116,7 @@ authority (AI-G-07).
 | Phase 2 understanding | — | `docs/00-discovery/` (5 files) |
 | Is the documentation consistent, and what is still blocking? | `progress-tracker.md` §5 | `docs/45-quality/documentation-audit-v1.0.md` |
 | **What do we build first, and what does it depend on?** | `progress-tracker.md` §5 | **`docs/45-quality/implementation-plan-v1.0.md`** |
-| **Is this table safe to create yet?** | — | **`docs/45-quality/implementation-plan-v1.0.md` §9 — the schema decision gate (D-34, D-55, D-56, D-57)** |
+| **Is this table safe to create yet?** | — | **`docs/45-quality/implementation-plan-v1.0.md` §9 — the schema gate. `M0 — COMPLETE`: D-34, D-55, D-56 and D-57 were approved on 2026-10-07 and §9.2 states the resulting schema boundary. Still open and still gating a table shape: D-04 (hours) and D-44 (services, products, pricing)** |
 | **Can this area go to production, or only to development?** | — | **`docs/45-quality/implementation-plan-v1.0.md` §6.1** |
 | Is `.ai/` still true to `docs/`? | — | `tools/verify-ai-context.py` **(executable)** |
 | Is `docs/` internally consistent? | — | `tools/verify-docs.py` **(executable)** |

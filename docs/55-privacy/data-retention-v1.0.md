@@ -73,7 +73,7 @@ For each class, four questions:
 | Category | Characteristic | Approach |
 | --- | --- | --- |
 | **Account-lifetime** | Needed while the account exists | Delete on deletion, plus a short grace |
-| **Content** | Published and useful to others | Lifetime of publication; deletion semantics are the hard part (D-34) |
+| **Content** | Published and useful to others | Lifetime of publication. **The deletion semantics are settled — withdrawal, not destruction (D-34)** — but the **retention period** for the withdrawn record is the hard part and remains **PENDING COUNSEL** (L-21, D-46) |
 | **Transient operational** | Needed for minutes or hours | Expire automatically; prune aggressively |
 | **Security** | Needed to investigate | Bounded period; the shortest that permits investigation |
 | **Statutory record** | Required by law | Period set by the obligation, not by Bulbula |
@@ -103,9 +103,9 @@ For each class, four questions:
 
 | ID | Class | Proposed | Trigger | Reasoning |
 | --- | --- | --- | --- | --- |
-| RET-4.9 | **Published Review** | Life of publication | Author deletion, moderation removal, listing removal | **D-34 governs what happens on account deletion and is open** |
+| RET-4.9 | **Published Review** | Life of publication; on author deletion or account deletion the Review is **withdrawn** — public visibility ceases and it leaves every rating summary (D-34) | Author deletion, account deletion, moderation removal, listing removal | **How long the withdrawn record is retained is PENDING COUNSEL (L-21, D-46).** No period is proposed here |
 | RET-4.10 | Removed Review | **Short retention of the fact and policy basis; the text destroyed** | Removal | Accountability for the decision without preserving the content |
-| RET-4.11 | Review edit history, if any | With the Review | — | D-34 |
+| RET-4.11 | Review edit history | With the Review. An edit within the **30-day window** returns the Review to moderation (D-34), so the history is moderation evidence as well as content | — | **PENDING COUNSEL** (L-21), as for RET-4.9 |
 | RET-4.12 | **Saved listings** | Life of the account; **deleted with it** | Deletion | Private, revealing, no secondary purpose (PRIV-3) |
 | RET-4.13 | **Report submissions** | **Until resolved, plus a short period**; reporter identity destroyed earliest consistent with handling | Resolution | TS-8. Holding reporter identity longer than needed is a direct risk to the reporter |
 | RET-4.14 | Correction requests | Until actioned, plus a short period | Resolution | TS-1…TS-5 |
@@ -238,7 +238,7 @@ retain forever by inattention.
 | --- | --- | --- |
 | **L-21** | **The entire schedule in §4** | **PENDING COUNSEL** — the central gap |
 | D-46 | Retention periods as a Class A legal item | **PENDING COUNSEL** |
-| D-34 | Reviews after account deletion | **Open — product decision.** Blocks RET-4.9 |
+| L-21 / D-46 | **Retention period** for a withdrawn Review and its edit history | **PENDING COUNSEL.** D-34 closed the mechanism on 2026-10-07 and RET-4.9 now states it; only the duration is missing |
 | D-27 | Whether raw analytics events exist at all | **Open — privacy decision** |
 | D-43 | Permission record contents and period | **Open — privacy decision** |
 | D-08 | Verification evidence contents and period | **Open — product decision** |

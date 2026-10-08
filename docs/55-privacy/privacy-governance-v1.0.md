@@ -427,7 +427,7 @@ should be sought where appropriate.
 | D-46 | Minimum account age; retention schedule | Counsel | **PENDING COUNSEL** |
 | D-27 | Analytics granularity, retention, raw events | Owner | **Open — privacy decision** |
 | D-43 | Permission record contents and retention | Owner | **Open — privacy decision** |
-| D-34 | Review treatment after account deletion | Owner | **Open — product decision** |
+| L-21 / D-46 | **Retention period** for a withdrawn Review after account deletion | Counsel | **PENDING COUNSEL.** D-34 settled the treatment — withdrawal — on 2026-10-07 |
 | D-51 | Minimisation principle | Owner | **Approved** — binding |
 | — | Whether Bulbula publishes a privacy contact before a DPO decision | Owner | **Open — privacy decision.** Art. 24(1)(a) needs one |
 | — | Whether a conflict-free DPO is feasible at Bulbula's size | Owner | **Open — privacy decision** (Art. 41(2)) |

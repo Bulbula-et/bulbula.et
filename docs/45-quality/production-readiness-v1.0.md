@@ -73,7 +73,7 @@ recorded as blocking in a document above this one.
 | PRR-3.7 | **D-23** — production secret custody | Secrets must exist somewhere accountable before production does | **Open — technical decision** |
 | PRR-3.8 | **D-40** — launch-area boundary | Area data is provisional without it | **Open — product decision** |
 | PRR-3.9 | **D-08** — verification methods and interval | Verification is the central trust claim | **Open — product decision** |
-| PRR-3.10 | **D-56 / D-57** — category catalogue and cardinality | Taxonomy is the backbone of browsing | **Open — product decision** |
+| PRR-3.10 | **The populated Category catalogue** — the content, not the model | Taxonomy is the backbone of browsing. **D-56 and D-57 were approved on 2026-10-07**, so the model and cardinality are settled; what remains is the **curated catalogue content**, which is an operations task | **Open — operational decision** |
 | PRR-3.11 | **D-39** — commercial/editorial integrity controls | **Blocks the first paid Campaign**, not the launch itself | **Open — product decision** |
 
 | ID | Rule |
@@ -116,7 +116,7 @@ recorded as blocking in a document above this one.
 | 21 | Every published Listing passed second-person quality review | Review records; LO-5.1 |
 | 22 | Personal contact points are flagged where applicable | Query; COL-2, PCP-1 |
 | 23 | Media has alt text and recorded rights; EXIF stripped | Query; OPX-6.1, OPX-6.2, APP-6.11 |
-| 24 | The Category catalogue is approved and populated | **Open (D-56, D-57)** |
+| 24 | The Category catalogue is approved and populated | **Open — operational decision.** The catalogue *model* is settled (D-56, D-57); the *content* is curated by Bulbula and is not yet produced |
 | 25 | Areas for the launch boundary are curated | **Open (D-40)** |
 | 26 | No fabricated Listing, Review, rating or activity exists | TS-13 — a statement of fact, verifiable by provenance |
 
@@ -249,7 +249,8 @@ recorded as blocking in a document above this one.
 | ID | Item | Marker |
 | --- | --- | --- |
 | D-30n / D-31 | The launch threshold and the pilot that produces it | **PENDING PILOT** |
-| D-42 / D-42b, D-41, D-23, D-14, D-45, D-40, D-08, D-56, D-57 | The blocking decisions in §3 | **Open** — see §3 |
+| D-42 / D-42b, D-41, D-23, D-14, D-45, D-40, D-08 | The blocking decisions in §3 | **Open** — see §3 |
+| Category catalogue content | Criterion 24; PRR-3.10. The **model** is settled (D-56, D-57); the **content** is not produced | **Open — operational decision** |
 | D-39 | Blocks the first paid Campaign | **Open — product decision** |
 | D-26 | Thresholds as the domain grows | **Open — quality decision** |
 | D-11 | Billing | **Open — product decision** |

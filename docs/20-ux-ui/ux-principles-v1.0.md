@@ -292,7 +292,7 @@ When two principles collide, this order decides:
 | View layer | **Open (D-17)** |
 | Mini App navigation model | **Open (D-38)** |
 | Maps embed strategy and fallback | **Open (D-21)** |
-| Review scale, edit window, moderation timing | **Open (D-34)** |
+| Review scale, edit window, moderation timing | **Closed 2026-10-07 (D-34)** — 1 to 5, 30 days, pre-publication |
 | Hours model | **Open (D-04)** |
 | Structured guest suggestions | **Open (D-35)** |
 | Operator / Administrator split | **Open (D-14)** |

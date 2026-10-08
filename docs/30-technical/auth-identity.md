@@ -349,7 +349,8 @@ POST /me/deletion   → explicit, informed confirmation
 DELETE /me          → execute
    ├─ revoke every session
    ├─ delete or irreversibly detach personal data (identities, OTP state, saves)
-   ├─ apply the Review outcome fixed by D-34 / L-21
+   ├─ withdraw the Customer's Reviews — public visibility ceases (D-34)
+   │    retention of the internal record: PENDING COUNSEL (L-21, D-46)
    ├─ write an audit entry WITHOUT personal data (TRD TR-167)
    └─ send confirmation (C-39)
 ```
@@ -359,7 +360,7 @@ DELETE /me          → execute
 | DL-1 | Deletion requires explicit confirmation and states what will and will not be removed before it happens |
 | DL-2 | Every session is revoked |
 | DL-3 | Audit entries survive; they record that a deletion occurred, not who the person was (TRD TR-167) |
-| DL-4 | Published Reviews: handling is **Open — product/legal (D-34, L-21)**. The model supports anonymisation or removal; neither is asserted here |
+| DL-4 | Published Reviews are **withdrawn**: public visibility ceases and they leave every rating summary (D-34). **How long the internal record is retained, and whether it is ultimately anonymised or erased, remains PENDING COUNSEL (L-21, D-46)** — neither is asserted here |
 | DL-5 | Response windows and completeness obligations are **PENDING COUNSEL** (LK-7) |
 | DL-6 | A deleted address may sign in again — producing a **new** Customer with no prior data (NA-1) |
 
@@ -387,12 +388,17 @@ DELETE /me          → execute
 | --- | --- | --- |
 | D-13 | Identity-linking rules | Open — product decision |
 | D-33 | Telegram identity relationship | Open — product decision |
-| D-34 | Review fate on deletion | Open — product decision |
 | D-41 | Email provider and deliverability | Open — OTP depends on it |
 | D-45 | **Staff authentication strength** | Open — §7 accommodates all outcomes |
 | D-46 | Minimum age | Open — **PENDING COUNSEL** |
 | TRD OT-01 | Session lifetimes | Open — technical decision |
 | TRD OT-02 | OTP length, window, attempt and request limits | Open — technical decision |
+
+**D-34 closed on 2026-10-07** and has left this table. It fixes the
+*mechanism* on deletion — a Review is **withdrawn**, not destructively
+erased — which is reflected in §10 DL-4. It does **not** fix the retention
+period or the minimum age; both remain **PENDING COUNSEL** under L-21 and
+D-46.
 | LK-5 | Lawful basis for processing | **PENDING COUNSEL** |
 | LK-7 | Rights-request windows and export format | **PENDING COUNSEL** |
 | L-21 | Retention schedule | **PENDING COUNSEL** |

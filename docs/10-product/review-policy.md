@@ -15,10 +15,16 @@ what Bulbula will not do. Referenced by [`prd-v1.0.md`](prd-v1.0.md) §15 and
 capabilities C-13, C-25, C-35.
 
 **Discipline of this document.** Where an approved decision exists, the rule
-is stated. Where it does not, the item is marked **Open —
-implementation/product detail (D-34)** and left open. **No policy is invented
-here.** A reader looking for a rule that is marked open must obtain a
-decision, not a guess.
+is stated. Where it does not, the item is marked open and left open. **No
+policy is invented here.** A reader looking for a rule that is marked open
+must obtain a decision, not a guess.
+
+**D-34 is approved (2026-10-07).** The Review subject, rating scale,
+rating-only support, edit window, edit-returns-to-moderation rule, deletion
+semantics, moderation order, rating-summary computation, default ordering and
+the account-age question are **settled** and are stated below as rules. What
+remains open is listed in §9 and is deliberately narrow: configuration values
+and the **PENDING COUNSEL** retention questions.
 
 ---
 
@@ -28,8 +34,8 @@ decision, not a guess.
 | --- | --- | --- |
 | Read Reviews and rating summaries | Everyone, including Guests | D-05 |
 | Write a Review | Authenticated Customers only | D-12 |
-| Edit own Review | The author, within the permitted window | D-12; window **Open (D-34)** |
-| Delete own Review | The author | D-12; semantics **Open (D-34)** |
+| Edit own Review | The author, **within 30 days of creation**; the edit re-enters moderation | D-12, D-34 |
+| Delete own Review | The author, at any time; deletion is a **withdrawal**, not destructive erasure | D-12, D-34 |
 | Report a Review | Authenticated Customers and Staff | `interaction-permissions.md` §3 |
 | Moderate Reviews | Operator; Administrator for policy and appeals | D-12 |
 | **Reply to a Review** | **Nobody in V1** — Businesses have no accounts | **D-12, D-54** |
@@ -49,28 +55,31 @@ decision, not a guess.
 
 | Component | V1 position | Decision |
 | --- | --- | --- |
-| **Rating** | Required. A numeric score on a fixed scale | D-12 |
-| Rating scale | Five points, whole numbers | **[P]** — conventional and consistent with structured-data expectations (R-15); confirm under D-34 |
-| **Review text** | Optional, free text | D-12 |
-| Text limits | Minimum and maximum length | **Open (D-34)** |
+| **Rating** | **Required.** An integer from **1 to 5** | D-12, D-34 |
+| Rating scale | **1–5, whole numbers.** Consistent with structured-data expectations (R-15) | D-34 |
+| **Review text** | **Optional**, free text | D-12, D-34 |
+| Text limits | Maximum length is an **implementation/configuration parameter**; no value is fixed by D-34 and none is invented here | D-34; **Open — implementation detail** |
 | **Author attribution** | The Customer's display name | D-12 |
 | **Date** | Submission date, and edit date where edited | — |
 | **Photos** | **Not in V1** | **Deferred (D-36)** |
 | **Helpful voting** | **Not in V1** | **Deferred (D-37)** |
 | **Business reply** | **Not in V1** | **D-12, D-54** |
-| Rating-only Reviews (no text) | Whether permitted | **Open (D-34)** |
+| Rating-only Reviews (no text) | **Permitted.** A Rating alone is a valid Review | D-34 |
 | Structured sub-ratings (service, value, …) | **Not in V1** — one overall Rating only | D-12 |
 
 ### 2.1 Subject of a Review
 
-| Question | Status |
+| Question | Position |
 | --- | --- |
-| Is a Review attached to a **Business** or to a **Branch**? | **Open — implementation/product detail (D-34)** |
-| How a multi-branch rating summary is composed | Follows from D-34; **Open** |
+| Is a Review attached to a **Business** or to a **Branch**? | **A Review belongs to a Branch.** Never directly to a Business | D-34, D-55 |
+| How a multi-branch rating summary is composed | A Business-level summary is an **aggregate derived from its Branches' Reviews** (§3) | D-34 |
 
-This is the single most consequential open item in this document: it affects
-the data model, the profile layout and the rating summary. It **MUST** be
-resolved before the UX and data-model phase and recorded in the register.
+| ID | Rule |
+| --- | --- |
+| SUBJ-1 | A Review **MUST** reference exactly one **Branch** |
+| SUBJ-2 | A single-location Business is **not** a special case: it has one Branch, and its Reviews attach there |
+| SUBJ-3 | A Business-level rating summary is **derived**, never stored as the primary truth |
+| SUBJ-4 | A Customer **MUST** be able to tell which Branch they are reviewing, and which Branch a published Review concerns |
 
 ---
 
@@ -83,22 +92,28 @@ resolved before the UX and data-model phase and recorded in the register.
 | SUM-3 | The summary **MUST** state the number of Reviews it is based on |
 | SUM-4 | Only **published** Reviews contribute; pending, rejected, removed and deleted Reviews do not |
 | SUM-5 | The summary **MUST** update when a Review is published, removed or deleted |
-| SUM-6 | The computation method (plain mean, or a method that accounts for volume) is **Open (D-34)**. Until resolved, nothing downstream may assume a weighting |
+| SUM-6 | The computation method is the **arithmetic mean of currently Published Review ratings** for the applicable Branch or Business scope. **No weighting of any kind** — not by volume, recency, author or any other factor (D-34) |
 | SUM-7 | A displayed rating **MUST** match any rating published in structured data (R-15, SEO-6) |
+| SUM-8 | A **Branch** summary covers that Branch's Published Reviews. A **Business** summary aggregates the Published Reviews of all its Branches (D-34, D-55) |
+| SUM-9 | Default public ordering of Reviews is **newest Published Review first**. Any alternative ordering requires a later decision (D-34) |
 
 ---
 
 ## 4. Review lifecycle and states
 
 ```text
-submitted → [moderation] → published
-                   ↓
-               rejected  (author notified, reason given)
+submitted → pending → [moderation] → published
+                           ↓
+                       rejected        (author notified, reason given;
+                                        never public)
 
-published → edited → [moderation] → published
-published → removed  (by Staff, with policy basis)
-published → deleted  (by the author)
+published → edited (within 30 days) → pending → [moderation] → published
+published → removed   (by Staff, with policy basis)
+published → deleted   (withdrawn by the author; public visibility ceases)
 ```
+
+**Moderation precedes publication (LC-4).** Nothing a Customer submits is
+public before a moderator approves it.
 
 | State | Meaning | Visible to |
 | --- | --- | --- |
@@ -113,9 +128,11 @@ published → deleted  (by the author)
 | LC-1 | Every state change **MUST** record actor, timestamp and reason (C-29) |
 | LC-2 | The author **MUST** be notified of rejection or removal, with the reason (C-39) |
 | LC-3 | Rejected and removed Reviews **MUST NOT** contribute to the rating summary |
-| LC-4 | Whether moderation occurs **before** or **after** publication is **Open (D-34)** — the states above support either, and the product **MUST NOT** hard-code an assumption before it is decided |
-| LC-5 | Whether an edit returns a Review to moderation is **Open (D-34)** |
-| LC-6 | Whether author deletion is a hard delete or a withdrawal that retains an internal record is **Open (D-34)**, and interacts with the legal question of retention after account deletion (**PENDING COUNSEL**, L-21, D-46) |
+| LC-4 | **Moderation is pre-publication.** A submitted Review enters `Pending` and becomes `Published` only on moderation approval. A Rejected Review **MUST NEVER** become public. Post-publication removal remains available for later moderation cases (D-34) |
+| LC-5 | **An edit returns the Review to moderation.** The edited Review re-enters `Pending` and becomes `Published` again only on approval (D-34) |
+| LC-6 | **Author deletion is a withdrawal, not a destructive erasure.** Public visibility ceases immediately; an internal record may remain where retention, audit, abuse prevention or legal obligation requires it. **How long such a record is retained is PENDING COUNSEL (L-21, D-46)** and is not decided by D-34 |
+| LC-7 | A Customer may hold **at most one active Review per Branch**. A second submission for the same Branch is an **edit** of the existing Review, never a new one (D-34, AB-3) |
+| LC-8 | The edit window is **30 days from creation** (D-34). After it closes the Review stands as published; the author may still withdraw it under LC-6 |
 
 ---
 
@@ -144,7 +161,7 @@ A Review may be rejected or removed only on a published ground:
 | MOD-3 | A Business's objection, commercial relationship or advertising spend is **not** a ground (TS-14, ADV-9) |
 | MOD-4 | Moderators **MUST NOT** edit the content of a Review. The only outcomes are publish, reject and remove |
 | MOD-5 | Decisions **MUST** be recorded with the policy basis, the actor and the time (C-25, C-29) |
-| MOD-6 | Appeals are handled by an Administrator; the appeal mechanism and any time limit are **Open (D-34)** |
+| MOD-6 | Appeals are handled by an Administrator. **D-34 confirms the Administrator as the appeal authority**; the appeal mechanism and any time limit remain an **operational configuration detail** and no deadline is invented here |
 | MOD-7 | A public summary of these grounds **MUST** be published as a static page (C-18) |
 
 ### 5.2 Defamation and legal demands
@@ -178,13 +195,13 @@ commercial interference.
 | ID | Control | Status |
 | --- | --- | --- |
 | AB-1 | Authentication is required to write (D-12) | **[C]** |
-| AB-2 | Rate limits on submissions per Customer per period | **[C]** required; values **Open (D-34)** |
-| AB-3 | One Review per Customer per subject, with editing rather than re-posting | **[C]** required; the *subject* (Business or Branch) is **Open (D-34)** |
+| AB-2 | Rate limits on submissions per Customer per period | **[C]** required; values are **configuration**, not schema, and are deliberately unset (D-34) |
+| AB-3 | **One active Review per Customer per Branch**, edited rather than re-posted | **[C]** required; the subject is the **Branch** (D-34, §2.1) |
 | AB-4 | Duplicate and near-duplicate text detection across Reviews | **[C]** required; method is a TRD matter |
-| AB-5 | Anomaly detection: bursts of Reviews on one Business, or from one account, surfaced to Staff | **[C]** required; thresholds **Open (D-34)** |
+| AB-5 | Anomaly detection: bursts of Reviews on one Branch or Business, or from one account, surfaced to Staff | **[C]** required; thresholds are **configuration**, not schema, and are deliberately unset (D-34) |
 | AB-6 | Staff review of anomalous patterns before summaries shift materially | **[C]** |
 | AB-7 | Separation of commercial relationships from moderation — **Open (D-39)**, and **MUST** be resolved before the first paid Campaign | Open |
-| AB-8 | Account-age or activity requirements before a first Review | **[P]** — not approved; evaluate under D-34 |
+| AB-8 | Account-age or activity requirement before a first Review | **None in V1.** D-34 imposes no minimum account age; authentication (AB-1), rate limits (AB-2) and anomaly detection (AB-5) remain the controls |
 | AB-9 | No automated removal; adverse outcomes are taken by a person | **[C]** |
 
 | ID | Prohibition |
@@ -216,29 +233,41 @@ no "owner has not responded" state (PRD H-4).
 
 ## 9. Open items
 
-Every item below is **Open — implementation/product detail (D-34)** unless
-marked otherwise. Each **MUST** be resolved through the decision process and
-recorded in the register before the UX and data-model phase.
+**D-34 closed thirteen of the fourteen items this section previously
+carried.** What follows is what genuinely remains.
 
-| # | Open item |
+### 9.1 Settled by D-34 on 2026-10-07
+
+| Former item | Settled position |
 | --- | --- |
-| 1 | Is a Review attached to a Business or to a Branch? (§2.1) |
-| 2 | Rating scale confirmation (currently **[P]** five points) |
-| 3 | Minimum and maximum review-text length |
-| 4 | Whether rating-only Reviews are permitted |
-| 5 | Edit window length, and whether an edit returns the Review to moderation |
-| 6 | Whether author deletion is a hard delete or a withdrawal (interacts with **L-21 / D-46**, PENDING COUNSEL) |
-| 7 | Pre-publication versus post-publication moderation (LC-4) |
-| 8 | Rating summary computation method (SUM-6) |
-| 9 | Rate-limit values (AB-2) and anomaly thresholds (AB-5) |
-| 10 | Whether an account-age or activity requirement applies (AB-8, currently **[P]**) |
-| 11 | Appeal mechanism and any time limit (MOD-6) |
-| 12 | Default ordering of Reviews on a profile |
-| 13 | Treatment of published Reviews after the author deletes their account (**L-21 / D-46**, PENDING COUNSEL) |
-| 14 | Commercial-editorial separation controls (**D-39**) |
+| Review subject | **Branch** (§2.1, SUBJ-1) |
+| Rating scale | **Integer 1–5, required** (§2) |
+| Rating-only Reviews | **Permitted** (§2) |
+| Edit window | **30 days from creation** (LC-8) |
+| Edit returns to moderation | **Yes** (LC-5) |
+| Author deletion | **Withdrawal / soft deletion** (LC-6) |
+| Moderation order | **Pre-publication** (LC-4) |
+| Rating summary computation | **Arithmetic mean of Published Reviews, no weighting** (SUM-6) |
+| Default ordering | **Newest Published first** (SUM-9) |
+| Account-age requirement | **None** (AB-8) |
+| Appeal authority | **Administrator** (MOD-6) |
+| One Review per Customer per subject | **Per Branch** (LC-7, AB-3) |
+| Multi-branch summary composition | **Aggregate of Branch Reviews** (SUM-8) |
+
+### 9.2 Still open
+
+| # | Open item | Status |
+| --- | --- | --- |
+| 1 | Maximum review-text length | **Open — implementation detail.** Configuration; D-34 deliberately sets no value |
+| 2 | Rate-limit values (AB-2) and anomaly thresholds (AB-5) | **Open — implementation detail.** Configuration, not schema |
+| 3 | Appeal mechanism and any time limit (MOD-6) | **Open — operational decision.** No legal or product deadline is invented |
+| 4 | Duplicate-detection method (AB-4) | **Open — technical decision** |
+| 5 | Retention of a withdrawn Review's internal record, and the treatment of Reviews after the author deletes their **account** | **PENDING COUNSEL** (L-21, D-46). D-34 fixes the *mechanism*, not the *period* |
+| 6 | Legal removal and defamation process (§5.2) | **PENDING COUNSEL** (L-15) |
+| 7 | Commercial-editorial separation controls | **Open (D-39)** — **D-34 does not close D-39** |
 
 ---
 
 ## Decision references
 
-D-05, D-12, D-34, D-36, D-37, D-39, D-46, D-48, D-54.
+D-05, D-12, D-34, D-36, D-37, D-39, D-46, D-54, D-55.

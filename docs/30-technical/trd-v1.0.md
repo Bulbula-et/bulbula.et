@@ -615,11 +615,21 @@ draft ──submit──▶ in_review ──approve──▶ published ──unp
 | TR-58 | No bulk-import path may bypass Permission, provenance or quality review | OC-10 |
 
 **Open — product/data detail:** the opening-hours model (D-04), verification
-rules and interval (D-08), completeness definition (D-09), Branch-vs-Business
-attribute boundary (D-55), category catalogue and cardinality (D-56, D-57),
-Permission record contents and retention (D-43), services/products/pricing
-representation (D-44). The schema in `data-model.md` accommodates these
-without pre-deciding them.
+rules and interval (D-08), completeness definition (D-09), Permission record
+contents and retention (D-43), services/products/pricing representation
+(D-44). The schema in `data-model.md` accommodates these without
+pre-deciding them.
+
+**Settled at the M0 schema gate (2026-10-07).** The **Business/Branch
+attribute boundary is fixed by D-55**: brand-level attributes on the
+Business, location-specific operational attributes — address, Area,
+Sub-city, Landmark, coordinates, phone, branch email, hours, branch-specific
+services and pricing — on the Branch, and **no attribute may be moved
+between levels for implementation convenience**. The **category catalogue is
+centrally curated reference data** (D-56) and **every Listing carries
+exactly one primary Category plus zero or more secondaries** (D-57).
+Directory schema is therefore no longer blocked. D-04 and D-44 remain open;
+D-55 settles only the *level* at which they live.
 
 ---
 
@@ -630,15 +640,22 @@ Implements `review-policy.md` and capabilities C-13, C-25, C-35.
 | ID | Requirement | Source |
 | --- | --- | --- |
 | TR-59 | A Review **MUST** be written only by an authenticated Customer and **MUST** be attributed to that Customer | D-12 |
-| TR-60 | Review state **MUST** be an explicit value (`pending`, `published`, `rejected`, `removed`, `deleted`) supporting **either** pre- or post-publication moderation, because the choice is **Open (D-34)**. No code may assume one of them | LC-4, D-34 |
+| TR-60 | Review state **MUST** be an explicit value (`pending`, `published`, `rejected`, `removed`, `deleted`). **Moderation is pre-publication** (D-34, LC-4): a Review is created `pending` and reaches `published` only on approval, and a `rejected` Review **MUST NOT** ever be publicly visible. `removed` supports post-publication removal; `deleted` is author withdrawal | LC-4, D-34 |
 | TR-61 | Only `published` Reviews **MUST** contribute to a rating summary; the summary **MUST** be recomputed on every state change | SUM-4, SUM-5 |
 | TR-62 | The rating summary **MUST** be stored as a derived value for query performance and **MUST** be rebuildable from Reviews | DO-7 |
-| TR-63 | A Business with no published Reviews **MUST** have no rating value — the schema **MUST** distinguish "no rating" from "rating of zero" | SUM-2 |
+| TR-63 | A Branch or Business with no published Reviews **MUST** have no rating value — the schema **MUST** distinguish "no rating" from "rating of zero" | SUM-2 |
+| TR-63a | The rating summary **MUST** be the **arithmetic mean of currently `published` ratings, unweighted**; `pending`, `rejected`, `removed` and `deleted` Reviews **MUST** be excluded. A **Business** summary **MUST** be computed by aggregating its Branches' Reviews, never by storing Reviews against the Business | SUM-6, SUM-8, D-34, D-55 |
 | TR-64 | Every moderation outcome **MUST** record the policy ground, the actor, the time and the reason | MOD-5, C-29 |
 | TR-65 | Reporter identity **MUST NOT** be retrievable through any response visible to the author or the Business | TS-10, REP-4 |
-| TR-66 | Anti-abuse controls — rate limiting, one Review per Customer per subject, duplicate-text detection, anomaly surfacing — **MUST** exist; **their thresholds are configuration, not constants, and the values are Open (D-34)** | AB-2…AB-5 |
+| TR-66 | Anti-abuse controls — rate limiting, **at most one active Review per Customer per Branch**, duplicate-text detection, anomaly surfacing — **MUST** exist; **their thresholds remain configuration, not constants, and D-34 deliberately sets no values** | AB-2…AB-5, D-34 |
 | TR-67 | **No reply-to-review structure may be built**: there is no business principal to own it (D-12, D-54). A schema column, API field or template slot for it is a defect | D-12, D-54, PRD H-4 |
-| TR-68 | Whether the review subject is a Business or a Branch is **Open (D-34)**; the data model **MUST** record the decision point explicitly rather than guessing | D-34 |
+| TR-68 | A Review's subject **MUST** be a **Branch** (D-34, D-55). No Review may be stored against a Business; Business-level rating figures **MUST** be derived by aggregation | D-34, D-55 |
+| TR-69 | `rating` **MUST** be a required integer in the inclusive range 1–5, enforced at the database level and not only in application code; review text **MUST** be optional, so a rating-only Review is valid | D-34 |
+| TR-70 | The database **MUST** enforce **at most one active Review per (Customer, Branch)**; re-reviewing **MUST** be an edit of the existing Review, never a second row | D-34, AB-3 |
+| TR-71 | The author's edit window **MUST** be **30 days from creation**, enforced server-side, and an accepted edit **MUST** return the Review to `pending` for re-moderation | D-34, LC-5, LC-8 |
+| TR-72 | Author deletion **MUST** be a **soft delete (withdrawal)**: public visibility ceases immediately and the Review leaves every summary, while the internal record may be retained for retention, audit, abuse and legal purposes. **The retention period is PENDING COUNSEL (L-21, D-46) and MUST NOT be invented in code** | D-34, LC-6, D-46 |
+| TR-73 | Published Reviews **MUST** be ordered **newest first** by default | SUM-9, D-34 |
+| TR-74 | **No minimum account age** may gate a first Review (D-34). Authentication, rate limiting and anomaly detection are the controls | D-34, AB-8 |
 
 ---
 
@@ -894,7 +911,7 @@ filename order; batches tracked in the `migrations` table; rollback by batch.
 | --- | --- |
 | TR-175 | Every migration **MUST** be reversible, or **MUST** state in a comment why it is not and what the recovery procedure is |
 | TR-176 | Migrations **MUST** be additive where possible; a destructive change is split into expand → migrate data → contract across separate deployments |
-| TR-177 | A migration **MUST NOT** contain business data beyond reference data required for the system to function; the Category catalogue is content, not schema (**Open — D-56**) |
+| TR-177 | A migration **MUST NOT** contain business data beyond reference data required for the system to function. **The Category catalogue is reference data, not application schema (D-56):** adding, removing or reclassifying a Category **MUST NOT** require a code change or a migration where the model already supports it |
 | TR-178 | Migrations **MUST** be deterministic and **MUST NOT** depend on the current date, environment or existing production content |
 | TR-179 | Schema changes **MUST** be accompanied by the indexes the new queries require (TR-169) |
 | TR-180 | Migrations are run deliberately, never automatically by the deployment cron (§32) |
@@ -976,7 +993,7 @@ Architectural constraints only; the privacy specification belongs to
 | TR-202 | Analytics events **MUST NOT** store information identifying an individual Guest — no IP address retained as an identifier, no device fingerprint, no cross-session identifier | PRD AN-3, NFR-PR3 |
 | TR-203 | Business data **MUST NOT** be assumed non-personal; personal contact points are flagged at the schema level (DO-6) | D-51, PCP-1, PCP-2 |
 | TR-204 | All personal data relating to one person **MUST** be locatable through documented relationships so a rights request can be executed completely | PRIV-7 |
-| TR-205 | Account deletion **MUST** remove or irreversibly detach personal data; the treatment of published Reviews afterwards is **Open — product/legal (D-34, L-21)** | C-36, D-34 |
+| TR-205 | Account deletion **MUST** remove or irreversibly detach personal data. A published Review follows the **withdrawal** model fixed by D-34 — public visibility ceases — but **how long any internal record is retained is PENDING COUNSEL (L-21, D-46)** and **MUST NOT** be hard-coded | C-36, D-34, D-46 |
 | TR-206 | Personal data residency follows PRD LOC-1; the hosting approach is **Open (D-42, D-42b)** and the lawful basis for any transfer is **PENDING COUNSEL** (L-10, L-12) | D-42, L-10 |
 | TR-207 | No third-party tracking, advertising SDK or behavioural profiling component may be integrated | NFR-PR4, NG-12 |
 | TR-208 | Retention periods per data class are **PENDING COUNSEL** (L-21, D-46); the schema supports expiry, and the pruning job reads the period from configuration | D-46, TR-196 |
@@ -1138,7 +1155,6 @@ PRD and the register; they are referenced, not duplicated.
 | D-26 | Coverage and mutation-score gates as the domain grows | Phase 1 thresholds hold; never lowered |
 | D-27 | Analytics granularity, retention, raw-event policy | Event schema exists; retention is configuration |
 | D-33 | Telegram identity | Mini App context is a surface signal only |
-| D-34 | Review mechanics | Review subject, edit window, deletion semantics provisional |
 | D-35 | Guest structured suggestions | Free-text reports only |
 | D-38 | Mini App navigation model | Both models remain possible |
 | D-39 | Advertising integrity controls | Blocks the first paid Campaign |
@@ -1149,9 +1165,19 @@ PRD and the register; they are referenced, not duplicated.
 | D-44 | Services/products/pricing representation | Deferred structure in the data model |
 | D-45 | Staff authentication strength | Schema accommodates factors (TR-31); policy not set |
 | D-46 / D-46 | Legal minima, account age, retention schedule | **PENDING COUNSEL** |
-| D-55 | Branch versus Business attributes | Attribute placement provisional |
-| D-56 / D-57 | Category catalogue and cardinality | Taxonomy content and multiplicity pending |
 | D-30n / D-31 | Launch threshold and pilot | **PENDING PILOT** — no capacity or coverage number assumed |
+
+**Closed at the M0 schema gate — 2026-10-07.** **D-34**, **D-55**, **D-56**
+and **D-57** left the table above. Review schema and the Review repository
+and service, the Business and Branch tables and their repositories, the
+Category and Subcategory tables, the Listing-to-Category join, the taxonomy
+reference-data framework, category filtering, the review APIs and the Review
+moderation model are **no longer blocked**. The requirements are stated in
+§17 (directory), §18 (TR-59…TR-74) and §24 (TR-177).
+
+The **catalogue content** remains an operations task under D-56 — unblocking
+the schema does not produce the data. No retention period is unblocked:
+L-21 and D-46 remain **PENDING COUNSEL**.
 
 **Rule.** An open item is a visible hole. Implementation **MUST** either
 resolve it through the decision process and record it in the register, or

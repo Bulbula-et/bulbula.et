@@ -240,9 +240,12 @@ not preferences.**
 | Account deletion, after | **Your account has been deleted.** |
 | Data export requested | **We're preparing your data** — "We'll email you when it's ready." |
 
-**The `{Review outcome}` placeholder is deliberate.** The fate of published
-Reviews on deletion is **Open (D-34, L-21)**. The dialog must state the
-**decided** outcome and **must not guess** (UFL-B9.5).
+**The `{Review outcome}` placeholder now has a decided core.** On account
+deletion a published Review is **withdrawn** — it stops being publicly
+visible and no longer counts towards any rating (D-34) — and the copy says
+exactly that. What the copy **must not** do is state or imply **how long**
+any internal record is kept, because that remains **PENDING COUNSEL** (L-21,
+D-46).
 
 ---
 
@@ -473,7 +476,7 @@ whether or not an account exists (UFL-B2.1, OTP-8).
 
 | ID | Item | Status |
 | --- | --- | --- |
-| D-34 | Review state wording, and the deletion outcome in §8 | Open — product detail |
+| D-34 | Review state wording, and the deletion outcome in §8 | **Closed 2026-10-07.** Copy says 1 to 5, text optional, awaiting review before publication, editable for 30 days, and withdrawal on deletion. The retention period stays **PENDING COUNSEL** (L-21, D-46) |
 | D-35 | Report form structure and its labels | Open — product detail |
 | D-04 | Hours wording for special and 24-hour cases | Open — product detail |
 | D-08 | What "Verified" means in detail, for the explanation page | Open — product detail |

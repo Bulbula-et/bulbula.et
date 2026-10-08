@@ -222,7 +222,7 @@ resolution and must not pre-empt it.
 | AS-8.3 | Sign-out on one surface does not sign the Customer out of the other, unless they ask for all sessions | S-8, C-32 |
 | AS-8.4 | **Account deletion revokes every session immediately** | S-7 |
 | AS-8.5 | Deletion requires an authenticated, confirmed action and is **audited** | THR-26, C-29 |
-| AS-8.6 | Deletion removes or irreversibly detaches personal data per the approved retention rules; **the treatment of published Reviews is Open (D-34) and PENDING COUNSEL (L-21)** | TR-205, D-34 |
+| AS-8.6 | Deletion removes or irreversibly detaches personal data per the approved retention rules. A published Review is **withdrawn** — public visibility ceases (D-34) — while **how long any internal record is retained remains PENDING COUNSEL (L-21, D-46)** and **must not** be hard-coded | TR-205, D-34, D-46 |
 | AS-8.7 | Deletion **must not** delete audit or moderation history belonging to the record of staff action | TR-167 |
 | AS-8.8 | After deletion, the address must be able to create a **new, unrelated account** without inheriting anything | TR-205 |
 | AS-8.9 | Deletion is a right under Art. 28 and is specified in `data-subject-rights-v1.0.md` §5 | DSR §5 |
@@ -271,7 +271,7 @@ resolution and must not pre-empt it.
 | D-13 | Identity-linking rules | **Owner decision, open** |
 | D-14 | Permission split | **Owner decision, open** |
 | D-33 | Telegram identity | **Owner decision, open.** Not a login mechanism |
-| D-34 | Review treatment after account deletion | **Owner decision, open** |
+| L-21 / D-46 | **How long** a withdrawn Review's internal record is retained after account deletion | **PENDING COUNSEL.** D-34 fixed the mechanism — withdrawal, not destructive erasure — on 2026-10-07; the period is not a security decision and is not set here |
 | D-41 | Email provider | **Open — technical decision** |
 | D-46 | Minimum account age | **PENDING COUNSEL** |
 | OT-01 | Session lifetime and rotation values | **Open — technical decision** |

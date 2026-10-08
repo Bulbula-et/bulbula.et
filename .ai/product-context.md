@@ -1,8 +1,8 @@
 # Product Context
 
 ```text
-Source baseline:   33f58e0e1619c7e5b952eede2382ae3c5e2ccf8c
-Last derived from: 2026-10-07
+Source baseline:   b5d606612c10e2a7a3c284b69fafab507f0b92fb
+Last derived from: 2026-10-08
 Context status:    Current
 ```
 
@@ -39,16 +39,16 @@ they leave detail inside it undecided.**
 | C-01 | Homepage | Guest | — |
 | C-02 | Search | Guest | D-09 |
 | C-03 | Search autocomplete | Guest | — |
-| C-04 | Category / subcategory browsing | Guest | D-56, D-57 |
+| C-04 | Category / subcategory browsing | Guest | — |
 | C-05 | Location / area browsing | Guest | D-40 |
-| C-06 | Category × area pages | Guest | D-56 |
+| C-06 | Category × area pages | Guest | — |
 | C-07 | Nearby / distance discovery | Guest | — |
-| C-08 | Business profile pages | Guest | D-44, D-55 |
-| C-09 | Opening hours and open status | Guest | D-04, D-55 |
+| C-08 | Business profile pages | Guest | D-44 |
+| C-09 | Opening hours and open status | Guest | D-04 |
 | C-10 | Google Maps embed and open-in-maps | Guest | D-21 |
-| C-11 | Business contact actions — **the core value event** | Guest | D-55 |
+| C-11 | Business contact actions — **the core value event** | Guest | — |
 | C-12 | Trust indicators | Guest | D-08 |
-| C-13 | Reviews — read as Guest, **write as Customer** | Guest / Customer | D-34, D-36, D-37 |
+| C-13 | Reviews — read as Guest, **write as Customer** | Guest / Customer | D-36, D-37 |
 | C-14 | Save — **private, no counts** | Customer | — |
 | C-15 | Report a problem / suggest a correction | **Guest, no account** | D-35 |
 | C-16 | Sponsored placements | Guest | D-10 detail |
@@ -63,9 +63,9 @@ they leave detail inside it undecided.**
 | C-20 | Listing editing | Operator | D-14 |
 | C-21 | Verification and quality control | Operator | D-08 |
 | C-22 | Media management | Operator | D-25 |
-| C-23 | Category management | **Administrator** | D-06, D-56, D-57 |
+| C-23 | Category management | **Administrator** | — |
 | C-24 | Location management | **Administrator** | D-40 |
-| C-25 | Review moderation | Operator | D-34 |
+| C-25 | Review moderation | Operator | — |
 | C-26 | Report management | Operator | D-35 |
 | C-27 | Advertising and campaign management | Operator creates, **Administrator approves** | D-11, D-39 |
 | C-28 | Operational analytics | Staff | D-27 |
@@ -80,7 +80,7 @@ they leave detail inside it undecided.**
 | C-32 | Unified Bulbula identity | Customer | D-13, D-33 |
 | C-33 | Customer profile | Customer | D-51 |
 | C-34 | Save management | Customer | — |
-| C-35 | Customer review management | Customer | D-34 |
+| C-35 | Customer review management | Customer | — |
 | C-36 | Account deletion and privacy controls | Customer | D-46 |
 
 ### 2.4 Cross-cutting (4)
@@ -183,7 +183,14 @@ permitted. **Features** for it are not (BND-4).
 | **Moderation is independent of advertising** | MOD-3, TS-14, IN-3 |
 | Reporter identity is never disclosed | TS-10, REP-4 |
 | Rating average is always shown **with its count**; nothing at all when there are no Reviews | UR-16, TR-63 |
-| Review subject, edit window, deletion semantics and moderation order are **Open (D-34)** | D-34 |
+| A Review belongs to a **Branch**, never to a Business; Business rating figures are **aggregates** across Branches | D-34, D-55 |
+| Rating is a **required integer 1–5**; review text is **optional**, so a rating-only Review is valid and complete | D-34 |
+| **At most one active Review per Customer per Branch**, enforced in the database; re-reviewing is an **edit** | D-34 |
+| **Moderation precedes publication:** `pending` → `published` or `rejected`. A rejected Review is never public; post-publication removal remains available | D-34 |
+| The author may edit for **30 days from creation**, and an edit **returns the Review to moderation** | D-34 |
+| Author deletion is a **withdrawal / soft delete** — public visibility ceases, the internal record may remain. **The retention period is PENDING COUNSEL (L-21, D-46)** and must not be invented | D-34, D-46 |
+| The rating summary is the **unweighted arithmetic mean of `published` ratings**; default ordering is **newest published first** | D-34 |
+| **No minimum account age.** Maximum text length, rate limits and anomaly thresholds are **configuration**, deliberately unset | D-34 |
 
 ### Save
 
@@ -258,7 +265,6 @@ them. Authority: `docs/60-decisions/decision-register.md` §2.
 | **D-26** | Coverage and mutation gates as the domain grows | Any new code |
 | **D-27** | Analytics granularity, retention, raw-event policy | C-28, C-38 |
 | **D-33** | Telegram identity integration — **open evaluation** | Mini App auth |
-| **D-34** | Review mechanics: subject, edit window, deletion, moderation order | C-13, C-25, C-35 |
 | **D-35** | Structured guest suggestions vs free-text reports | C-15 |
 | **D-38** | Mini App navigation: full page loads vs fragment swaps | Mini App |
 | **D-39** | Ad / editorial integrity controls — **blocks the first paid Campaign** | C-16, C-27 |
@@ -269,10 +275,23 @@ them. Authority: `docs/60-decisions/decision-register.md` §2.
 | **D-44** | Services / products / pricing representation | C-08 |
 | **D-45** | Staff authentication strength | Staff auth |
 | **D-46** | Minimum account age; retention per data class | C-36, retention |
-| **D-55** | Branch vs Business attribute boundary | Data model |
-| **D-56 / D-57** | Category catalogue production and cardinality | C-04, C-23 |
 
 Technical opens `OT-01…OT-09` are in `technical-context.md` §9.
+
+### Approved at the M0 schema gate — 2026-10-07
+
+These four were open when earlier context was written. **They are approved.
+Do not treat them as open, and do not re-derive them.**
+
+| ID | Approved outcome |
+| --- | --- |
+| **D-34** | Review mechanics — see the Review rules above. Schema for Reviews is **unblocked** |
+| **D-55** | **Business:** name, description, website, brand-level public social links. **Branch:** address, Area, Sub-city, Landmark, coordinates, phone, branch email, opening hours, branch-specific services, products and pricing. Reviews and location analytics are Branch-level; Business figures are derived. Media may attach to either. **An attribute must not be moved between levels for implementation convenience.** Directory schema is **unblocked** |
+| **D-56** | The Category catalogue is **centrally owned and manually curated by Bulbula**, over **exactly two levels**, with **no user-created** entries, an English label required and Amharic where available. **Catalogue content is reference data, not application schema** — a catalogue change must not require a code change or a migration. The **structure is unblocked**; the **content remains an operations task** and must never be shipped in a migration |
+| **D-57** | **Exactly one Primary Category** per published Listing, **zero or more Secondary Categories**, no duplicates, the Primary never also a Secondary, **no artificial maximum**. Cardinality is **unblocked** |
+
+**What this does not close:** D-39, D-04, D-44, D-09, D-45, the legal items,
+and the retention period for a withdrawn Review (L-21, D-46).
 
 ---
 

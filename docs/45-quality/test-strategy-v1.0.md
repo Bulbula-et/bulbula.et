@@ -227,11 +227,20 @@ requirement.
 | — | Whether MariaDB-backed integration tests are added alongside SQLite | **Open — technical decision** |
 | — | How accessibility is verified beyond the manual checks in §7 | **Open — quality decision**; depends on NFR-AC1 |
 | OT-02 | OTP values — tests must not pin them while open (TST-4.5) | **Open — technical decision** |
-| D-34 | Review mechanics — tests must not pin edit, deletion or moderation order | **Open — product decision** |
+| D-34 (residual) | Maximum review-text length, rate-limit values, anomaly thresholds — all **configuration** | **Open — implementation detail.** Tests **must not** pin a literal value; they assert behaviour against the configured value |
+
+**D-34 closed on 2026-10-07.** Tests may and should now pin the settled
+mechanics: the **Branch** subject, the **integer 1–5** rating, **optional**
+text, **at most one active Review per Customer per Branch** enforced in the
+database, the **30-day** edit window, **re-moderation on edit**,
+**pre-publication** moderation, **withdrawal** on author deletion, the
+**unweighted mean of Published ratings**, and **newest-first** ordering.
+Tests **must not** pin a retention period for a withdrawn Review — that is
+**PENDING COUNSEL** (L-21, D-46).
 | — | Who performs and records each manual check in §7 | **Open — operational decision** |
 
 ---
 
 ## Decision references
 
-D-26, D-34, D-41, D-50.
+D-26, D-34, D-41, D-46, D-50.

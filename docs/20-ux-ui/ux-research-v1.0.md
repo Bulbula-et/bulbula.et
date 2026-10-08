@@ -319,7 +319,7 @@ recorded so that nobody re-proposes them as "standard practice":
 | Mini App navigation model | **Open (D-38)** |
 | Maps embed strategy and fallback | **Open (D-21)** |
 | Whether Guests may submit structured suggestions | **Open (D-35)** |
-| Review scale, edit window, moderation timing | **Open (D-34)** |
+| Review scale, edit window, moderation timing | **Closed 2026-10-07 (D-34)** — 1 to 5, 30 days, pre-publication |
 | Hours model (split shifts, exceptions, 24 h) | **Open (D-04)** |
 | Whether NFR-AC1 (WCAG 2.2 AA) becomes contractual | **`[P]` — owner approval** |
 | Ethiopian advertising-disclosure rules | **PENDING COUNSEL (L-16)** |

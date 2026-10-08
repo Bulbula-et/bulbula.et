@@ -193,7 +193,7 @@ Bulbula **never renders a second back button** (UR-12, UXP-9.4).
 | IAR-18 | Breadcrumbs are real links, marked up as a navigation landmark with an ordered list |
 | IAR-19 | The current page is the **last item and is not a link** |
 | IAR-20 | On mobile the breadcrumb may truncate intermediate items but **always keeps the immediate parent** — it is the primary "up" affordance where there is no browser chrome (Mini App) |
-| IAR-21 | The profile breadcrumb uses the **primary Category**, giving one stable path even where a Business has several Categories (D-57 open) |
+| IAR-21 | The profile breadcrumb uses the **primary Category**. Every published Listing has **exactly one** (D-57), so the path is always well defined even where a Business carries secondary Categories |
 
 ### 3.4 Search entry points
 
@@ -371,7 +371,7 @@ share sheet, autocomplete, a toast.
 | D-38 | Mini App navigation model | **Open — implementation detail**; §4 holds for either answer |
 | D-21 | Maps embed strategy and fallback | **Open — product detail**; affects the profile map block only |
 | D-40 | Launch-area boundary | **Open — product detail**; affects which Areas exist, not the structure |
-| D-56 / D-57 | Category catalogue and cardinality | **Open — product detail**; §3.3 uses the primary Category for breadcrumbs |
+| D-56 / D-57 | Category catalogue and cardinality | **Closed 2026-10-07.** The catalogue is centrally curated reference data over exactly two levels (D-56); each Listing has one primary Category and zero or more secondaries (D-57). §3.3 breadcrumbs use the primary Category, which is now guaranteed to exist |
 | D-35 | Structured guest suggestions | **Open — product detail**; `/b/{business}/report` is free-text today |
 | D-04 | Hours model | **Open — product detail**; affects the hours block, not the IA |
 | — | Minimum-content threshold for SEO-9 | **Open — product detail**; the rule exists, the number does not |
