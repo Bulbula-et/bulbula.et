@@ -1,13 +1,13 @@
 # Operations and Quality Context
 
 ```text
-Source baseline:   b68ce5acf32afd6b525226a90343e3196f258a0e
+Source baseline:   33f58e0e1619c7e5b952eede2382ae3c5e2ccf8c
 Last derived from: 2026-10-07
 Context status:    Current
 ```
 
 **Derived from** `docs/40-operations/` (nine documents) ·
-`docs/45-quality/` (five documents) ·
+`docs/45-quality/` (seven documents) ·
 `docs/30-technical/deployment.md` · `trd-v1.0.md` §39.
 **Authority:** those documents.
 
@@ -235,4 +235,6 @@ decision**, plus an explicit note that it is unset.
 | How a change ships | `docs/45-quality/release-management-v1.0.md` |
 | The 70 launch criteria | `docs/45-quality/production-readiness-v1.0.md` |
 | Life after launch | `docs/45-quality/maintenance-v1.0.md` |
+| Whether the documentation is consistent, and what still blocks | `docs/45-quality/documentation-audit-v1.0.md` |
+| **What to build first, in what order, and what is gated** | **`docs/45-quality/implementation-plan-v1.0.md`** |
 | Servers, environments, deploy steps | `docs/30-technical/deployment.md` |
