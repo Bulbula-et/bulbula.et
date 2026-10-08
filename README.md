@@ -21,7 +21,7 @@ Flight or any other application framework. Focused libraries (Monolog for
 PSR-3 logging, phpdotenv for environment parsing, FastRoute for route
 matching) are fine — frameworks are not. The rule is enforced by an architecture test, not just by convention.
 
-See [docs/architecture.md](docs/architecture.md).
+See [docs/30-technical/architecture.md](docs/30-technical/architecture.md).
 
 ## Requirements
 
@@ -85,7 +85,7 @@ tests/                 Unit (PHPUnit style) · Feature & Arch (Pest style)
 | `Bulbula\Config` `Logging` `Error` `Support` | configuration, PSR-3 logging, error handling, env reader |
 
 Full details — request lifecycle, routing, middleware, database rules,
-migration workflow — are in [docs/architecture.md](docs/architecture.md).
+migration workflow — are in [docs/30-technical/architecture.md](docs/30-technical/architecture.md).
 
 ## Routing and endpoints
 
@@ -210,7 +210,7 @@ served straight off disk from `public/assets/`.
 point; `public/.htaccess` sets `DirectoryIndex index.php` and routes
 everything that is not an existing file or directory to it. Setup, the cPanel
 paths and the automated development deploy are documented in
-[docs/deployment.md](docs/deployment.md).
+[docs/30-technical/deployment.md](docs/30-technical/deployment.md).
 
 ## Credits
 
