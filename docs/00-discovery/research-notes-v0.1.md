@@ -4,7 +4,8 @@
 | --- | --- |
 | **Document** | Research Notes supporting the Product Understanding Report |
 | **Version** | 0.1 |
-| **Status** | Discovery |
+| **Status** | **Approved — historical record (frozen)** |
+| **Note** | Findings R-01…R-15. Later findings R-16…R-23 are in product-decision-brief-v0.2.md and R-24…R-26 in v0.3. |
 | **Date** | 2026-10-07 |
 | **Parent** | [project-understanding-v0.1.md](project-understanding-v0.1.md) |
 

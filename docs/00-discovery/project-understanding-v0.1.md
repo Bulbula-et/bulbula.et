@@ -4,7 +4,8 @@
 | --- | --- |
 | **Document** | Bulbula Product Understanding Report |
 | **Version** | 0.1 |
-| **Status** | Discovery — awaiting review |
+| **Status** | **Approved — historical record (frozen)** |
+| **Note** | Reviewed and accepted as the discovery baseline. Retained unedited; decisions it proposed are now tracked in [docs/60-decisions/decision-register.md](../60-decisions/decision-register.md). |
 | **Date** | 2026-10-07 |
 | **Repository baseline** | `main` @ `fc6188b` (139 tracked files) |
 | **Supersedes** | — |
